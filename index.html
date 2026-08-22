@@ -38,7 +38,7 @@ input:focus,select:focus,textarea:focus{outline:none}
 .sidebar .logo .icon{width:2.5rem;height:2.5rem;border-radius:.75rem;background:linear-gradient(135deg,var(--b),var(--s));display:flex;align-items:center;justify-content:center;font-size:1.25rem}
 .sidebar .logo h2{font-family:'Space Grotesk',sans-serif;font-size:1.125rem;font-weight:700}
 .sidebar .logo span{font-size:.625rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em}
-.sidebar nav{flex:1;padding:1rem;display:flex;flex-direction:column;gap:.25rem}
+.sidebar nav{flex:1;padding:1rem;display:flex;flex-direction:column;gap:.25rem;overflow-y:auto}
 .sidebar nav a{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-radius:.75rem;font-size:.8125rem;font-weight:500;color:rgba(255,255,255,.5);transition:all .2s;text-decoration:none;cursor:pointer}
 .sidebar nav a:hover,.sidebar nav a.active{background:rgba(255,255,255,.1);color:#fff}
 .sidebar .user-box{padding:1rem;border-top:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:.75rem}
@@ -95,476 +95,1399 @@ td{padding:.625rem .75rem;border-bottom:1px solid #f1f5f9}tr:hover{background:#f
 </style>
 </head>
 <body>
+
 <div id="toast" class="toast"></div>
+
+<!-- ===== LOGIN PAGE ===== -->
 <div id="page-login" class="page login-page active">
-<div style="text-align:center;margin-bottom:2rem;color:#fff">
-<div style="font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:700;margin-bottom:.5rem">Global Acqua</div>
-<div style="font-size:.75rem;opacity:.6;letter-spacing:.1em;text-transform:uppercase">Sensory Quality Control</div>
+  <div style="text-align:center;margin-bottom:2rem;color:#fff">
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:700;margin-bottom:.5rem">Global Acqua</div>
+    <div style="font-size:.75rem;opacity:.6;letter-spacing:.1em;text-transform:uppercase">Sensory Quality Control</div>
+  </div>
+  <div class="login-card">
+    <div class="login-logo">💧</div>
+    <h1>Welcome back</h1>
+    <p>Sign in to access your sensory analysis dashboard</p>
+    <div id="login-error" class="err" style="display:none"></div>
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="login-user" placeholder="Enter username" autocomplete="username">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password">
+    </div>
+    <button class="btn btn-primary btn-full" id="login-btn" style="height:2.75rem">Sign In</button>
+    <div style="text-align:center;margin-top:1.5rem;font-size:.75rem;color:var(--t4)">Developed by <b>Mr Saila Ruidas</b> in collaboration with <b>Emergent Lab</b></div>
+  </div>
 </div>
-<div class="login-card">
-<div class="login-logo">💧</div>
-<h1>Welcome back</h1>
-<p>Sign in to access your sensory analysis dashboard</p>
-<div id="login-error" class="err" style="display:none"></div>
-<div class="field"><label>Username</label><input type="text" id="login-user" placeholder="Enter username" autocomplete="username"></div>
-<div class="field"><label>Password</label><input type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password"></div>
-<button class="btn btn-primary btn-full" onclick="doLogin()" style="height:2.75rem">Sign In</button>
-<div style="text-align:center;margin-top:1.5rem;font-size:.75rem;color:var(--t4)">Developed by <b>Mr Saila Ruidas</b> in collaboration with <b>Emergent Lab</b></div>
-</div>
-</div>
+
+<!-- ===== APP SHELL ===== -->
 <div id="page-app" class="page">
-<div class="mobile-header"><div class="mob-logo"><div class="icon">💧</div><span>Global Acqua</span></div><button class="hamburger" onclick="toggleSidebar()">☰</button></div>
-<aside class="sidebar" id="sidebar">
-<div class="logo"><div class="icon">💧</div><div><h2>Global Acqua</h2><span id="sidebar-role-label">Panel</span></div></div>
-<nav id="sidebar-nav"></nav>
-<div class="user-box">
-<div class="avatar" id="sidebar-avatar">A</div>
-<div class="info"><div class="name" id="sidebar-name">Admin</div><div class="role" id="sidebar-role-text">Administrator</div></div>
-<button class="btn btn-sm btn-secondary" onclick="doLogout()" style="margin-left:.5rem;font-size:.6875rem;color:#fff;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)">Out</button>
+  <div class="mobile-header">
+    <div class="mob-logo"><div class="icon">💧</div><span>Global Acqua</span></div>
+    <button class="hamburger" id="hamburger-btn">☰</button>
+  </div>
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <div class="icon">💧</div>
+      <div><h2>Global Acqua</h2><span id="sidebar-role-label">Panel</span></div>
+    </div>
+    <nav id="sidebar-nav"></nav>
+    <div class="user-box">
+      <div class="avatar" id="sidebar-avatar">A</div>
+      <div class="info">
+        <div class="name" id="sidebar-name">Admin</div>
+        <div class="role" id="sidebar-role-text">Administrator</div>
+      </div>
+      <button class="btn btn-sm btn-secondary" id="logout-btn" style="margin-left:.5rem;font-size:.6875rem;color:#fff;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)">Out</button>
+    </div>
+  </aside>
+  <div class="main" id="main-content"></div>
 </div>
-</aside>
-<div class="main" id="main-content"></div>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal-content"></div>
 </div>
-<div class="modal-overlay" id="modal-overlay"><div class="modal" id="modal-content"></div></div>
 
 <script>
-// ===== DATA LAYER =====
-const DB={
-_k:'gaq_db',
-_load(){try{return JSON.parse(localStorage.getItem(this._k))||{users:[],sessions:[]};}catch{return{users:[],sessions:[]};}},
-_save(d){localStorage.setItem(this._k,JSON.stringify(d));},
-init(){const d=this._load();if(!d.users.length){d.users=[{id:uid(),username:'admin',password:hashPw('admin123'),role:'admin',createdAt:now()},{id:uid(),username:'Saila Ruidas',password:hashPw('saila123'),role:'admin',createdAt:now()},{id:uid(),username:'SD',password:hashPw('sd123'),role:'user',createdAt:now()},{id:uid(),username:'RM',password:hashPw('rm123'),role:'user',createdAt:now()},{id:uid(),username:'SC',password:hashPw('sc123'),role:'user',createdAt:now()},{id:uid(),username:'SM',password:hashPw('sm123'),role:'user',createdAt:now()}];this._save(d);}return d;},
-getUsers(){return this._load().users.map(u=>({...u,password:undefined}));},
-findUser(u,p){const d=this._load();return d.users.find(x=>x.username===u&&verifyPw(p,x.password));},
-addUser(u,p,r){const d=this._load();if(d.users.find(x=>x.username===u))return false;d.users.push({id:uid(),username:u,password:hashPw(p),role:r,createdAt:now()});this._save(d);return true;},
-deleteUser(u){const d=this._load();d.users=d.users.filter(x=>x.username!==u);this._save(d);},
-getSessions(role,user){const d=this._load();return role==='admin'?d.sessions:d.sessions.filter(s=>s.createdBy===user);},
-getAllSessions(){return this._load().sessions;},
-findSession(code){return this._load().sessions.find(s=>s.sessionCode===code);},
-createSession(code,count,type,user){const d=this._load();const s={id:uid(),sessionCode:code,status:'in_progress',targetPanelistCount:count,testType:type||'regular',ballots:[],createdBy:user,createdAt:now(),completedAt:null,verifiedBy:null,verifiedByName:null,verificationSignature:null};d.sessions.push(s);this._save(d);return s;},
-submitBallot(code,ballot){const d=this._load();const s=d.sessions.find(x=>x.sessionCode===code);if(!s)return null;s.ballots.push(ballot);if(s.ballots.length>=s.targetPanelistCount){s.status='completed';s.completedAt=now();}this._save(d);return s;},
-deleteSession(code){const d=this._load();d.sessions=d.sessions.filter(x=>x.sessionCode!==code);this._save(d);}
+// ============================================================
+// DATA LAYER
+// ============================================================
+var DB = {
+  _k: 'gaq_db',
+
+  _load: function() {
+    try {
+      return JSON.parse(localStorage.getItem(this._k)) || { users: [], sessions: [] };
+    } catch(e) {
+      return { users: [], sessions: [] };
+    }
+  },
+
+  _save: function(d) {
+    localStorage.setItem(this._k, JSON.stringify(d));
+  },
+
+  init: function() {
+    var d = this._load();
+    if (!d.users.length) {
+      d.users = [
+        { id: uid(), username: 'admin', password: hashPw('admin123'), role: 'admin', createdAt: now() },
+        { id: uid(), username: 'Saila Ruidas', password: hashPw('saila123'), role: 'admin', createdAt: now() },
+        { id: uid(), username: 'SD', password: hashPw('sd123'), role: 'user', createdAt: now() },
+        { id: uid(), username: 'RM', password: hashPw('rm123'), role: 'user', createdAt: now() },
+        { id: uid(), username: 'SC', password: hashPw('sc123'), role: 'user', createdAt: now() },
+        { id: uid(), username: 'SM', password: hashPw('sm123'), role: 'user', createdAt: now() }
+      ];
+      this._save(d);
+    }
+    return d;
+  },
+
+  getUsers: function() {
+    return this._load().users.map(function(u) {
+      var copy = {};
+      for (var k in u) copy[k] = u[k];
+      copy.password = undefined;
+      return copy;
+    });
+  },
+
+  findUser: function(u, p) {
+    var d = this._load();
+    for (var i = 0; i < d.users.length; i++) {
+      if (d.users[i].username === u && verifyPw(p, d.users[i].password)) {
+        return d.users[i];
+      }
+    }
+    return null;
+  },
+
+  addUser: function(u, p, r) {
+    var d = this._load();
+    for (var i = 0; i < d.users.length; i++) {
+      if (d.users[i].username === u) return false;
+    }
+    d.users.push({ id: uid(), username: u, password: hashPw(p), role: r, createdAt: now() });
+    this._save(d);
+    return true;
+  },
+
+  deleteUser: function(u) {
+    var d = this._load();
+    d.users = d.users.filter(function(x) { return x.username !== u; });
+    this._save(d);
+  },
+
+  getSessions: function(role, user) {
+    var d = this._load();
+    if (role === 'admin') return d.sessions;
+    return d.sessions.filter(function(s) { return s.createdBy === user; });
+  },
+
+  getAllSessions: function() {
+    return this._load().sessions;
+  },
+
+  findSession: function(code) {
+    var d = this._load();
+    for (var i = 0; i < d.sessions.length; i++) {
+      if (d.sessions[i].sessionCode === code) return d.sessions[i];
+    }
+    return null;
+  },
+
+  createSession: function(code, count, type, user) {
+    var d = this._load();
+    var s = {
+      id: uid(),
+      sessionCode: code,
+      status: 'in_progress',
+      targetPanelistCount: count,
+      testType: type || 'regular',
+      ballots: [],
+      createdBy: user,
+      createdAt: now(),
+      completedAt: null,
+      verifiedBy: null,
+      verifiedByName: null,
+      verificationSignature: null
+    };
+    d.sessions.push(s);
+    this._save(d);
+    return s;
+  },
+
+  submitBallot: function(code, ballot) {
+    var d = this._load();
+    var s = null;
+    for (var i = 0; i < d.sessions.length; i++) {
+      if (d.sessions[i].sessionCode === code) { s = d.sessions[i]; break; }
+    }
+    if (!s) return null;
+    s.ballots.push(ballot);
+    if (s.ballots.length >= s.targetPanelistCount) {
+      s.status = 'completed';
+      s.completedAt = now();
+    }
+    this._save(d);
+    return s;
+  },
+
+  deleteSession: function(code) {
+    var d = this._load();
+    d.sessions = d.sessions.filter(function(x) { return x.sessionCode !== code; });
+    this._save(d);
+  }
 };
 
-// ===== HELPERS =====
-function uid(){return crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)+Date.now().toString(36);}
-function now(){return new Date().toISOString();}
-function hashPw(p){let h=0;for(let i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h|=0;}return'h'+h;}
-function verifyPw(p,h){return hashPw(p)===h;}
-function fmtDate(s){return s?new Date(s).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'}):'N/A';}
-function fmtDateTime(s){return s?new Date(s).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'N/A';}
-function escH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function showModal(h){document.getElementById('modal-content').innerHTML=h;document.getElementById('modal-overlay').classList.add('show');}
-function hideModal(){document.getElementById('modal-overlay').classList.remove('show');}
-document.getElementById('modal-overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)hideModal();});
-
-let _toastTimer=null;
-function toast(msg,type){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.className='toast '+type+' show';
-  clearTimeout(_toastTimer);
-  _toastTimer=setTimeout(()=>t.classList.remove('show'),3500);
+// ============================================================
+// HELPERS
+// ============================================================
+function uid() {
+  if (crypto.randomUUID) return crypto.randomUUID();
+  return Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
 
-// ===== STATE =====
-let currentUser=null,currentView='dashboard';
-let _joinCode='',_testSelect=false,_activeCode='',_ballotNum=1,_ballotInitial=null,_selectedTest='regular',_viewingSession=null;
-let _sSearch='',_sDateFrom='',_sDateTo='',_sStatus='all';
-let _genType='regular',_genCount='3',_genCode='';
+function now() {
+  return new Date().toISOString();
+}
 
-// ===== AUTH =====
-function doLogin(){
-  const u=document.getElementById('login-user').value.trim();
-  const p=document.getElementById('login-pass').value;
-  const user=DB.findUser(u,p);
-  if(!user){document.getElementById('login-error').textContent='Incorrect username or password';document.getElementById('login-error').style.display='block';return;}
-  currentUser={username:user.username,role:user.role};
-  document.getElementById('login-error').style.display='none';
+function hashPw(p) {
+  var h = 0;
+  for (var i = 0; i < p.length; i++) {
+    h = ((h << 5) - h) + p.charCodeAt(i);
+    h = h | 0;
+  }
+  return 'h' + h;
+}
+
+function verifyPw(p, h) {
+  return hashPw(p) === h;
+}
+
+function fmtDate(s) {
+  if (!s) return 'N/A';
+  return new Date(s).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+function fmtDateTime(s) {
+  if (!s) return 'N/A';
+  return new Date(s).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+function escH(s) {
+  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function showModal(html) {
+  document.getElementById('modal-content').innerHTML = html;
+  document.getElementById('modal-overlay').classList.add('show');
+}
+
+function hideModal() {
+  document.getElementById('modal-overlay').classList.remove('show');
+}
+
+var _toastTimer = null;
+function toast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(function() { t.classList.remove('show'); }, 3500);
+}
+
+function genCode() {
+  var A = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  var c = 'GAQ-';
+  for (var i = 0; i < 6; i++) c += A[Math.floor(Math.random() * A.length)];
+  return c;
+}
+
+function badgeColorForCode(code) {
+  var map = {
+    'Control': '#e5e7eb', 'Yellow': '#fef08a', 'Brown': '#a16207',
+    'Blue': '#3b82f6', 'Green': '#22c55e', 'Red': '#ef4444', 'Purple': '#a855f7'
+  };
+  return map[code] || '#ccc';
+}
+
+function badgeTextForCode(code) {
+  return (code === 'Control' || code === 'Yellow' || code === 'Green') ? '#000' : '#fff';
+}
+
+// ============================================================
+// STATE
+// ============================================================
+var currentUser = null;
+var currentView = 'dashboard';
+var _joinCode = '';
+var _testSelect = false;
+var _activeCode = '';
+var _ballotNum = 1;
+var _ballotInitial = null;
+var _selectedTest = 'regular';
+var _viewingSession = null;
+var _sSearch = '';
+var _sDateFrom = '';
+var _sDateTo = '';
+var _sStatus = 'all';
+var _genType = 'regular';
+var _genCount = '3';
+var _genCode = '';
+
+// ============================================================
+// AUTH
+// ============================================================
+function doLogin() {
+  var u = document.getElementById('login-user').value.trim();
+  var p = document.getElementById('login-pass').value;
+  if (!u || !p) {
+    document.getElementById('login-error').textContent = 'Please enter username and password';
+    document.getElementById('login-error').style.display = 'block';
+    return;
+  }
+  var user = DB.findUser(u, p);
+  if (!user) {
+    document.getElementById('login-error').textContent = 'Incorrect username or password';
+    document.getElementById('login-error').style.display = 'block';
+    return;
+  }
+  currentUser = { username: user.username, role: user.role };
+  document.getElementById('login-error').style.display = 'none';
   showApp();
 }
-function doLogout(){currentUser=null;currentView='dashboard';document.getElementById('page-app').classList.remove('active');document.getElementById('page-login').classList.add('active');document.getElementById('login-user').value='';document.getElementById('login-pass').value='';}
-document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-document.getElementById('login-user').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-pass').focus();});
 
-// ===== APP SHELL =====
-function showApp(){
+function doLogout() {
+  currentUser = null;
+  currentView = 'dashboard';
+  document.getElementById('page-app').classList.remove('active');
+  document.getElementById('page-login').classList.add('active');
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+}
+
+// ============================================================
+// APP SHELL
+// ============================================================
+function showApp() {
   document.getElementById('page-login').classList.remove('active');
   document.getElementById('page-app').classList.add('active');
-  document.getElementById('sidebar-name').textContent=currentUser.username;
-  document.getElementById('sidebar-avatar').textContent=currentUser.username.charAt(0).toUpperCase();
-  if(currentUser.role==='admin'){document.getElementById('sidebar-role-label').textContent='Admin Panel';document.getElementById('sidebar-role-text').textContent='Administrator';}
-  else{document.getElementById('sidebar-role-label').textContent='Sensory Panel';document.getElementById('sidebar-role-text').textContent='Panelist';}
-  buildNav();navigateTo('dashboard');
-  toast('Welcome, '+currentUser.username+'!','success');
-}
-function buildNav(){
-  const nav=document.getElementById('sidebar-nav');
-  if(currentUser.role==='admin'){
-    nav.innerHTML=`<a onclick="navigateTo('dashboard')" id="nav-dashboard">📊 Dashboard</a>
-    <a onclick="navigateTo('users')" id="nav-users">👥 User Management</a>
-    <a onclick="navigateTo('sessions')" id="nav-sessions">📋 All Sessions</a>
-    <a onclick="navigateTo('generate')" id="nav-generate">🔑 Generate Code</a>
-    <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.1)">
-    <div style="font-size:.625rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;padding:0 1rem;margin-bottom:.5rem">Reports</div>
-    <a onclick="openReport('daily')">📅 Daily Summary</a>
-    <a onclick="openReport('blind')">🎯 Blind Test Summary</a>
-    <a onclick="openReport('proficiency')">⭐ Proficiency Summary</a></div>`;
-  }else{
-    nav.innerHTML=`<a onclick="navigateTo('dashboard')" id="nav-dashboard">📊 Dashboard</a>
-    <a onclick="navigateTo('active')" id="nav-active">📋 Active Session</a>`;
+  document.getElementById('sidebar-name').textContent = currentUser.username;
+  document.getElementById('sidebar-avatar').textContent = currentUser.username.charAt(0).toUpperCase();
+  if (currentUser.role === 'admin') {
+    document.getElementById('sidebar-role-label').textContent = 'Admin Panel';
+    document.getElementById('sidebar-role-text').textContent = 'Administrator';
+  } else {
+    document.getElementById('sidebar-role-label').textContent = 'Sensory Panel';
+    document.getElementById('sidebar-role-text').textContent = 'Panelist';
   }
-}
-function navigateTo(view){
-  currentView=view;
-  document.querySelectorAll('.sidebar nav a').forEach(a=>a.classList.remove('active'));
-  const el=document.getElementById('nav-'+view);if(el)el.classList.add('active');
-  renderView();
-  document.getElementById('sidebar').classList.remove('open');
-}
-function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
-function renderView(){
-  const m=document.getElementById('main-content');
-  switch(currentView){
-    case'dashboard':m.innerHTML=currentUser.role==='admin'?renderAdminDash():renderUserDash();break;
-    case'users':m.innerHTML=renderUsers();break;
-    case'sessions':m.innerHTML=renderSessions();break;
-    case'generate':m.innerHTML=renderGenerate();break;
-    case'active':m.innerHTML=renderActive();break;
-    case'ballot':m.innerHTML=renderBallot();setupRadioListeners();break;
-    case'report':m.innerHTML=renderSessionReport();break;
-    default:m.innerHTML=renderUserDash();
-  }
+  buildNav();
+  navigateTo('dashboard');
+  toast('Welcome, ' + currentUser.username + '!', 'success');
 }
 
-// ===== RADIO BUTTON FIX (event delegation - no innerHTML scripts) =====
-function setupRadioListeners(){
-  document.querySelectorAll('.test-card').forEach(tc=>{
-    const radios=tc.querySelectorAll('input[type=radio]');
-    const reasonWrap=tc.querySelector('.reason-wrap');
-    if(!reasonWrap)return;
-    radios.forEach(r=>{r.addEventListener('change',()=>{reasonWrap.style.display=r.value==='OUT'&&r.checked?'block':'none';});});
+function buildNav() {
+  var nav = document.getElementById('sidebar-nav');
+  if (currentUser.role === 'admin') {
+    nav.innerHTML =
+      '<a data-nav="dashboard">📊 Dashboard</a>' +
+      '<a data-nav="users">👥 User Management</a>' +
+      '<a data-nav="sessions">📋 All Sessions</a>' +
+      '<a data-nav="generate">🔑 Generate Code</a>' +
+      '<div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.1)">' +
+      '<div style="font-size:.625rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;padding:0 1rem;margin-bottom:.5rem">Reports</div>' +
+      '<a data-action="daily">📅 Daily Summary</a>' +
+      '<a data-action="blind">🎯 Blind Test Summary</a>' +
+      '<a data-action="proficiency">⭐ Proficiency Summary</a></div>';
+  } else {
+    nav.innerHTML =
+      '<a data-nav="dashboard">📊 Dashboard</a>' +
+      '<a data-nav="active">📋 Active Session</a>';
+  }
+  // Attach nav click listeners via event delegation
+  nav.querySelectorAll('a[data-nav]').forEach(function(a) {
+    a.addEventListener('click', function() {
+      navigateTo(a.getAttribute('data-nav'));
+    });
+  });
+  nav.querySelectorAll('a[data-action]').forEach(function(a) {
+    a.addEventListener('click', function() {
+      openReport(a.getAttribute('data-action'));
+    });
   });
 }
 
-// ===== ADMIN DASHBOARD =====
-function renderAdminDash(){
-  const sessions=DB.getAllSessions();const today=new Date().toDateString();
-  const completed=sessions.filter(s=>s.status==='completed');
-  const todayCount=completed.filter(s=>s.createdAt&&new Date(s.createdAt).toDateString()===today).length;
-  const ballotsCount=sessions.reduce((a,s)=>a+s.ballots.length,0);
-  return`<div class="main-header"><h1>Admin Dashboard</h1><p>Welcome, ${escH(currentUser.username)}</p></div>
-  <div class="grid grid-4" style="margin-bottom:2rem">
-  <div class="stat-card"><div class="stat-icon" style="background:#eff6ff;color:var(--b)">📊</div><div><div class="stat-val">${sessions.length}</div><div class="stat-lbl">Total Sessions</div></div></div>
-  <div class="stat-card"><div class="stat-icon" style="background:#f0fdf4;color:var(--grn)">✅</div><div><div class="stat-val">${completed.length}</div><div class="stat-lbl">Completed</div></div></div>
-  <div class="stat-card"><div class="stat-icon" style="background:#fffbeb;color:var(--amb)">📋</div><div><div class="stat-val">${todayCount}</div><div class="stat-lbl">Today</div></div></div>
-  <div class="stat-card"><div class="stat-icon" style="background:#f5f3ff;color:var(--pur)">👥</div><div><div class="stat-val">${ballotsCount}</div><div class="stat-lbl">Ballots</div></div></div>
-  </div>
-  <div class="grid grid-2">
-  <div class="card"><div class="card-header"><span style="font-size:1.25rem">🔑</span><h3>Quick Actions</h3></div><div class="card-body">
-  <button class="btn btn-primary btn-full" onclick="navigateTo('generate')" style="margin-bottom:.75rem">Generate Session Code</button>
-  <button class="btn btn-secondary btn-full" onclick="navigateTo('sessions')">View All Sessions</button></div></div>
-  <div class="card"><div class="card-header"><span style="font-size:1.25rem">👥</span><h3>User Management</h3></div><div class="card-body">
-  <button class="btn btn-primary btn-full" onclick="navigateTo('users')">Manage Users</button></div></div></div>`;
+function navigateTo(view) {
+  currentView = view;
+  document.querySelectorAll('.sidebar nav a').forEach(function(a) { a.classList.remove('active'); });
+  var el = document.querySelector('.sidebar nav a[data-nav="' + view + '"]');
+  if (el) el.classList.add('active');
+  renderView();
+  document.getElementById('sidebar').classList.remove('open');
 }
 
-// ===== USER DASHBOARD =====
-function renderUserDash(){
-  const sessions=DB.getSessions(currentUser.role,currentUser.username);
-  const completed=sessions.filter(s=>s.status==='completed');
-  const today=new Date().toDateString();
-  const todayCount=completed.filter(s=>s.completedAt&&new Date(s.completedAt).toDateString()===today).length;
-  return`<div class="main-header"><h1>Sensory Analysis Dashboard</h1><p>Create or join a sensory evaluation session</p></div>
-  <div class="grid grid-4" style="margin-bottom:2rem">
-  <div class="stat-card"><div class="stat-icon" style="background:#eff6ff;color:var(--b)">📊</div><div><div class="stat-val">${sessions.length}</div><div class="stat-lbl">Sessions</div></div></div>
-  <div class="stat-card"><div class="stat-icon" style="background:#f0fdf4;color:var(--grn)">✅</div><div><div class="stat-val">${completed.length}</div><div class="stat-lbl">Completed</div></div></div>
-  <div class="stat-card"><div class="stat-icon" style="background:#fffbeb;color:var(--amb)">📋</div><div><div class="stat-val">${todayCount}</div><div class="stat-lbl">Today</div></div></div>
-  <div class="stat-card"><div class="stat-icon" style="background:#f5f3ff;color:var(--pur)">👥</div><div><div class="stat-val">${sessions.reduce((a,s)=>a+s.ballots.length,0)}</div><div class="stat-lbl">Ballots</div></div></div>
-  </div>
-  <div class="grid grid-2">
-  <div class="card"><div class="card-header"><span style="font-size:1.25rem">➕</span><h3>New Session</h3></div><div class="card-body">
-  <p style="font-size:.8125rem;color:var(--t3);margin-bottom:1rem">Create a collaborative session for sensory evaluation</p>
-  ${!_testSelect?`<button class="btn btn-primary btn-full" onclick="_testSelect=true;renderView()">1 Panelist Session</button>`
-  :`<div style="display:flex;flex-direction:column;gap:.5rem">
-  <button class="btn btn-full" onclick="startSession(1,'regular')" style="background:#eff6ff;border:1px solid #bfdbfe;color:var(--b);font-weight:600">📋 Regular Sensory Test</button>
-  <button class="btn btn-full" onclick="startSession(1,'blind')" style="background:#f5f3ff;border:1px solid #ddd6fe;color:var(--pur);font-weight:600">🎯 Sensory Blind Test</button>
-  <button class="btn btn-full" onclick="startSession(1,'proficiency')" style="background:#f0fdf4;border:1px solid #bbf7d0;color:var(--grn);font-weight:600">⭐ Proficiency Test</button>
-  <button class="btn btn-secondary btn-full" onclick="_testSelect=false;renderView()" style="font-size:.8125rem">Cancel</button></div>`}
-  <div style="margin-top:.75rem;display:flex;flex-direction:column;gap:.5rem">
-  <button class="btn btn-full" onclick="startSession(2)" style="background:linear-gradient(135deg,#003A70,#0064C8);color:#fff">👥 2 Panelists</button>
-  <button class="btn btn-full" onclick="startSession(3)" style="background:linear-gradient(135deg,#00274d,#003A70);color:#fff">👥 3 Panelists</button></div></div></div>
-  <div class="card"><div class="card-header"><span style="font-size:1.25rem">🔑</span><h3>Join Session</h3></div><div class="card-body">
-  <p style="font-size:.8125rem;color:var(--t3);margin-bottom:1rem">Enter a session code to join an existing evaluation</p>
-  <div class="field"><input id="join-code-input" placeholder="e.g., GAQ-ABC123" value="${escH(_joinCode)}" oninput="_joinCode=this.value.toUpperCase();document.getElementById('join-btn').disabled=!_joinCode.trim()" onkeydown="if(event.key==='Enter'&&_joinCode.trim())joinSession()"></div>
-  <button id="join-btn" class="btn btn-primary btn-full" onclick="joinSession()" ${_joinCode.trim()?'':'disabled'}>Join Session</button>
-  <p style="font-size:.6875rem;color:var(--t4);text-align:center;margin-top:.5rem">Ask the session admin for the code</p></div></div></div>
-  ${sessions.length?`<div style="margin-top:2rem"><div class="main-header" style="margin-bottom:1rem"><h1 style="font-size:1.125rem">Recent Sessions</h1></div>
-  <div class="grid" style="gap:.75rem">${sessions.slice(0,5).map(s=>`
-  <div class="card" style="cursor:pointer" onclick="viewSession('${s.sessionCode}')">
-  <div style="padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem">
-  <div><span class="badge ${s.status==='completed'?'badge-green':'badge-amber'}">${s.status}</span> <span class="badge badge-blue">${s.testType||'regular'}</span></div>
-  <div style="font-family:'Space Grotesk',monospace;font-weight:700;color:var(--b)">${s.sessionCode}</div>
-  <div style="font-size:.75rem;color:var(--t3)">${s.ballots.length}/${s.targetPanelistCount} panelists · ${fmtDate(s.createdAt)}</div></div></div>`).join('')}</div></div>`:''}`;
+function renderView() {
+  var m = document.getElementById('main-content');
+  switch (currentView) {
+    case 'dashboard':
+      m.innerHTML = currentUser.role === 'admin' ? renderAdminDash() : renderUserDash();
+      attachDashboardListeners();
+      break;
+    case 'users':
+      m.innerHTML = renderUsers();
+      break;
+    case 'sessions':
+      m.innerHTML = renderSessions();
+      attachSessionFilterListeners();
+      break;
+    case 'generate':
+      m.innerHTML = renderGenerate();
+      attachGenerateListeners();
+      break;
+    case 'active':
+      m.innerHTML = renderActive();
+      break;
+    case 'ballot':
+      m.innerHTML = renderBallot();
+      setupRadioListeners();
+      break;
+    case 'report':
+      m.innerHTML = renderSessionReport();
+      break;
+    default:
+      m.innerHTML = renderUserDash();
+      attachDashboardListeners();
+  }
 }
 
-// ===== USERS =====
-function renderUsers(){
-  const users=DB.getUsers();
-  return`<div class="main-header"><h1>User Management</h1><p>Manage system users and their access roles</p></div>
-  <div class="card"><div class="card-header"><span style="font-size:1.25rem">➕</span><h3>Create New User</h3></div><div class="card-body">
-  <div class="grid grid-4" style="align-items:end">
-  <div class="field"><label>Username</label><input id="new-u"></div>
-  <div class="field"><label>Password</label><input id="new-p" type="password"></div>
-  <div class="field"><label>Role</label><select id="new-r"><option value="user">User</option><option value="admin">Admin</option></select></div>
-  <button class="btn btn-primary btn-full" onclick="createUser()">Create User</button></div></div></div>
-  <div style="margin-top:1rem"><div class="card"><div class="card-header"><span style="font-size:1.25rem">👥</span><h3>All Users (${users.length})</h3></div>
-  <div>${users.map(u=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid #f1f5f9">
-  <div style="display:flex;align-items:center;gap:.75rem">
-  <div style="width:2.25rem;height:2.25rem;border-radius:50%;background:${u.role==='admin'?'linear-gradient(135deg,#7c3aed,#a78bfa)':'linear-gradient(135deg,#0064C8,#009DE0)'};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8125rem">${u.username.charAt(0).toUpperCase()}</div>
-  <div><div style="font-weight:600;font-size:.875rem">${escH(u.username)}</div><div style="display:flex;gap:.5rem;margin-top:.25rem"><span class="badge ${u.role==='admin'?'badge-purple':'badge-blue'}">${u.role}</span><span style="font-size:.6875rem;color:var(--t4)">Created ${fmtDate(u.createdAt)}</span></div></div></div>
-  <button class="btn btn-sm btn-secondary" onclick="deleteUser('${escH(u.username)}')" style="color:var(--red)">🗑️</button></div>`).join('')}</div></div></div></div>`;
-}
-function createUser(){const u=document.getElementById('new-u').value.trim(),p=document.getElementById('new-p').value,r=document.getElementById('new-r').value;if(!u||!p){toast('Username and password required','error');return;}if(DB.addUser(u,p,r)){toast('User created!','success');renderView();}else{toast('Username already exists','error');}}
-function deleteUser(u){if(u===currentUser.username){toast("Can't delete yourself",'error');return;}if(confirm(`Delete user '${u}'?`)){DB.deleteUser(u);toast('User deleted','success');renderView();}}
-
-// ===== SESSIONS =====
-function renderSessions(){
-  let sessions=DB.getAllSessions();
-  if(_sSearch){const q=_sSearch.toLowerCase();sessions=sessions.filter(s=>(s.sessionCode||'').toLowerCase().includes(q)||(s.testType||'').toLowerCase().includes(q)||(s.createdBy||'').toLowerCase().includes(q));}
-  if(_sDateFrom)sessions=sessions.filter(s=>new Date(s.createdAt).toISOString().split('T')[0]>=_sDateFrom);
-  if(_sDateTo)sessions=sessions.filter(s=>new Date(s.createdAt).toISOString().split('T')[0]<=_sDateTo);
-  if(_sStatus!=='all')sessions=sessions.filter(s=>s.status===_sStatus);
-  return`<div class="main-header"><h1>All Sessions</h1><p>View and manage all sensory analysis sessions</p></div>
-  <div class="card"><div class="card-header" style="flex-wrap:wrap;gap:.75rem">
-  <span style="font-size:1.25rem">📋</span><h3 style="margin-right:auto">Sessions (${sessions.length})</h3>
-  <input placeholder="Search..." value="${escH(_sSearch)}" oninput="_sSearch=this.value;renderView()" style="height:2rem;padding:0 .625rem;border:1px solid var(--brd);border-radius:.5rem;font-size:.75rem;width:14rem"></div>
-  <div class="filter-bar" style="padding:0 1.5rem;padding-top:1rem">
-  <label>From:</label><input type="date" value="${_sDateFrom}" onchange="_sDateFrom=this.value;renderView()">
-  <label>To:</label><input type="date" value="${_sDateTo}" onchange="_sDateTo=this.value;renderView()">
-  <label>Status:</label><select onchange="_sStatus=this.value;renderView()"><option value="all" ${_sStatus==='all'?'selected':''}>All</option><option value="completed" ${_sStatus==='completed'?'selected':''}>Completed</option><option value="in_progress" ${_sStatus==='in_progress'?'selected':''}>In Progress</option></select>
-  ${(_sDateFrom||_sDateTo||_sStatus!=='all')?'<button class="btn btn-sm btn-secondary" onclick="clearSessionFilters()">Clear</button>':''}
-  </div>
-  <div class="table-wrap"><table><thead><tr><th>Code</th><th>Status</th><th>Type</th><th>Panelists</th><th>Created By</th><th>Date</th><th>Actions</th></tr></thead>
-  <tbody>${sessions.length?sessions.map(s=>`<tr>
-  <td><span style="font-family:'Space Grotesk',monospace;font-weight:700;color:var(--b)">${s.sessionCode}</span></td>
-  <td><span class="badge ${s.status==='completed'?'badge-green':'badge-amber'}">${s.status}</span></td>
-  <td><span class="badge badge-blue">${s.testType||'regular'}</span></td>
-  <td>${s.ballots.length}/${s.targetPanelistCount} <span style="font-size:.6875rem;color:var(--b);font-weight:700">${Math.min(100,Math.round((s.ballots.length/Math.max(s.targetPanelistCount,1))*100))}%</span></td>
-  <td>${escH(s.createdBy)}</td>
-  <td style="font-size:.75rem">${fmtDate(s.createdAt)}</td>
-  <td style="white-space:nowrap"><button class="btn btn-sm btn-secondary" onclick="viewSession('${s.sessionCode}')">View</button> <button class="btn btn-sm btn-secondary" style="color:var(--red)" onclick="deleteSession('${s.sessionCode}')">🗑️</button></td>
-  </tr>`).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--t4);padding:3rem">No sessions found</td></tr>'}</tbody></table></div></div>`;
-}
-function clearSessionFilters(){_sSearch='';_sDateFrom='';_sDateTo='';_sStatus='all';renderView();}
-function deleteSession(c){if(confirm(`Delete session ${c}?`)){DB.deleteSession(c);toast('Session deleted','success');renderView();}}
-
-// ===== GENERATE CODE =====
-function renderGenerate(){
-  return`<div class="main-header"><h1>Generate Session Code</h1><p>Create a new session and generate a code for panelists</p></div>
-  <div class="card" style="max-width:32rem"><div class="card-header"><span style="font-size:1.25rem">🔑</span><h3>Auto-Generate Session Code</h3></div><div class="card-body">
-  <div class="grid grid-2" style="margin-bottom:1rem">
-  <div class="field"><label>Test Type</label><select onchange="_genType=this.value"><option value="regular" ${_genType==='regular'?'selected':''}>Regular Sensory Test</option><option value="blind" ${_genType==='blind'?'selected':''}>Sensory Blind Test</option><option value="proficiency" ${_genType==='proficiency'?'selected':''}>Proficiency Test</option></select></div>
-  <div class="field"><label>Panelists</label><select onchange="_genCount=this.value"><option value="1" ${_genCount==='1'?'selected':''}>1 Panelist</option><option value="2" ${_genCount==='2'?'selected':''}>2 Panelists</option><option value="3" ${_genCount==='3'?'selected':''}>3 Panelists</option><option value="4" ${_genCount==='4'?'selected':''}>4 Panelists</option><option value="5" ${_genCount==='5'?'selected':''}>5 Panelists</option></select></div></div>
-  <button class="btn btn-primary btn-full" onclick="generateCode()" style="height:2.75rem">🔑 Generate Session Code</button></div></div>
-  ${_genCode?`<div class="card" style="margin-top:1rem;max-width:32rem"><div class="card-body" style="background:linear-gradient(160deg,var(--d),#0f3460);border-radius:1rem;text-align:center;padding:2rem">
-  <div style="font-size:.6875rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem">${_genType.toUpperCase()} TEST · ${_genCount} PANELIST${parseInt(_genCount)>1?'S':''}</div>
-  <div class="session-code" style="color:#fff;background:transparent;border-color:rgba(255,255,255,.2);margin:1rem 0;font-size:2rem">${_genCode}</div>
-  <button class="btn btn-sm" onclick="copyCode('${_genCode}')" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">📋 Copy Code</button>
-  <p style="font-size:.6875rem;color:rgba(255,255,255,.4);margin-top:.75rem">Share this code — panelists tap "Join Session" on their device</p></div></div>`:''}`;
-}
-function generateCode(){const A='ABCDEFGHJKMNPQRSTUVWXYZ23456789';let c='GAQ-';for(let i=0;i<6;i++)c+=A[Math.floor(Math.random()*A.length)];if(DB.findSession(c))return generateCode();DB.createSession(c,parseInt(_genCount),_genType,currentUser.username);_genCode=c;toast('Session '+c+' created!','success');renderView();}
-function copyCode(code){navigator.clipboard.writeText(code).then(()=>toast('Code copied!','info')).catch(()=>{toast('Code: '+code,'info');});}
-
-// ===== SESSION FLOW =====
-function startSession(count,testType='regular'){
-  const A='ABCDEFGHJKMNPQRSTUVWXYZ23456789';let c='GAQ-';for(let i=0;i<6;i++)c+=A[Math.floor(Math.random()*A.length)];
-  DB.createSession(c,count,testType,currentUser.username);
-  _activeCode=c;_ballotNum=1;_ballotInitial=null;_selectedTest=testType;
-  toast('Session '+c+' created!','success');
-  currentView='ballot';renderView();
-}
-function joinSession(){
-  const inputEl=document.getElementById('join-code-input');
-  const code=(inputEl?inputEl.value:_joinCode).trim().toUpperCase();
-  if(!code){toast('Enter a session code','error');return;}
-  const s=DB.findSession(code);if(!s){toast('Session not found. Check the code and try again.','error');return;}
-  if(s.status==='completed'){toast('This session is already completed','error');return;}
-  _activeCode=code;_ballotNum=s.ballots.length+1;_selectedTest=s.testType||'regular';
-  if(s.ballots.length>0){const f=s.ballots[0];_ballotInitial={productType:f.productType,otherProductType:f.otherProductType,productVariant:f.productVariant,otherProductVariant:f.otherProductVariant,productCode:f.productCode,dateOfMfg:f.dateOfMfg,controlSampleCode:f.controlSampleCode,productTime:f.productTime};}
-  else{_ballotInitial=null;}
-  _joinCode='';currentView='ballot';renderView();
-  toast('Joined session '+code+'!','success');
-}
-function viewSession(code){const s=DB.findSession(code);if(!s){toast('Session not found','error');return;}_viewingSession=s;currentView='report';renderView();}
-function submitBallot(data){
-  data.signature=data.signature||null;
-  const updated=DB.submitBallot(_activeCode,data);
-  if(!updated){toast('Failed to submit ballot','error');return;}
-  if(updated.status==='completed'){_viewingSession=updated;currentView='report';renderView();toast('Session completed!','success');}
-  else{_ballotNum=updated.ballots.length+1;if(updated.ballots.length===1&&_selectedTest==='regular'){_ballotInitial={productType:data.productType,otherProductType:data.otherProductType,productVariant:data.productVariant,otherProductVariant:data.otherProductVariant,productCode:data.productCode,dateOfMfg:data.dateOfMfg,controlSampleCode:data.controlSampleCode,productTime:data.productTime};}renderView();toast('Ballot submitted! Waiting for '+(updated.targetPanelistCount-updated.ballots.length)+' more.','success');}
+// ============================================================
+// EVENT ATTACHMENT HELPERS
+// ============================================================
+function setupRadioListeners() {
+  document.querySelectorAll('.test-card').forEach(function(tc) {
+    var radios = tc.querySelectorAll('input[type=radio]');
+    var reasonWrap = tc.querySelector('.reason-wrap');
+    if (!reasonWrap) return;
+    radios.forEach(function(r) {
+      r.addEventListener('change', function() {
+        reasonWrap.style.display = (r.value === 'OUT' && r.checked) ? 'block' : 'none';
+      });
+    });
+  });
 }
 
-// ===== BALLOT FORM =====
-function renderBallot(){
-  const s=DB.findSession(_activeCode);if(!s)return'<p>Session not found. <a href="#" onclick="navigateTo(\'dashboard\');return false" style="color:var(--b)">Go to Dashboard</a></p>';
-  if(s.status==='completed'){_viewingSession=s;currentView='report';return renderSessionReport();}
-  const total=s.targetPanelistCount;const done=s.ballots.length;const pct=Math.min(100,Math.round((done/total)*100));
-  return`<div style="max-width:40rem;margin:0 auto">
-  <div class="session-code" style="margin-bottom:1.5rem">${_activeCode}</div>
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
-  <button class="btn btn-sm btn-secondary" onclick="navigateTo('dashboard')">← Dashboard</button>
-  <div style="display:flex;align-items:center;gap:.75rem"><span style="font-size:.8125rem;color:var(--t2)">Panelist ${_ballotNum} of ${total}</span>
-  <div style="display:flex;gap:3px">${Array.from({length:total}).map((_,i)=>`<div style="width:2rem;height:.375rem;border-radius:999px;background:${i<done?'var(--b)':'#e2e8f0'}"></div>`).join('')}</div></div></div>
-  <div style="height:.5rem;background:#e2e8f0;border-radius:999px;margin-bottom:1.5rem;overflow:hidden"><div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--b),var(--s));border-radius:999px;transition:width .5s"></div></div>
-  <div class="card"><div class="card-body">
-  <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;margin-bottom:1.25rem">Panelist ${_ballotNum} — Ballot Entry</h3>
-  ${s.testType==='blind'?renderBlindBallot(s):s.testType==='proficiency'?renderProfBallot(s):renderRegularBallot(s)}
-  </div></div></div>`;
+function attachDashboardListeners() {
+  // Admin dashboard listeners are static onclick, no extra needed
 }
 
-function renderRegularBallot(s){
-  const i=_ballotInitial||{};const nd=new Date();const cd=nd.toISOString().split('T')[0];const ct=nd.toTimeString().slice(0,5);
-  const pw=i.productType==='Raw Water';
-  return`<form id="ballot-form" onsubmit="event.preventDefault();submitRegularBallot(this)">
-  <div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>👤 Panelist Information</h3></div><div class="card-body">
-  <div class="field"><label>Panelist Name *</label><input name="panelistName" required placeholder="e.g., John Doe"></div></div></div>
-  <div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>📦 Product Information</h3></div><div class="card-body">
-  <div class="grid grid-2">
-  <div class="field"><label>Product Type *</label><select name="productType" id="pt-select" required onchange="toggleOtherType(this);toggleVariant(this)">
-  <option value="">Select...</option><option value="Raw Water" ${i.productType==='Raw Water'?'selected':''}>Raw Water</option><option value="Treated Water" ${i.productType==='Treated Water'?'selected':''}>Treated Water</option><option value="Finished Goods" ${i.productType==='Finished Goods'?'selected':''}>Finished Goods</option><option value="CIP Final Rinse Water" ${i.productType==='CIP Final Rinse Water'?'selected':''}>CIP Final Rinse Water</option><option value="Other">Other</option></select></div>
-  <div class="field" id="other-type-field" style="display:${i.productType==='Other'?'block':'none'}"><label>Specify *</label><input name="otherProductType" value="${escH(i.otherProductType||'')}"></div>
-  <div class="field" id="variant-field" style="display:${i.productType==='Finished Goods'||i.productType==='CIP Final Rinse Water'?'block':'none'}"><label>${i.productType==='CIP Final Rinse Water'?'CIP Component':'Product Variant'}</label>
-  <select name="productVariant"><option value="">Select...</option><option value="KW 500 ml">KW 500 ml</option><option value="KW 1000 ml">KW 1000 ml</option><option value="KW 2000 ml">KW 2000 ml</option><option value="Filler Bowl">Filler Bowl</option><option value="Product Water Tank">Product Water Tank</option><option value="Other">Other</option></select></div>
-  <div class="field"><label>Product Code *</label><input name="productCode" required value="${escH(i.productCode||'')}"></div>
-  <div class="field"><label>Date of Mfg *</label><input name="dateOfMfg" type="date" required value="${i.dateOfMfg||cd}"></div>
-  <div class="field"><label>Control Sample Code *</label><input name="controlSampleCode" required value="${escH(i.controlSampleCode||'')}"></div>
-  <div class="field"><label>Product Time *</label><input name="productTime" type="time" required value="${i.productTime||ct}"></div></div></div></div>
-  <div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>🧪 Sensory Testing</h3></div><div class="card-body">
-  ${renderTestRadio('Appearance','appearance',['Turbid','Discolored','Contains Particles','Cloudy','Sediment Present','Other'])}
-  ${renderTestRadio('Odour','odour',['Plastic','Fruity','Burnt Caramel','Musty','Metallic','Sulfurous','Earthy','Acetaldehyde','Fermented','Medicinal','Other'])}
-  ${!pw?renderTestRadio('Taste','taste',['Plastic','Fruity','Burnt Caramel','Musty','Metallic','Sulfurous','Earthy','Acetaldehyde','Fermented','Medicinal','Other']):''}
-  </div></div>
-  <div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>📝 Remarks</h3></div><div class="card-body">
-  <div class="field"><textarea name="remarks" rows="3" placeholder="Additional observations..."></textarea></div></div></div>
-  <div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>⏱️ Testing Completion</h3></div><div class="card-body">
-  <div class="grid grid-2"><div class="field"><label>Date *</label><input name="completionDate" type="date" required value="${cd}"></div><div class="field"><label>Time *</label><input name="completionTime" type="time" required value="${ct}"></div></div></div></div>
-  <button type="submit" class="btn btn-primary btn-full" style="height:3rem;font-size:1rem">✅ Submit Ballot</button></form>`;
+function attachSessionFilterListeners() {
+  var searchEl = document.getElementById('session-search');
+  if (searchEl) searchEl.addEventListener('input', function() { _sSearch = this.value; renderView(); });
+  var fromEl = document.getElementById('filter-date-from');
+  if (fromEl) fromEl.addEventListener('change', function() { _sDateFrom = this.value; renderView(); });
+  var toEl = document.getElementById('filter-date-to');
+  if (toEl) toEl.addEventListener('change', function() { _sDateTo = this.value; renderView(); });
+  var statusEl = document.getElementById('filter-status');
+  if (statusEl) statusEl.addEventListener('change', function() { _sStatus = this.value; renderView(); });
 }
 
-function toggleOtherType(sel){const f=document.getElementById('other-type-field');if(f)f.style.display=sel.value==='Other'?'block':'none';}
-function toggleVariant(sel){const f=document.getElementById('variant-field');if(f)f.style.display=(sel.value==='Finished Goods'||sel.value==='CIP Final Rinse Water')?'block':'none';}
-
-function renderTestRadio(label,name,reasons){
-  return`<div class="test-card"><h4><span style="width:1.5rem;height:1.5rem;background:var(--b);color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.6875rem;font-weight:700">${label[0]}</span>${label}</h4>
-  <div class="radio-group"><div class="radio-option in"><input type="radio" name="${name}" value="IN" id="${name}-in" checked><label for="${name}-in">✅ IN</label></div><div class="radio-option out"><input type="radio" name="${name}" value="OUT" id="${name}-out"><label for="${name}-out">❌ OUT</label></div></div>
-  <div class="field reason-wrap" style="display:none;margin-top:.5rem"><label>Reason *</label><select name="${name}Reason"><option value="">Select reason...</option>${reasons.map(r=>`<option value="${r}">${r}</option>`).join('')}</select></div></div>`;
+function attachGenerateListeners() {
+  var typeEl = document.getElementById('gen-type');
+  if (typeEl) typeEl.addEventListener('change', function() { _genType = this.value; });
+  var countEl = document.getElementById('gen-count');
+  if (countEl) countEl.addEventListener('change', function() { _genCount = this.value; });
 }
 
-function submitRegularBallot(form){
-  const fd=new FormData(form);
-  const d={panelistName:fd.get('panelistName'),productType:fd.get('productType'),otherProductType:fd.get('otherProductType')||'',productVariant:fd.get('productVariant')||'',otherProductVariant:'',productCode:fd.get('productCode'),dateOfMfg:fd.get('dateOfMfg'),controlSampleCode:fd.get('controlSampleCode'),productTime:fd.get('productTime'),testingCompletionDate:fd.get('completionDate'),testingCompletionTime:fd.get('completionTime'),remarks:fd.get('remarks')||'',appearance:{status:fd.get('appearance'),reason:fd.get('appearanceReason')||'',otherReason:''},odour:{status:fd.get('odour'),reason:fd.get('odourReason')||'',otherReason:''},taste:{status:fd.get('taste')||'IN',reason:fd.get('tasteReason')||'',otherReason:''}};
-  if(d.productType==='Raw Water')d.taste={status:'IN',reason:'',otherReason:''};
+// ============================================================
+// ADMIN DASHBOARD
+// ============================================================
+function renderAdminDash() {
+  var sessions = DB.getAllSessions();
+  var today = new Date().toDateString();
+  var completed = sessions.filter(function(s) { return s.status === 'completed'; });
+  var todayCount = completed.filter(function(s) {
+    return s.createdAt && new Date(s.createdAt).toDateString() === today;
+  }).length;
+  var ballotsCount = sessions.reduce(function(a, s) { return a + s.ballots.length; }, 0);
+
+  return '<div class="main-header"><h1>Admin Dashboard</h1><p>Welcome, ' + escH(currentUser.username) + '</p></div>' +
+    '<div class="grid grid-4" style="margin-bottom:2rem">' +
+    '<div class="stat-card"><div class="stat-icon" style="background:#eff6ff;color:var(--b)">📊</div><div><div class="stat-val">' + sessions.length + '</div><div class="stat-lbl">Total Sessions</div></div></div>' +
+    '<div class="stat-card"><div class="stat-icon" style="background:#f0fdf4;color:var(--grn)">✅</div><div><div class="stat-val">' + completed.length + '</div><div class="stat-lbl">Completed</div></div></div>' +
+    '<div class="stat-card"><div class="stat-icon" style="background:#fffbeb;color:var(--amb)">📋</div><div><div class="stat-val">' + todayCount + '</div><div class="stat-lbl">Today</div></div></div>' +
+    '<div class="stat-card"><div class="stat-icon" style="background:#f5f3ff;color:var(--pur)">👥</div><div><div class="stat-val">' + ballotsCount + '</div><div class="stat-lbl">Ballots</div></div></div>' +
+    '</div>' +
+    '<div class="grid grid-2">' +
+    '<div class="card"><div class="card-header"><span style="font-size:1.25rem">🔑</span><h3>Quick Actions</h3></div><div class="card-body">' +
+    '<button class="btn btn-primary btn-full" onclick="navigateTo(\'generate\')" style="margin-bottom:.75rem">Generate Session Code</button>' +
+    '<button class="btn btn-secondary btn-full" onclick="navigateTo(\'sessions\')">View All Sessions</button></div></div>' +
+    '<div class="card"><div class="card-header"><span style="font-size:1.25rem">👥</span><h3>User Management</h3></div><div class="card-body">' +
+    '<button class="btn btn-primary btn-full" onclick="navigateTo(\'users\')">Manage Users</button></div></div></div>';
+}
+
+// ============================================================
+// USER DASHBOARD
+// ============================================================
+function renderUserDash() {
+  var sessions = DB.getSessions(currentUser.role, currentUser.username);
+  var completed = sessions.filter(function(s) { return s.status === 'completed'; });
+  var today = new Date().toDateString();
+  var todayCount = completed.filter(function(s) {
+    return s.completedAt && new Date(s.completedAt).toDateString() === today;
+  }).length;
+  var ballotsTotal = sessions.reduce(function(a, s) { return a + s.ballots.length; }, 0);
+
+  var html = '<div class="main-header"><h1>Sensory Analysis Dashboard</h1><p>Create or join a sensory evaluation session</p></div>';
+  html += '<div class="grid grid-4" style="margin-bottom:2rem">';
+  html += '<div class="stat-card"><div class="stat-icon" style="background:#eff6ff;color:var(--b)">📊</div><div><div class="stat-val">' + sessions.length + '</div><div class="stat-lbl">Sessions</div></div></div>';
+  html += '<div class="stat-card"><div class="stat-icon" style="background:#f0fdf4;color:var(--grn)">✅</div><div><div class="stat-val">' + completed.length + '</div><div class="stat-lbl">Completed</div></div></div>';
+  html += '<div class="stat-card"><div class="stat-icon" style="background:#fffbeb;color:var(--amb)">📋</div><div><div class="stat-val">' + todayCount + '</div><div class="stat-lbl">Today</div></div></div>';
+  html += '<div class="stat-card"><div class="stat-icon" style="background:#f5f3ff;color:var(--pur)">👥</div><div><div class="stat-val">' + ballotsTotal + '</div><div class="stat-lbl">Ballots</div></div></div>';
+  html += '</div>';
+
+  html += '<div class="grid grid-2">';
+
+  // New Session Card
+  html += '<div class="card"><div class="card-header"><span style="font-size:1.25rem">➕</span><h3>New Session</h3></div><div class="card-body">';
+  html += '<p style="font-size:.8125rem;color:var(--t3);margin-bottom:1rem">Create a collaborative session for sensory evaluation</p>';
+  if (!_testSelect) {
+    html += '<button class="btn btn-primary btn-full" onclick="_testSelect=true;renderView()">1 Panelist Session</button>';
+  } else {
+    html += '<div style="display:flex;flex-direction:column;gap:.5rem">';
+    html += '<button class="btn btn-full" onclick="startSession(1,\'regular\')" style="background:#eff6ff;border:1px solid #bfdbfe;color:var(--b);font-weight:600">📋 Regular Sensory Test</button>';
+    html += '<button class="btn btn-full" onclick="startSession(1,\'blind\')" style="background:#f5f3ff;border:1px solid #ddd6fe;color:var(--pur);font-weight:600">🎯 Sensory Blind Test</button>';
+    html += '<button class="btn btn-full" onclick="startSession(1,\'proficiency\')" style="background:#f0fdf4;border:1px solid #bbf7d0;color:var(--grn);font-weight:600">⭐ Proficiency Test</button>';
+    html += '<button class="btn btn-secondary btn-full" onclick="_testSelect=false;renderView()" style="font-size:.8125rem">Cancel</button>';
+    html += '</div>';
+  }
+  html += '<div style="margin-top:.75rem;display:flex;flex-direction:column;gap:.5rem">';
+  html += '<button class="btn btn-full" onclick="startSession(2)" style="background:linear-gradient(135deg,#003A70,#0064C8);color:#fff">👥 2 Panelists</button>';
+  html += '<button class="btn btn-full" onclick="startSession(3)" style="background:linear-gradient(135deg,#00274d,#003A70);color:#fff">👥 3 Panelists</button>';
+  html += '</div></div></div>';
+
+  // Join Session Card
+  html += '<div class="card"><div class="card-header"><span style="font-size:1.25rem">🔑</span><h3>Join Session</h3></div><div class="card-body">';
+  html += '<p style="font-size:.8125rem;color:var(--t3);margin-bottom:1rem">Enter a session code to join an existing evaluation</p>';
+  html += '<div class="field"><input id="join-code-input" placeholder="e.g., GAQ-ABC123" value="' + escH(_joinCode) + '"></div>';
+  html += '<button id="join-btn" class="btn btn-primary btn-full" disabled>Join Session</button>';
+  html += '<p style="font-size:.6875rem;color:var(--t4);text-align:center;margin-top:.5rem">Ask the session admin for the code</p>';
+  html += '</div></div>';
+
+  html += '</div>'; // end grid-2
+
+  // Recent Sessions
+  if (sessions.length) {
+    html += '<div style="margin-top:2rem"><div class="main-header" style="margin-bottom:1rem"><h1 style="font-size:1.125rem">Recent Sessions</h1></div>';
+    html += '<div class="grid" style="gap:.75rem">';
+    var recent = sessions.slice(0, 5);
+    for (var i = 0; i < recent.length; i++) {
+      var s = recent[i];
+      var statusBadge = s.status === 'completed' ? 'badge-green' : 'badge-amber';
+      var pct = Math.min(100, Math.round((s.ballots.length / Math.max(s.targetPanelistCount, 1)) * 100));
+      html += '<div class="card" style="cursor:pointer" data-session="' + s.sessionCode + '">';
+      html += '<div style="padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem">';
+      html += '<div><span class="badge ' + statusBadge + '">' + s.status + '</span> <span class="badge badge-blue">' + (s.testType || 'regular') + '</span></div>';
+      html += '<div style="font-family:\'Space Grotesk\',monospace;font-weight:700;color:var(--b)">' + s.sessionCode + '</div>';
+      html += '<div style="font-size:.75rem;color:var(--t3)">' + s.ballots.length + '/' + s.targetPanelistCount + ' panelists · ' + fmtDate(s.createdAt) + '</div>';
+      html += '</div></div>';
+    }
+    html += '</div></div>';
+  }
+
+  return html;
+}
+
+function attachUserDashListeners() {
+  // Join code input
+  var joinInput = document.getElementById('join-code-input');
+  var joinBtn = document.getElementById('join-btn');
+  if (joinInput && joinBtn) {
+    joinInput.addEventListener('input', function() {
+      _joinCode = this.value.toUpperCase();
+      joinBtn.disabled = !_joinCode.trim();
+    });
+    joinInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && _joinCode.trim()) joinSession();
+    });
+    joinBtn.addEventListener('click', function() { joinSession(); });
+  }
+  // Session card clicks
+  document.querySelectorAll('[data-session]').forEach(function(card) {
+    card.addEventListener('click', function() {
+      viewSession(card.getAttribute('data-session'));
+    });
+  });
+}
+
+// ============================================================
+// USERS
+// ============================================================
+function renderUsers() {
+  var users = DB.getUsers();
+  var html = '<div class="main-header"><h1>User Management</h1><p>Manage system users and their access roles</p></div>';
+  html += '<div class="card"><div class="card-header"><span style="font-size:1.25rem">➕</span><h3>Create New User</h3></div><div class="card-body">';
+  html += '<div class="grid grid-4" style="align-items:end">';
+  html += '<div class="field"><label>Username</label><input id="new-u"></div>';
+  html += '<div class="field"><label>Password</label><input id="new-p" type="password"></div>';
+  html += '<div class="field"><label>Role</label><select id="new-r"><option value="user">User</option><option value="admin">Admin</option></select></div>';
+  html += '<button class="btn btn-primary btn-full" onclick="createUser()">Create User</button>';
+  html += '</div></div></div>';
+
+  html += '<div style="margin-top:1rem"><div class="card"><div class="card-header"><span style="font-size:1.25rem">👥</span><h3>All Users (' + users.length + ')</h3></div>';
+  for (var i = 0; i < users.length; i++) {
+    var u = users[i];
+    var gradBg = u.role === 'admin' ? 'linear-gradient(135deg,#7c3aed,#a78bfa)' : 'linear-gradient(135deg,#0064C8,#009DE0)';
+    var roleBadge = u.role === 'admin' ? 'badge-purple' : 'badge-blue';
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid #f1f5f9">';
+    html += '<div style="display:flex;align-items:center;gap:.75rem">';
+    html += '<div style="width:2.25rem;height:2.25rem;border-radius:50%;background:' + gradBg + ';color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8125rem">' + u.username.charAt(0).toUpperCase() + '</div>';
+    html += '<div><div style="font-weight:600;font-size:.875rem">' + escH(u.username) + '</div>';
+    html += '<div style="display:flex;gap:.5rem;margin-top:.25rem"><span class="badge ' + roleBadge + '">' + u.role + '</span><span style="font-size:.6875rem;color:var(--t4)">Created ' + fmtDate(u.createdAt) + '</span></div></div></div>';
+    html += '<button class="btn btn-sm btn-secondary" onclick="deleteUser(\'' + escH(u.username) + '\')" style="color:var(--red)">🗑️</button></div>';
+  }
+  html += '</div></div></div>';
+  return html;
+}
+
+function createUser() {
+  var u = document.getElementById('new-u').value.trim();
+  var p = document.getElementById('new-p').value;
+  var r = document.getElementById('new-r').value;
+  if (!u || !p) { toast('Username and password required', 'error'); return; }
+  if (DB.addUser(u, p, r)) {
+    toast('User created!', 'success');
+    renderView();
+  } else {
+    toast('Username already exists', 'error');
+  }
+}
+
+function deleteUser(u) {
+  if (u === currentUser.username) { toast("Can't delete yourself", 'error'); return; }
+  if (confirm('Delete user ' + u + '?')) {
+    DB.deleteUser(u);
+    toast('User deleted', 'success');
+    renderView();
+  }
+}
+
+// ============================================================
+// SESSIONS (Admin)
+// ============================================================
+function renderSessions() {
+  var sessions = DB.getAllSessions();
+  if (_sSearch) {
+    var q = _sSearch.toLowerCase();
+    sessions = sessions.filter(function(s) {
+      return (s.sessionCode || '').toLowerCase().indexOf(q) !== -1 ||
+             (s.testType || '').toLowerCase().indexOf(q) !== -1 ||
+             (s.createdBy || '').toLowerCase().indexOf(q) !== -1;
+    });
+  }
+  if (_sDateFrom) sessions = sessions.filter(function(s) { return new Date(s.createdAt).toISOString().split('T')[0] >= _sDateFrom; });
+  if (_sDateTo) sessions = sessions.filter(function(s) { return new Date(s.createdAt).toISOString().split('T')[0] <= _sDateTo; });
+  if (_sStatus !== 'all') sessions = sessions.filter(function(s) { return s.status === _sStatus; });
+
+  var html = '<div class="main-header"><h1>All Sessions</h1><p>View and manage all sensory analysis sessions</p></div>';
+  html += '<div class="card"><div class="card-header" style="flex-wrap:wrap;gap:.75rem">';
+  html += '<span style="font-size:1.25rem">📋</span><h3 style="margin-right:auto">Sessions (' + sessions.length + ')</h3>';
+  html += '<input id="session-search" placeholder="Search..." value="' + escH(_sSearch) + '" style="height:2rem;padding:0 .625rem;border:1px solid var(--brd);border-radius:.5rem;font-size:.75rem;width:14rem">';
+  html += '</div>';
+
+  html += '<div class="filter-bar" style="padding:0 1.5rem;padding-top:1rem">';
+  html += '<label>From:</label><input id="filter-date-from" type="date" value="' + _sDateFrom + '">';
+  html += '<label>To:</label><input id="filter-date-to" type="date" value="' + _sDateTo + '">';
+  html += '<label>Status:</label><select id="filter-status">';
+  html += '<option value="all"' + (_sStatus === 'all' ? ' selected' : '') + '>All</option>';
+  html += '<option value="completed"' + (_sStatus === 'completed' ? ' selected' : '') + '>Completed</option>';
+  html += '<option value="in_progress"' + (_sStatus === 'in_progress' ? ' selected' : '') + '>In Progress</option>';
+  html += '</select>';
+  if (_sDateFrom || _sDateTo || _sStatus !== 'all') {
+    html += '<button class="btn btn-sm btn-secondary" onclick="clearSessionFilters()">Clear</button>';
+  }
+  html += '</div>';
+
+  html += '<div class="table-wrap"><table><thead><tr><th>Code</th><th>Status</th><th>Type</th><th>Panelists</th><th>Created By</th><th>Date</th><th>Actions</th></tr></thead>';
+  html += '<tbody>';
+  if (sessions.length) {
+    for (var i = 0; i < sessions.length; i++) {
+      var s = sessions[i];
+      var statusBadge = s.status === 'completed' ? 'badge-green' : 'badge-amber';
+      var pct = Math.min(100, Math.round((s.ballots.length / Math.max(s.targetPanelistCount, 1)) * 100));
+      html += '<tr>';
+      html += '<td><span style="font-family:\'Space Grotesk\',monospace;font-weight:700;color:var(--b)">' + s.sessionCode + '</span></td>';
+      html += '<td><span class="badge ' + statusBadge + '">' + s.status + '</span></td>';
+      html += '<td><span class="badge badge-blue">' + (s.testType || 'regular') + '</span></td>';
+      html += '<td>' + s.ballots.length + '/' + s.targetPanelistCount + ' <span style="font-size:.6875rem;color:var(--b);font-weight:700">' + pct + '%</span></td>';
+      html += '<td>' + escH(s.createdBy) + '</td>';
+      html += '<td style="font-size:.75rem">' + fmtDate(s.createdAt) + '</td>';
+      html += '<td style="white-space:nowrap"><button class="btn btn-sm btn-secondary" onclick="viewSession(\'' + s.sessionCode + '\')">View</button> <button class="btn btn-sm btn-secondary" style="color:var(--red)" onclick="deleteSession(\'' + s.sessionCode + '\')">🗑️</button></td>';
+      html += '</tr>';
+    }
+  } else {
+    html += '<tr><td colspan="7" style="text-align:center;color:var(--t4);padding:3rem">No sessions found</td></tr>';
+  }
+  html += '</tbody></table></div></div>';
+  return html;
+}
+
+function clearSessionFilters() {
+  _sSearch = '';
+  _sDateFrom = '';
+  _sDateTo = '';
+  _sStatus = 'all';
+  renderView();
+}
+
+function deleteSession(c) {
+  if (confirm('Delete session ' + c + '?')) {
+    DB.deleteSession(c);
+    toast('Session deleted', 'success');
+    renderView();
+  }
+}
+
+// ============================================================
+// GENERATE CODE
+// ============================================================
+function renderGenerate() {
+  var html = '<div class="main-header"><h1>Generate Session Code</h1><p>Create a new session and generate a code for panelists</p></div>';
+  html += '<div class="card" style="max-width:32rem"><div class="card-header"><span style="font-size:1.25rem">🔑</span><h3>Auto-Generate Session Code</h3></div><div class="card-body">';
+  html += '<div class="grid grid-2" style="margin-bottom:1rem">';
+  html += '<div class="field"><label>Test Type</label><select id="gen-type">';
+  html += '<option value="regular"' + (_genType === 'regular' ? ' selected' : '') + '>Regular Sensory Test</option>';
+  html += '<option value="blind"' + (_genType === 'blind' ? ' selected' : '') + '>Sensory Blind Test</option>';
+  html += '<option value="proficiency"' + (_genType === 'proficiency' ? ' selected' : '') + '>Proficiency Test</option>';
+  html += '</select></div>';
+  html += '<div class="field"><label>Panelists</label><select id="gen-count">';
+  for (var n = 1; n <= 5; n++) {
+    html += '<option value="' + n + '"' + (_genCount == n ? ' selected' : '') + '>' + n + ' Panelist' + (n > 1 ? 's' : '') + '</option>';
+  }
+  html += '</select></div></div>';
+  html += '<button class="btn btn-primary btn-full" onclick="generateCode()" style="height:2.75rem">🔑 Generate Session Code</button>';
+  html += '</div></div>';
+
+  if (_genCode) {
+    html += '<div class="card" style="margin-top:1rem;max-width:32rem"><div class="card-body" style="background:linear-gradient(160deg,var(--d),#0f3460);border-radius:1rem;text-align:center;padding:2rem">';
+    html += '<div style="font-size:.6875rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem">' + _genType.toUpperCase() + ' TEST · ' + _genCount + ' PANELIST' + (parseInt(_genCount) > 1 ? 'S' : '') + '</div>';
+    html += '<div class="session-code" style="color:#fff;background:transparent;border-color:rgba(255,255,255,.2);margin:1rem 0;font-size:2rem">' + _genCode + '</div>';
+    html += '<button class="btn btn-sm" onclick="copyCode(\'' + _genCode + '\')" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">📋 Copy Code</button>';
+    html += '<p style="font-size:.6875rem;color:rgba(255,255,255,.4);margin-top:.75rem">Share this code — panelists tap "Join Session" on their device</p>';
+    html += '</div></div>';
+  }
+  return html;
+}
+
+function generateCode() {
+  var c = genCode();
+  while (DB.findSession(c)) c = genCode();
+  DB.createSession(c, parseInt(_genCount), _genType, currentUser.username);
+  _genCode = c;
+  toast('Session ' + c + ' created!', 'success');
+  renderView();
+}
+
+function copyCode(code) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(code).then(function() { toast('Code copied!', 'info'); });
+  } else {
+    toast('Code: ' + code, 'info');
+  }
+}
+
+// ============================================================
+// SESSION FLOW
+// ============================================================
+function startSession(count, testType) {
+  testType = testType || 'regular';
+  var c = genCode();
+  while (DB.findSession(c)) c = genCode();
+  DB.createSession(c, count, testType, currentUser.username);
+  _activeCode = c;
+  _ballotNum = 1;
+  _ballotInitial = null;
+  _selectedTest = testType;
+  toast('Session ' + c + ' created!', 'success');
+  currentView = 'ballot';
+  renderView();
+}
+
+function joinSession() {
+  var inputEl = document.getElementById('join-code-input');
+  var rawCode = inputEl ? inputEl.value : _joinCode;
+  var code = rawCode.trim().toUpperCase();
+  if (!code) {
+    toast('Enter a session code', 'error');
+    return;
+  }
+  var s = DB.findSession(code);
+  if (!s) {
+    toast('Session not found. Check the code and try again.', 'error');
+    return;
+  }
+  if (s.status === 'completed') {
+    toast('This session is already completed', 'error');
+    return;
+  }
+  _activeCode = code;
+  _ballotNum = s.ballots.length + 1;
+  _selectedTest = s.testType || 'regular';
+  if (s.ballots.length > 0) {
+    var f = s.ballots[0];
+    _ballotInitial = {
+      productType: f.productType,
+      otherProductType: f.otherProductType,
+      productVariant: f.productVariant,
+      otherProductVariant: f.otherProductVariant,
+      productCode: f.productCode,
+      dateOfMfg: f.dateOfMfg,
+      controlSampleCode: f.controlSampleCode,
+      productTime: f.productTime
+    };
+  } else {
+    _ballotInitial = null;
+  }
+  _joinCode = '';
+  currentView = 'ballot';
+  renderView();
+  toast('Joined session ' + code + '!', 'success');
+}
+
+function viewSession(code) {
+  var s = DB.findSession(code);
+  if (!s) { toast('Session not found', 'error'); return; }
+  _viewingSession = s;
+  currentView = 'report';
+  renderView();
+}
+
+function submitBallot(data) {
+  data.signature = data.signature || null;
+  var updated = DB.submitBallot(_activeCode, data);
+  if (!updated) {
+    toast('Failed to submit ballot', 'error');
+    return;
+  }
+  if (updated.status === 'completed') {
+    _viewingSession = updated;
+    currentView = 'report';
+    renderView();
+    toast('Session completed!', 'success');
+  } else {
+    _ballotNum = updated.ballots.length + 1;
+    if (updated.ballots.length === 1 && _selectedTest === 'regular') {
+      _ballotInitial = {
+        productType: data.productType,
+        otherProductType: data.otherProductType,
+        productVariant: data.productVariant,
+        otherProductVariant: data.otherProductVariant,
+        productCode: data.productCode,
+        dateOfMfg: data.dateOfMfg,
+        controlSampleCode: data.controlSampleCode,
+        productTime: data.productTime
+      };
+    }
+    renderView();
+    toast('Ballot submitted! Waiting for ' + (updated.targetPanelistCount - updated.ballots.length) + ' more.', 'success');
+  }
+}
+
+// ============================================================
+// BALLOT FORM
+// ============================================================
+function renderBallot() {
+  var s = DB.findSession(_activeCode);
+  if (!s) {
+    return '<p>Session not found. <a href="#" onclick="navigateTo(\'dashboard\');return false" style="color:var(--b)">Go to Dashboard</a></p>';
+  }
+  if (s.status === 'completed') {
+    _viewingSession = s;
+    currentView = 'report';
+    return renderSessionReport();
+  }
+  var total = s.targetPanelistCount;
+  var done = s.ballots.length;
+  var pct = Math.min(100, Math.round((done / total) * 100));
+
+  var html = '<div style="max-width:40rem;margin:0 auto">';
+  html += '<div class="session-code" style="margin-bottom:1.5rem">' + _activeCode + '</div>';
+
+  // Progress bar
+  html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">';
+  html += '<button class="btn btn-sm btn-secondary" onclick="navigateTo(\'dashboard\')">← Dashboard</button>';
+  html += '<div style="display:flex;align-items:center;gap:.75rem"><span style="font-size:.8125rem;color:var(--t2)">Panelist ' + _ballotNum + ' of ' + total + '</span>';
+  html += '<div style="display:flex;gap:3px">';
+  for (var pi = 0; pi < total; pi++) {
+    var bgc = pi < done ? 'var(--b)' : '#e2e8f0';
+    html += '<div style="width:2rem;height:.375rem;border-radius:999px;background:' + bgc + '"></div>';
+  }
+  html += '</div></div></div>';
+
+  html += '<div style="height:.5rem;background:#e2e8f0;border-radius:999px;margin-bottom:1.5rem;overflow:hidden">';
+  html += '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,var(--b),var(--s));border-radius:999px;transition:width .5s"></div></div>';
+
+  html += '<div class="card"><div class="card-body">';
+  html += '<h3 style="font-family:\'Space Grotesk\',sans-serif;font-weight:700;margin-bottom:1.25rem">Panelist ' + _ballotNum + ' — Ballot Entry</h3>';
+
+  if (s.testType === 'blind') {
+    html += renderBlindBallot(s);
+  } else if (s.testType === 'proficiency') {
+    html += renderProfBallot(s);
+  } else {
+    html += renderRegularBallot(s);
+  }
+
+  html += '</div></div></div>';
+  return html;
+}
+
+function renderRegularBallot(s) {
+  var i = _ballotInitial || {};
+  var nd = new Date();
+  var cd = nd.toISOString().split('T')[0];
+  var ct = nd.toTimeString().slice(0, 5);
+  var pw = i.productType === 'Raw Water';
+
+  var html = '<form id="ballot-form">';
+
+  // Panelist Info
+  html += '<div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>👤 Panelist Information</h3></div><div class="card-body">';
+  html += '<div class="field"><label>Panelist Name *</label><input name="panelistName" required placeholder="e.g., John Doe"></div>';
+  html += '</div></div>';
+
+  // Product Info
+  html += '<div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>📦 Product Information</h3></div><div class="card-body">';
+  html += '<div class="grid grid-2">';
+  html += '<div class="field"><label>Product Type *</label><select name="productType" id="pt-select" required>';
+  html += '<option value="">Select...</option>';
+  html += '<option value="Raw Water"' + (i.productType === 'Raw Water' ? ' selected' : '') + '>Raw Water</option>';
+  html += '<option value="Treated Water"' + (i.productType === 'Treated Water' ? ' selected' : '') + '>Treated Water</option>';
+  html += '<option value="Finished Goods"' + (i.productType === 'Finished Goods' ? ' selected' : '') + '>Finished Goods</option>';
+  html += '<option value="CIP Final Rinse Water"' + (i.productType === 'CIP Final Rinse Water' ? ' selected' : '') + '>CIP Final Rinse Water</option>';
+  html += '<option value="Other">Other</option>';
+  html += '</select></div>';
+
+  var showOther = i.productType === 'Other' ? 'block' : 'none';
+  html += '<div class="field" id="other-type-field" style="display:' + showOther + '"><label>Specify *</label><input name="otherProductType" value="' + escH(i.otherProductType || '') + '"></div>';
+
+  var showVariant = (i.productType === 'Finished Goods' || i.productType === 'CIP Final Rinse Water') ? 'block' : 'none';
+  var varLabel = i.productType === 'CIP Final Rinse Water' ? 'CIP Component' : 'Product Variant';
+  html += '<div class="field" id="variant-field" style="display:' + showVariant + '"><label>' + varLabel + '</label>';
+  html += '<select name="productVariant"><option value="">Select...</option>';
+  html += '<option value="KW 500 ml">KW 500 ml</option><option value="KW 1000 ml">KW 1000 ml</option>';
+  html += '<option value="KW 2000 ml">KW 2000 ml</option><option value="Filler Bowl">Filler Bowl</option>';
+  html += '<option value="Product Water Tank">Product Water Tank</option><option value="Other">Other</option>';
+  html += '</select></div>';
+
+  html += '<div class="field"><label>Product Code *</label><input name="productCode" required value="' + escH(i.productCode || '') + '"></div>';
+  html += '<div class="field"><label>Date of Mfg *</label><input name="dateOfMfg" type="date" required value="' + (i.dateOfMfg || cd) + '"></div>';
+  html += '<div class="field"><label>Control Sample Code *</label><input name="controlSampleCode" required value="' + escH(i.controlSampleCode || '') + '"></div>';
+  html += '<div class="field"><label>Product Time *</label><input name="productTime" type="time" required value="' + (i.productTime || ct) + '"></div>';
+  html += '</div></div></div>';
+
+  // Sensory Testing
+  html += '<div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>🧪 Sensory Testing</h3></div><div class="card-body">';
+  html += renderTestRadio('Appearance', 'appearance', ['Turbid', 'Discolored', 'Contains Particles', 'Cloudy', 'Sediment Present', 'Other']);
+  html += renderTestRadio('Odour', 'odour', ['Plastic', 'Fruity', 'Burnt Caramel', 'Musty', 'Metallic', 'Sulfurous', 'Earthy', 'Acetaldehyde', 'Fermented', 'Medicinal', 'Other']);
+  if (!pw) {
+    html += renderTestRadio('Taste', 'taste', ['Plastic', 'Fruity', 'Burnt Caramel', 'Musty', 'Metallic', 'Sulfurous', 'Earthy', 'Acetaldehyde', 'Fermented', 'Medicinal', 'Other']);
+  }
+  html += '</div></div>';
+
+  // Remarks
+  html += '<div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>📝 Remarks</h3></div><div class="card-body">';
+  html += '<div class="field"><textarea name="remarks" rows="3" placeholder="Additional observations..."></textarea></div>';
+  html += '</div></div>';
+
+  // Completion
+  html += '<div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>⏱️ Testing Completion</h3></div><div class="card-body">';
+  html += '<div class="grid grid-2"><div class="field"><label>Date *</label><input name="completionDate" type="date" required value="' + cd + '"></div>';
+  html += '<div class="field"><label>Time *</label><input name="completionTime" type="time" required value="' + ct + '"></div></div>';
+  html += '</div></div>';
+
+  html += '<button type="submit" class="btn btn-primary btn-full" style="height:3rem;font-size:1rem">✅ Submit Ballot</button>';
+  html += '</form>';
+  return html;
+}
+
+function renderTestRadio(label, name, reasons) {
+  var letter = label.charAt(0);
+  var html = '<div class="test-card">';
+  html += '<h4><span style="width:1.5rem;height:1.5rem;background:var(--b);color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.6875rem;font-weight:700">' + letter + '</span>' + label + '</h4>';
+  html += '<div class="radio-group">';
+  html += '<div class="radio-option in"><input type="radio" name="' + name + '" value="IN" id="' + name + '-in" checked><label for="' + name + '-in">✅ IN</label></div>';
+  html += '<div class="radio-option out"><input type="radio" name="' + name + '" value="OUT" id="' + name + '-out"><label for="' + name + '-out">❌ OUT</label></div>';
+  html += '</div>';
+  html += '<div class="field reason-wrap" style="display:none;margin-top:.5rem"><label>Reason *</label><select name="' + name + 'Reason"><option value="">Select reason...</option>';
+  for (var r = 0; r < reasons.length; r++) {
+    html += '<option value="' + reasons[r] + '">' + reasons[r] + '</option>';
+  }
+  html += '</select></div></div>';
+  return html;
+}
+
+function submitRegularBallot() {
+  var form = document.getElementById('ballot-form');
+  var fd = new FormData(form);
+  var d = {
+    panelistName: fd.get('panelistName'),
+    productType: fd.get('productType'),
+    otherProductType: fd.get('otherProductType') || '',
+    productVariant: fd.get('productVariant') || '',
+    otherProductVariant: '',
+    productCode: fd.get('productCode'),
+    dateOfMfg: fd.get('dateOfMfg'),
+    controlSampleCode: fd.get('controlSampleCode'),
+    productTime: fd.get('productTime'),
+    testingCompletionDate: fd.get('completionDate'),
+    testingCompletionTime: fd.get('completionTime'),
+    remarks: fd.get('remarks') || '',
+    appearance: { status: fd.get('appearance'), reason: fd.get('appearanceReason') || '', otherReason: '' },
+    odour: { status: fd.get('odour'), reason: fd.get('odourReason') || '', otherReason: '' },
+    taste: { status: fd.get('taste') || 'IN', reason: fd.get('tasteReason') || '', otherReason: '' }
+  };
+  if (d.productType === 'Raw Water') d.taste = { status: 'IN', reason: '', otherReason: '' };
   submitBallot(d);
 }
 
-function renderBlindBallot(s){
-  const nd=new Date();const cd=nd.toISOString().split('T')[0];const ct=nd.toTimeString().slice(0,5);
-  const colors=['Control','Yellow','Brown','Blue','Green','Red','Purple'];
-  return`<form id="ballot-form" onsubmit="event.preventDefault();submitBlindBallot(this)">
-  <div class="card" style="margin-bottom:1rem"><div class="card-body">
-  <div class="grid grid-2"><div class="field"><label>Panelist Name *</label><input name="panelistName" required></div><div class="field"><label>Test Code</label><input name="testCode"></div>
-  <div class="field"><label>Test Date *</label><input name="testDate" type="date" required value="${cd}"></div><div class="field"><label>Test Time *</label><input name="testTime" type="time" required value="${ct}"></div>
-  <div class="field"><label>Round No *</label><input name="roundNo" required value="1"></div><div class="field"><label>Provider</label><input name="provider" placeholder="e.g., PepsiCo"></div></div></div></div>
-  <div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>🎯 Sample Evaluation</h3></div><div class="card-body">
-  <p style="font-size:.75rem;color:var(--t3);margin-bottom:1rem">Evaluate each sample and mark IN/OUT</p>
-  ${colors.map((c,ci)=>`<div style="display:grid;grid-template-columns:auto 1fr 1fr;gap:.5rem;margin-bottom:.5rem;align-items:center;padding:.5rem;border:1px solid var(--brd);border-radius:.5rem">
-  <span class="badge" style="background:${c==='Control'?'#e5e7eb':c==='Yellow'?'#fef08a':c==='Brown'?'#a16207':c==='Blue'?'#3b82f6':c==='Green'?'#22c55e':c==='Red'?'#ef4444':'#a855f7'};color:${c==='Control'||c==='Yellow'||c==='Green'?'#000':'#fff'};font-weight:700;min-width:5rem;justify-content:center">${c}</span>
-  <select name="sample_${ci}_status"><option value="IN">IN</option><option value="OUT">OUT</option></select>
-  <input name="sample_${ci}_offNote" placeholder="OFF Note (if OUT)"></div>`).join('')}</div></div>
-  <button type="submit" class="btn btn-primary btn-full" style="height:3rem">✅ Submit Blind Test</button></form>`;
+function toggleOtherType(sel) {
+  var f = document.getElementById('other-type-field');
+  if (f) f.style.display = sel.value === 'Other' ? 'block' : 'none';
 }
 
-function submitBlindBallot(form){
-  const fd=new FormData(form);const colors=['Control','Yellow','Brown','Blue','Green','Red','Purple'];
-  const samples=colors.map((c,i)=>({colorCode:c,status:fd.get(`sample_${i}_status`),offNote:fd.get(`sample_${i}_offNote`)||''}));
-  submitBallot({panelistName:fd.get('panelistName'),testCode:fd.get('testCode'),testDate:fd.get('testDate'),testTime:fd.get('testTime'),roundNo:fd.get('roundNo'),provider:fd.get('provider'),samples});
+function toggleVariant(sel) {
+  var f = document.getElementById('variant-field');
+  if (f) f.style.display = (sel.value === 'Finished Goods' || sel.value === 'CIP Final Rinse Water') ? 'block' : 'none';
 }
 
-function renderProfBallot(s){
-  const nd=new Date();const cd=nd.toISOString().split('T')[0];const ct=nd.toTimeString().slice(0,5);
-  const colors=['Control','Yellow','Brown','Blue','Green','Red','Purple'];
-  return`<form id="ballot-form" onsubmit="event.preventDefault();submitBlindBallot(this)">
-  <div class="card" style="margin-bottom:1rem"><div class="card-body">
-  <div class="grid grid-2"><div class="field"><label>Panelist Name *</label><input name="panelistName" required></div><div class="field"><label>Test Code</label><input name="testCode"></div>
-  <div class="field"><label>Test Date *</label><input name="testDate" type="date" required value="${cd}"></div><div class="field"><label>Test Time *</label><input name="testTime" type="time" required value="${ct}"></div>
-  <div class="field"><label>Round No *</label><input name="roundNo" required value="1"></div><div class="field"><label>Provider</label><input name="provider"></div></div></div></div>
-  <div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>⭐ Proficiency Samples</h3></div><div class="card-body">
-  ${colors.map((c,ci)=>`<div style="display:grid;grid-template-columns:auto 1fr 1fr;gap:.5rem;margin-bottom:.5rem;align-items:center;padding:.5rem;border:1px solid var(--brd);border-radius:.5rem">
-  <span class="badge" style="background:${c==='Control'?'#e5e7eb':c==='Yellow'?'#fef08a':c==='Brown'?'#a16207':c==='Blue'?'#3b82f6':c==='Green'?'#22c55e':c==='Red'?'#ef4444':'#a855f7'};color:${c==='Control'||c==='Yellow'||c==='Green'?'#000':'#fff'};font-weight:700;min-width:5rem;justify-content:center">${c}</span>
-  <select name="sample_${ci}_status"><option value="IN">IN</option><option value="OUT">OUT</option></select>
-  <input name="sample_${ci}_offNote" placeholder="OFF Note"></div>`).join('')}</div></div>
-  <button type="submit" class="btn btn-primary btn-full" style="height:3rem">✅ Submit Proficiency Test</button></form>`;
+function renderBlindBallot(s) {
+  var nd = new Date();
+  var cd = nd.toISOString().split('T')[0];
+  var ct = nd.toTimeString().slice(0, 5);
+  var colors = ['Control', 'Yellow', 'Brown', 'Blue', 'Green', 'Red', 'Purple'];
+
+  var html = '<form id="ballot-form">';
+  html += '<div class="card" style="margin-bottom:1rem"><div class="card-body">';
+  html += '<div class="grid grid-2">';
+  html += '<div class="field"><label>Panelist Name *</label><input name="panelistName" required></div>';
+  html += '<div class="field"><label>Test Code</label><input name="testCode"></div>';
+  html += '<div class="field"><label>Test Date *</label><input name="testDate" type="date" required value="' + cd + '"></div>';
+  html += '<div class="field"><label>Test Time *</label><input name="testTime" type="time" required value="' + ct + '"></div>';
+  html += '<div class="field"><label>Round No *</label><input name="roundNo" required value="1"></div>';
+  html += '<div class="field"><label>Provider</label><input name="provider" placeholder="e.g., PepsiCo"></div>';
+  html += '</div></div></div>';
+
+  html += '<div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>🎯 Sample Evaluation</h3></div><div class="card-body">';
+  html += '<p style="font-size:.75rem;color:var(--t3);margin-bottom:1rem">Evaluate each sample and mark IN/OUT</p>';
+  for (var ci = 0; ci < colors.length; ci++) {
+    var c = colors[ci];
+    html += '<div style="display:grid;grid-template-columns:auto 1fr 1fr;gap:.5rem;margin-bottom:.5rem;align-items:center;padding:.5rem;border:1px solid var(--brd);border-radius:.5rem">';
+    html += '<span class="badge" style="background:' + badgeColorForCode(c) + ';color:' + badgeTextForCode(c) + ';font-weight:700;min-width:5rem;justify-content:center">' + c + '</span>';
+    html += '<select name="sample_' + ci + '_status"><option value="IN">IN</option><option value="OUT">OUT</option></select>';
+    html += '<input name="sample_' + ci + '_offNote" placeholder="OFF Note (if OUT)"></div>';
+  }
+  html += '</div></div>';
+  html += '<button type="submit" class="btn btn-primary btn-full" style="height:3rem">✅ Submit Blind Test</button>';
+  html += '</form>';
+  return html;
 }
 
-// ===== REPORT =====
-function renderSessionReport(){
-  const s=_viewingSession;if(!s)return'<p>No session</p>';
-  const ballots=s.ballots||[];const total=s.targetPanelistCount;const pct=Math.min(100,Math.round((ballots.length/total)*100));
-  const isBlind=s.testType==='blind'||s.testType==='proficiency';
-  let checks=0,ins=0;const cat={Appearance:{i:0,t:0},Odour:{i:0,t:0},Taste:{i:0,t:0}};
-  ballots.forEach(b=>{['appearance','odour','taste'].forEach(k=>{if(b[k]&&b[k].status){const lk=k==='appearance'?'Appearance':k==='odour'?'Odour':'Taste';cat[lk].t++;checks++;if(b[k].status==='IN'){cat[lk].i++;ins++;}}});});
-  const passPct=checks?Math.round((ins/checks)*100):null;const allPassed=passPct===100;
-  return`<div style="max-width:50rem;margin:0 auto">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
-  <button class="btn btn-sm btn-secondary" onclick="navigateTo('dashboard')">← Dashboard</button>
-  <button class="btn btn-sm btn-primary" onclick="window.print()">🖨️ Print</button></div>
-  <div class="grid grid-3" style="margin-bottom:1.5rem">
-  <div class="stat-card"><div class="stat-icon" style="background:#eff6ff;color:var(--b)">👥</div><div><div class="stat-val">${ballots.length}/${total}</div><div class="stat-lbl">Panelists (${pct}%)</div></div></div>
-  <div class="stat-card"><div class="stat-icon" style="background:${allPassed?'#f0fdf4':'#fef2f2'};color:${allPassed?'var(--grn)':'var(--red)'}">✅</div><div><div class="stat-val" style="color:${allPassed?'var(--grn)':'var(--red)'}">${passPct!==null?passPct+'%':'—'}</div><div class="stat-lbl">Quality Rate</div></div></div>
-  <div class="stat-card"><div class="stat-icon" style="background:#f5f3ff;color:var(--pur)">📋</div><div><div class="stat-val">${s.testType||'regular'}</div><div class="stat-lbl">Test Type</div></div></div></div>
-  <div class="report-card"><div class="report-header">
-  <h1>${s.testType==='blind'?'Sensory Blind Test Report':s.testType==='proficiency'?'Proficiency Test Report':'Sensory Evaluation Report'}</h1>
-  <p>Global Acqua Pvt Ltd · Sensory Quality Control</p>
-  <div style="display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap">
-  <div class="badge badge-blue" style="font-family:'Space Grotesk',monospace;font-size:.875rem;padding:.5rem 1rem">${s.sessionCode}</div>
-  <div style="font-size:.8125rem;color:var(--t3)">Completed: ${fmtDateTime(s.completedAt||s.createdAt)}</div></div></div>
-  <div class="report-body">
-  ${Object.entries(cat).filter(([,v])=>v.t>0).map(([name,v])=>{const p=Math.round((v.i/v.t)*100);return`<div style="margin-bottom:.75rem"><div style="display:flex;justify-content:space-between;font-size:.75rem;margin-bottom:.25rem"><span style="font-weight:600">${name}</span><span style="font-weight:700;color:${p===100?'var(--grn)':'var(--b)'}">${p}% IN (${v.i}/${v.t})</span></div><div style="height:.5rem;background:#f1f5f9;border-radius:999px;overflow:hidden"><div style="height:100%;width:${p}%;background:${p===100?'var(--grn)':'var(--b)'};border-radius:999px"></div></div></div>`;}).join('')}
-  <h3 style="font-family:'Space Grotesk',sans-serif;font-size:.875rem;font-weight:600;margin:1.5rem 0 1rem;color:var(--t2)">Panelist Evaluations</h3>
-  ${ballots.map((b,idx)=>`<div style="border:1px solid var(--brd);border-radius:.75rem;margin-bottom:1rem;overflow:hidden">
-  <div style="background:${isBlind?'#f5f3ff':'#eff6ff'};padding:.75rem 1rem;border-bottom:1px solid ${isBlind?'#ede9fe':'#dbeafe'};display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem">
-  <div style="display:flex;align-items:center;gap:.5rem"><span style="width:1.75rem;height:1.75rem;background:${isBlind?'var(--pur)':'var(--b)'};color:#fff;border-radius:.375rem;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700">${idx+1}</span><span style="font-weight:600">${escH(b.panelistName||'Panelist '+(idx+1))}</span></div>
-  ${b.testingCompletionDate?`<span style="font-size:.6875rem;color:var(--t3)">${b.testingCompletionDate} ${b.testingCompletionTime||''}</span>`:''}</div>
-  <div style="padding:1rem">
-  ${isBlind&&b.samples?`<table style="width:100%"><thead><tr style="background:#fafbfc"><th style="font-size:.625rem">Sl</th><th style="font-size:.625rem">Color Code</th><th style="font-size:.625rem">Result</th><th style="font-size:.625rem">OFF Note</th></tr></thead><tbody>${b.samples.map((sm,si)=>`<tr><td>${sm.colorCode==='Control'?'Ctrl':si}</td><td><span class="badge" style="background:${sm.colorCode==='Control'?'#e5e7eb':sm.colorCode==='Yellow'?'#fef08a':sm.colorCode==='Brown'?'#a16207':sm.colorCode==='Blue'?'#3b82f6':sm.colorCode==='Green'?'#22c55e':sm.colorCode==='Red'?'#ef4444':'#a855f7'};color:${sm.colorCode==='Control'||sm.colorCode==='Yellow'||sm.colorCode==='Green'?'#000':'#fff'}">${sm.colorCode}</span></td><td><span class="badge ${sm.status==='IN'?'badge-green':'badge-red'}">${sm.colorCode==='Control'?'IN (Ctrl)':sm.status}</span></td><td>${sm.colorCode==='Control'?'N/A':(sm.offNote||'-')}</td></tr>`).join('')}</tbody></table>`
-  :`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(8rem,1fr));gap:.5rem;margin-bottom:.75rem">
-  ${b.productType?`<div style="background:#fafbfc;padding:.5rem;border-radius:.5rem"><div style="font-size:.625rem;font-weight:600;color:var(--t4);text-transform:uppercase">Type</div><div style="font-size:.8125rem;font-weight:600">${escH(b.productType==='Other'?b.otherProductType:b.productType)}</div></div>`:''}
-  ${b.productCode?`<div style="background:#fafbfc;padding:.5rem;border-radius:.5rem"><div style="font-size:.625rem;font-weight:600;color:var(--t4);text-transform:uppercase">Code</div><div style="font-size:.8125rem;font-weight:600;font-family:monospace">${escH(b.productCode)}</div></div>`:''}
-  ${b.dateOfMfg?`<div style="background:#fafbfc;padding:.5rem;border-radius:.5rem"><div style="font-size:.625rem;font-weight:600;color:var(--t4);text-transform:uppercase">Mfg Date</div><div style="font-size:.8125rem;font-weight:600">${b.dateOfMfg}</div></div>`:''}</div>
-  ${['appearance','odour'].concat(b.productType!=='Raw Water'?['taste']:[]).filter(k=>b[k]).map(k=>`<div class="result-row ${b[k].status==='IN'?'pass':'fail'}"><span style="font-size:.8125rem;font-weight:500">${k.charAt(0).toUpperCase()+k.slice(1)}</span><div style="display:flex;align-items:center;gap:.5rem"><span class="badge ${b[k].status==='IN'?'badge-green':'badge-red'}">${b[k].status}</span>${b[k].status==='OUT'?`<span style="font-size:.75rem;color:var(--red)">${escH(b[k].reason==='Other'?'Other':b[k].reason)}</span>`:''}</div></div>`).join('')}
-  ${b.remarks?`<div style="margin-top:.5rem;background:#fafbfc;padding:.5rem;border-radius:.5rem"><div style="font-size:.625rem;font-weight:600;color:var(--t4);text-transform:uppercase">Remarks</div><div style="font-size:.8125rem">${escH(b.remarks)}</div></div>`:''}
-  </div></div>`).join('')}
-  <div style="text-align:center;margin-top:2rem;padding-top:1rem;border-top:1px solid #f1f5f9;font-size:.75rem;color:var(--t4)">Generated by <b>Global Acqua Pvt Ltd</b> · Sensory Analysis System</div></div></div></div>`;
+function submitBlindBallot() {
+  var form = document.getElementById('ballot-form');
+  var fd = new FormData(form);
+  var colors = ['Control', 'Yellow', 'Brown', 'Blue', 'Green', 'Red', 'Purple'];
+  var samples = colors.map(function(c, i) {
+    return {
+      colorCode: c,
+      status: fd.get('sample_' + i + '_status'),
+      offNote: fd.get('sample_' + i + '_offNote') || ''
+    };
+  });
+  submitBallot({
+    panelistName: fd.get('panelistName'),
+    testCode: fd.get('testCode'),
+    testDate: fd.get('testDate'),
+    testTime: fd.get('testTime'),
+    roundNo: fd.get('roundNo'),
+    provider: fd.get('provider'),
+    samples: samples
+  });
 }
 
-function renderActive(){
-  const s=DB.findSession(_activeCode);if(!s)return'<p>No active session. <a href="#" onclick="navigateTo(\'dashboard\');return false" style="color:var(--b)">Go to Dashboard</a></p>';
-  if(s.status==='completed'){_viewingSession=s;currentView='report';return renderSessionReport();}
-  currentView='ballot';return renderBallot();
+function renderProfBallot(s) {
+  var nd = new Date();
+  var cd = nd.toISOString().split('T')[0];
+  var ct = nd.toTimeString().slice(0, 5);
+  var colors = ['Control', 'Yellow', 'Brown', 'Blue', 'Green', 'Red', 'Purple'];
+
+  var html = '<form id="ballot-form">';
+  html += '<div class="card" style="margin-bottom:1rem"><div class="card-body">';
+  html += '<div class="grid grid-2">';
+  html += '<div class="field"><label>Panelist Name *</label><input name="panelistName" required></div>';
+  html += '<div class="field"><label>Test Code</label><input name="testCode"></div>';
+  html += '<div class="field"><label>Test Date *</label><input name="testDate" type="date" required value="' + cd + '"></div>';
+  html += '<div class="field"><label>Test Time *</label><input name="testTime" type="time" required value="' + ct + '"></div>';
+  html += '<div class="field"><label>Round No *</label><input name="roundNo" required value="1"></div>';
+  html += '<div class="field"><label>Provider</label><input name="provider"></div>';
+  html += '</div></div></div>';
+
+  html += '<div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>⭐ Proficiency Samples</h3></div><div class="card-body">';
+  for (var ci = 0; ci < colors.length; ci++) {
+    var c = colors[ci];
+    html += '<div style="display:grid;grid-template-columns:auto 1fr 1fr;gap:.5rem;margin-bottom:.5rem;align-items:center;padding:.5rem;border:1px solid var(--brd);border-radius:.5rem">';
+    html += '<span class="badge" style="background:' + badgeColorForCode(c) + ';color:' + badgeTextForCode(c) + ';font-weight:700;min-width:5rem;justify-content:center">' + c + '</span>';
+    html += '<select name="sample_' + ci + '_status"><option value="IN">IN</option><option value="OUT">OUT</option></select>';
+    html += '<input name="sample_' + ci + '_offNote" placeholder="OFF Note"></div>';
+  }
+  html += '</div></div>';
+  html += '<button type="submit" class="btn btn-primary btn-full" style="height:3rem">✅ Submit Proficiency Test</button>';
+  html += '</form>';
+  return html;
 }
 
-// ===== ADMIN REPORTS =====
-function openReport(type){
-  const sessions=DB.getAllSessions();
-  const filtered=type==='daily'?sessions.filter(s=>(!s.testType||s.testType==='regular')&&s.status==='completed'):type==='blind'?sessions.filter(s=>s.testType==='blind'&&s.status==='completed'):sessions.filter(s=>s.testType==='proficiency'&&s.status==='completed');
-  const title=type==='daily'?'Daily Summary':type==='blind'?'Blind Test Summary':'Proficiency Test Summary';
-  showModal(`<div style="max-height:70vh;overflow-y:auto"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem"><h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.125rem">${title}</h3><button class="btn btn-sm btn-secondary" onclick="hideModal()">✕</button></div>
-  <div class="table-wrap"><table style="width:100%;font-size:.8125rem"><thead><tr><th>Code</th><th>Product</th><th>Code</th><th>Panelists</th><th>Result</th><th>Date</th></tr></thead><tbody>
-  ${filtered.length?filtered.map(s=>{const b=s.ballots[0]||{};const allIn=s.ballots.every(x=>(x.appearance?.status==='IN')&&(x.odour?.status==='IN')&&((x.taste?.status==='IN')||x.productType==='Raw Water'));return`<tr><td style="font-family:monospace;font-weight:700;color:var(--b)">${s.sessionCode}</td><td>${escH(b.productType==='Other'?b.otherProductType:b.productType||'-')}</td><td>${escH(b.productCode||'-')}</td><td>${s.ballots.length}/${s.targetPanelistCount}</td><td><span class="badge ${allIn?'badge-green':'badge-red'}">${allIn?'IN':'OUT'}</span></td><td>${fmtDate(s.completedAt)}</td></tr>`;}).join('')
-  :'<tr><td colspan="6" style="text-align:center;color:var(--t4);padding:2rem">No completed sessions yet</td></tr>'}</tbody></table></div></div>`);
+// ============================================================
+// REPORT
+// ============================================================
+function renderSessionReport() {
+  var s = _viewingSession;
+  if (!s) return '<p>No session</p>';
+  var ballots = s.ballots || [];
+  var total = s.targetPanelistCount;
+  var pct = Math.min(100, Math.round((ballots.length / total) * 100));
+  var isBlind = s.testType === 'blind' || s.testType === 'proficiency';
+
+  var checks = 0, ins = 0;
+  var cat = { Appearance: { i: 0, t: 0 }, Odour: { i: 0, t: 0 }, Taste: { i: 0, t: 0 } };
+  ballots.forEach(function(b) {
+    ['appearance', 'odour', 'taste'].forEach(function(k) {
+      if (b[k] && b[k].status) {
+        var lk = k === 'appearance' ? 'Appearance' : k === 'odour' ? 'Odour' : 'Taste';
+        cat[lk].t++;
+        checks++;
+        if (b[k].status === 'IN') { cat[lk].i++; ins++; }
+      }
+    });
+  });
+  var passPct = checks ? Math.round((ins / checks) * 100) : null;
+  var allPassed = passPct === 100;
+
+  var html = '<div style="max-width:50rem;margin:0 auto">';
+
+  // Top bar
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">';
+  html += '<button class="btn btn-sm btn-secondary" onclick="navigateTo(\'dashboard\')">← Dashboard</button>';
+  html += '<button class="btn btn-sm btn-primary" onclick="window.print()">🖨️ Print</button></div>';
+
+  // Stats
+  var qColor = allPassed ? 'var(--grn)' : 'var(--red)';
+  var qBg = allPassed ? '#f0fdf4' : '#fef2f2';
+  var qLabel = passPct !== null ? passPct + '%' : '—';
+  html += '<div class="grid grid-3" style="margin-bottom:1.5rem">';
+  html += '<div class="stat-card"><div class="stat-icon" style="background:#eff6ff;color:var(--b)">👥</div><div><div class="stat-val">' + ballots.length + '/' + total + '</div><div class="stat-lbl">Panelists (' + pct + '%)</div></div></div>';
+  html += '<div class="stat-card"><div class="stat-icon" style="background:' + qBg + ';color:' + qColor + '">✅</div><div><div class="stat-val" style="color:' + qColor + '">' + qLabel + '</div><div class="stat-lbl">Quality Rate</div></div></div>';
+  html += '<div class="stat-card"><div class="stat-icon" style="background:#f5f3ff;color:var(--pur)">📋</div><div><div class="stat-val">' + (s.testType || 'regular') + '</div><div class="stat-lbl">Test Type</div></div></div>';
+  html += '</div>';
+
+  // Report card
+  var reportTitle = s.testType === 'blind' ? 'Sensory Blind Test Report' : s.testType === 'proficiency' ? 'Proficiency Test Report' : 'Sensory Evaluation Report';
+  html += '<div class="report-card"><div class="report-header">';
+  html += '<h1>' + reportTitle + '</h1>';
+  html += '<p>Global Acqua Pvt Ltd · Sensory Quality Control</p>';
+  html += '<div style="display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap">';
+  html += '<div class="badge badge-blue" style="font-family:\'Space Grotesk\',monospace;font-size:.875rem;padding:.5rem 1rem">' + s.sessionCode + '</div>';
+  html += '<div style="font-size:.8125rem;color:var(--t3)">Completed: ' + fmtDateTime(s.completedAt || s.createdAt) + '</div>';
+  html += '</div></div>';
+
+  html += '<div class="report-body">';
+
+  // Category breakdown
+  var catNames = ['Appearance', 'Odour', 'Taste'];
+  for (var ci2 = 0; ci2 < catNames.length; ci2++) {
+    var cname = catNames[ci2];
+    var cv = cat[cname];
+    if (cv.t === 0) continue;
+    var cp = Math.round((cv.i / cv.t) * 100);
+    var cpColor = cp === 100 ? 'var(--grn)' : 'var(--b)';
+    html += '<div style="margin-bottom:.75rem">';
+    html += '<div style="display:flex;justify-content:space-between;font-size:.75rem;margin-bottom:.25rem">';
+    html += '<span style="font-weight:600">' + cname + '</span>';
+    html += '<span style="font-weight:700;color:' + cpColor + '">' + cp + '% IN (' + cv.i + '/' + cv.t + ')</span></div>';
+    html += '<div style="height:.5rem;background:#f1f5f9;border-radius:999px;overflow:hidden">';
+    html += '<div style="height:100%;width:' + cp + '%;background:' + cpColor + ';border-radius:999px"></div></div></div>';
+  }
+
+  html += '<h3 style="font-family:\'Space Grotesk\',sans-serif;font-size:.875rem;font-weight:600;margin:1.5rem 0 1rem;color:var(--t2)">Panelist Evaluations</h3>';
+
+  // Each ballot
+  for (var bi = 0; bi < ballots.length; bi++) {
+    var b = ballots[bi];
+    var panelistBg = isBlind ? '#f5f3ff' : '#eff6ff';
+    var panelistBorder = isBlind ? '#ede9fe' : '#dbeafe';
+    var panelistColor = isBlind ? 'var(--pur)' : 'var(--b)';
+
+    html += '<div style="border:1px solid var(--brd);border-radius:.75rem;margin-bottom:1rem;overflow:hidden">';
+    html += '<div style="background:' + panelistBg + ';padding:.75rem 1rem;border-bottom:1px solid ' + panelistBorder + ';display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem">';
+    html += '<div style="display:flex;align-items:center;gap:.5rem">';
+    html += '<span style="width:1.75rem;height:1.75rem;background:' + panelistColor + ';color:#fff;border-radius:.375rem;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700">' + (bi + 1) + '</span>';
+    html += '<span style="font-weight:600">' + escH(b.panelistName || 'Panelist ' + (bi + 1)) + '</span></div>';
+    if (b.testingCompletionDate) {
+      html += '<span style="font-size:.6875rem;color:var(--t3)">' + b.testingCompletionDate + ' ' + (b.testingCompletionTime || '') + '</span>';
+    }
+    html += '</div>';
+
+    html += '<div style="padding:1rem">';
+
+    if (isBlind && b.samples) {
+      // Blind/proficiency samples table
+      html += '<table style="width:100%"><thead><tr style="background:#fafbfc">';
+      html += '<th style="font-size:.625rem">Sl</th><th style="font-size:.625rem">Color Code</th><th style="font-size:.625rem">Result</th><th style="font-size:.625rem">OFF Note</th>';
+      html += '</tr></thead><tbody>';
+      for (var si = 0; si < b.samples.length; si++) {
+        var sm = b.samples[si];
+        var slLabel = sm.colorCode === 'Control' ? 'Ctrl' : si;
+        var resultLabel = sm.colorCode === 'Control' ? 'IN (Ctrl)' : sm.status;
+        html += '<tr>';
+        html += '<td>' + slLabel + '</td>';
+        html += '<td><span class="badge" style="background:' + badgeColorForCode(sm.colorCode) + ';color:' + badgeTextForCode(sm.colorCode) + '">' + sm.colorCode + '</span></td>';
+        html += '<td><span class="badge ' + (sm.status === 'IN' ? 'badge-green' : 'badge-red') + '">' + resultLabel + '</span></td>';
+        html += '<td>' + (sm.colorCode === 'Control' ? 'N/A' : (sm.offNote || '-')) + '</td>';
+        html += '</tr>';
+      }
+      html += '</tbody></table>';
+    } else {
+      // Regular ballot details
+      html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(8rem,1fr));gap:.5rem;margin-bottom:.75rem">';
+      if (b.productType) {
+        var ptDisplay = b.productType === 'Other' ? b.otherProductType : b.productType;
+        html += '<div style="background:#fafbfc;padding:.5rem;border-radius:.5rem"><div style="font-size:.625rem;font-weight:600;color:var(--t4);text-transform:uppercase">Type</div><div style="font-size:.8125rem;font-weight:600">' + escH(ptDisplay) + '</div></div>';
+      }
+      if (b.productCode) {
+        html += '<div style="background:#fafbfc;padding:.5rem;border-radius:.5rem"><div style="font-size:.625rem;font-weight:600;color:var(--t4);text-transform:uppercase">Code</div><div style="font-size:.8125rem;font-weight:600;font-family:monospace">' + escH(b.productCode) + '</div></div>';
+      }
+      if (b.dateOfMfg) {
+        html += '<div style="background:#fafbfc;padding:.5rem;border-radius:.5rem"><div style="font-size:.625rem;font-weight:600;color:var(--t4);text-transform:uppercase">Mfg Date</div><div style="font-size:.8125rem;font-weight:600">' + b.dateOfMfg + '</div></div>';
+      }
+      html += '</div>';
+
+      // Test results
+      var testKeys = ['appearance', 'odour'];
+      if (b.productType !== 'Raw Water') testKeys.push('taste');
+      for (var ti = 0; ti < testKeys.length; ti++) {
+        var tk = testKeys[ti];
+        if (!b[tk]) continue;
+        var rowClass = b[tk].status === 'IN' ? 'pass' : 'fail';
+        var badgeClass = b[tk].status === 'IN' ? 'badge-green' : 'badge-red';
+        var label = tk.charAt(0).toUpperCase() + tk.slice(1);
+        html += '<div class="result-row ' + rowClass + '">';
+        html += '<span style="font-size:.8125rem;font-weight:500">' + label + '</span>';
+        html += '<div style="display:flex;align-items:center;gap:.5rem">';
+        html += '<span class="badge ' + badgeClass + '">' + b[tk].status + '</span>';
+        if (b[tk].status === 'OUT') {
+          var reasonText = b[tk].reason === 'Other' ? 'Other' : b[tk].reason;
+          html += '<span style="font-size:.75rem;color:var(--red)">' + escH(reasonText) + '</span>';
+        }
+        html += '</div></div>';
+      }
+
+      // Remarks
+      if (b.remarks) {
+        html += '<div style="margin-top:.5rem;background:#fafbfc;padding:.5rem;border-radius:.5rem"><div style="font-size:.625rem;font-weight:600;color:var(--t4);text-transform:uppercase">Remarks</div><div style="font-size:.8125rem">' + escH(b.remarks) + '</div></div>';
+      }
+    }
+
+    html += '</div></div>';
+  }
+
+  html += '<div style="text-align:center;margin-top:2rem;padding-top:1rem;border-top:1px solid #f1f5f9;font-size:.75rem;color:var(--t4)">Generated by <b>Global Acqua Pvt Ltd</b> · Sensory Analysis System</div>';
+  html += '</div></div></div>';
+  return html;
 }
 
-// ===== INIT =====
+function renderActive() {
+  var s = DB.findSession(_activeCode);
+  if (!s) {
+    return '<p>No active session. <a href="#" onclick="navigateTo(\'dashboard\');return false" style="color:var(--b)">Go to Dashboard</a></p>';
+  }
+  if (s.status === 'completed') {
+    _viewingSession = s;
+    currentView = 'report';
+    return renderSessionReport();
+  }
+  currentView = 'ballot';
+  return renderBallot();
+}
+
+// ============================================================
+// ADMIN REPORTS (Modal)
+// ============================================================
+function openReport(type) {
+  var sessions = DB.getAllSessions();
+  var filtered;
+  if (type === 'daily') {
+    filtered = sessions.filter(function(s) { return (!s.testType || s.testType === 'regular') && s.status === 'completed'; });
+  } else if (type === 'blind') {
+    filtered = sessions.filter(function(s) { return s.testType === 'blind' && s.status === 'completed'; });
+  } else {
+    filtered = sessions.filter(function(s) { return s.testType === 'proficiency' && s.status === 'completed'; });
+  }
+
+  var title = type === 'daily' ? 'Daily Summary' : type === 'blind' ? 'Blind Test Summary' : 'Proficiency Summary';
+
+  var html = '<div style="max-height:70vh;overflow-y:auto">';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">';
+  html += '<h3 style="font-family:\'Space Grotesk\',sans-serif;font-weight:700;font-size:1.125rem">' + title + '</h3>';
+  html += '<button class="btn btn-sm btn-secondary" onclick="hideModal()">✕</button></div>';
+  html += '<div class="table-wrap"><table style="width:100%;font-size:.8125rem"><thead><tr>';
+  html += '<th>Code</th><th>Product</th><th>Code</th><th>Panelists</th><th>Result</th><th>Date</th>';
+  html += '</tr></thead><tbody>';
+
+  if (filtered.length) {
+    for (var ri = 0; ri < filtered.length; ri++) {
+      var sess = filtered[ri];
+      var fb = sess.ballots[0] || {};
+      var allIn = sess.ballots.every(function(x) {
+        return (x.appearance && x.appearance.status === 'IN') &&
+               (x.odour && x.odour.status === 'IN') &&
+               ((x.taste && x.taste.status === 'IN') || x.productType === 'Raw Water');
+      });
+      var ptDisplay = fb.productType === 'Other' ? fb.otherProductType : (fb.productType || '-');
+      var badgeClass = allIn ? 'badge-green' : 'badge-red';
+      var badgeLabel = allIn ? 'IN' : 'OUT';
+      html += '<tr>';
+      html += '<td style="font-family:monospace;font-weight:700;color:var(--b)">' + sess.sessionCode + '</td>';
+      html += '<td>' + escH(ptDisplay) + '</td>';
+      html += '<td>' + escH(fb.productCode || '-') + '</td>';
+      html += '<td>' + sess.ballots.length + '/' + sess.targetPanelistCount + '</td>';
+      html += '<td><span class="badge ' + badgeClass + '">' + badgeLabel + '</span></td>';
+      html += '<td>' + fmtDate(sess.completedAt) + '</td>';
+      html += '</tr>';
+    }
+  } else {
+    html += '<tr><td colspan="6" style="text-align:center;color:var(--t4);padding:2rem">No completed sessions yet</td></tr>';
+  }
+
+  html += '</tbody></table></div></div>';
+  showModal(html);
+}
+
+// ============================================================
+// INITIALIZATION — All event listeners attached here
+// ============================================================
 DB.init();
+
+// Login button
+document.getElementById('login-btn').addEventListener('click', doLogin);
+
+// Enter key on login fields
+document.getElementById('login-pass').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
+document.getElementById('login-user').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('login-pass').focus();
+});
+
+// Logout button
+document.getElementById('logout-btn').addEventListener('click', doLogout);
+
+// Hamburger menu
+document.getElementById('hamburger-btn').addEventListener('click', function() {
+  document.getElementById('sidebar').classList.toggle('open');
+});
+
+// Modal overlay click to close
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === e.currentTarget) hideModal();
+});
+
+// We need to re-attach listeners after renderView() changes innerHTML.
+// Override renderView to call attachUserDashListeners after rendering user dashboard.
+var _origRenderView = renderView;
+// Use a MutationObserver or just re-attach after each render.
+// Simplest: hook into renderView calls for user dashboard.
+(function() {
+  var origNav = navigateTo;
+  // Monkey-patch renderView to attach user dash listeners
+  var origRV = window.renderView;
+  window.renderView = function() {
+    origRV();
+    if (currentView === 'dashboard' && currentUser && currentUser.role !== 'admin') {
+      attachUserDashListeners();
+    }
+    if (currentView === 'ballot') {
+      attachBallotListeners();
+    }
+  };
+})();
+
+function attachBallotListeners() {
+  var form = document.getElementById('ballot-form');
+  if (!form) return;
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var s = DB.findSession(_activeCode);
+    if (!s) return;
+    if (s.testType === 'blind' || s.testType === 'proficiency') {
+      submitBlindBallot();
+    } else {
+      submitRegularBallot();
+    }
+  });
+  // Attach product type change listeners
+  var ptSelect = document.getElementById('pt-select');
+  if (ptSelect) {
+    ptSelect.addEventListener('change', function() {
+      toggleOtherType(this);
+      toggleVariant(this);
+    });
+  }
+  // Attach radio listeners
+  setupRadioListeners();
+}
+
 </script>
 </body>
 </html>
