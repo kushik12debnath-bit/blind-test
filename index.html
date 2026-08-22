@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <title>Global Acqua - Sensory Analysis</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💧</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -11,8 +10,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--d:#0a1628;--n:#0d2137;--b:#0064C8;--s:#009DE0;--g:#f0f4f8;--w:#fff;--t1:#1a202c;--t2:#4a5568;--t3:#718096;--t4:#a0aec0;--brd:#e2e8f0;--red:#dc2626;--grn:#059669;--amb:#d97706;--pur:#7c3aed}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--g);color:var(--t1);line-height:1.6}
-input,select,textarea,button{font-family:inherit}
-button{cursor:pointer;border:none}
+input,select,textarea,button{font-family:inherit}button{cursor:pointer;border:none}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--b);box-shadow:0 0 0 3px rgba(0,100,200,.1)}
 .page{display:none;min-height:100vh}.page.active{display:flex}
 .login-page{background:linear-gradient(160deg,var(--d),#0d2137 35%,#0f3460 70%,#16213e);align-items:center;justify-content:center;padding:1rem}
@@ -27,7 +25,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--b);box-s
 .btn-secondary{background:var(--w);color:var(--t2);border:1px solid var(--brd)}.btn-secondary:hover{background:#f7fafc}
 .btn-sm{padding:.375rem .75rem;font-size:.75rem;border-radius:.5rem}.btn-full{width:100%}.btn-danger{background:#fee2e2;color:var(--red);border:1px solid #fecaca}
 .err{background:#fef2f2;border:1px solid #fecaca;border-radius:.5rem;padding:.75rem;color:var(--red);font-size:.8125rem;margin-bottom:1rem}
-.sidebar{width:16rem;background:linear-gradient(180deg,var(--d),var(--n) 50%,#0f3460);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:40;transition:transform .3s}
+.sidebar{width:16rem;background:linear-gradient(180deg,var(--d),var(--n) 50%,#0f3460);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:40}
 .sidebar .logo{padding:1.5rem;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:.75rem}
 .sidebar .logo .icon{width:2.5rem;height:2.5rem;border-radius:.75rem;background:linear-gradient(135deg,var(--b),var(--s));display:flex;align-items:center;justify-content:center;font-size:1.25rem}
 .sidebar .logo h2{font-family:'Space Grotesk',sans-serif;font-size:1.125rem;font-weight:700}
@@ -57,14 +55,12 @@ td{padding:.625rem .75rem;border-bottom:1px solid #f1f5f9}tr:hover{background:#f
 .filter-bar{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;padding:1rem 1.5rem}
 .filter-bar label{font-size:.75rem;font-weight:500;color:var(--t3)}
 .filter-bar input,.filter-bar select{height:2rem;padding:0 .625rem;border:1px solid var(--brd);border-radius:.5rem;font-size:.75rem}
-.session-code{font-family:'Space Grotesk',monospace;font-size:1.5rem;font-weight:700;letter-spacing:.15em;color:var(--b);text-align:center;background:#f8fafc;border:2px dashed var(--brd);border-radius:.75rem;padding:1rem}
+.session-code-box{font-family:'Space Grotesk',monospace;font-size:1.5rem;font-weight:700;letter-spacing:.15em;color:var(--b);text-align:center;background:#f8fafc;border:2px dashed var(--brd);border-radius:.75rem;padding:1rem}
 .test-card{border:1px solid var(--brd);border-radius:.75rem;padding:1rem;margin-bottom:.75rem}
 .test-card h4{font-family:'Space Grotesk',sans-serif;font-size:.875rem;font-weight:600;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
-.radio-group{display:flex;gap:1rem}
 .report-card{background:var(--w);border:1px solid var(--brd);border-radius:1rem;overflow:hidden}
 .report-header{padding:2rem;border-bottom:1px solid #f1f5f9}
 .report-header h1{font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700}
-.report-header p{color:var(--t3);font-size:.8125rem}
 .report-body{padding:2rem}
 .result-row{display:flex;align-items:center;justify-content:space-between;padding:.625rem .875rem;border-radius:.5rem;border:1px solid var(--brd);margin-bottom:.5rem}
 .result-row.pass{background:#f0fdf4;border-color:#bbf7d0}.result-row.fail{background:#fef2f2;border-color:#fecaca}
@@ -74,22 +70,20 @@ td{padding:.625rem .75rem;border-bottom:1px solid #f1f5f9}tr:hover{background:#f
 .toast{position:fixed;top:1rem;right:1rem;z-index:200;padding:.75rem 1.25rem;border-radius:.75rem;font-size:.8125rem;font-weight:500;color:#fff;box-shadow:0 8px 30px -5px rgba(0,0,0,.2);transform:translateX(120%);transition:transform .3s}
 .toast.show{transform:translateX(0)}.toast.ok{background:#059669}.toast.err2{background:#dc2626}.toast.inf{background:#0064C8}
 .mobile-header{display:none;position:fixed;top:0;left:0;right:0;z-index:50;background:var(--w);border-bottom:1px solid var(--brd);padding:.75rem 1rem;align-items:center;justify-content:space-between}
-.hamburger{background:none;font-size:1.25rem;padding:.25rem}
-@media print{.no-print{display:none!important}body{background:#fff!important}.main{margin-left:0!important;padding:0!important}}
+@media print{.no-print{display:none!important}.main{margin-left:0!important;padding:0!important}}
 @media(max-width:768px){.g2,.g3,.g4{grid-template-columns:1fr}.sidebar{transform:translateX(-100%);width:16rem}.sidebar.open{transform:translateX(0)}.main{margin-left:0;padding:1rem}.mobile-header{display:flex!important}}
 </style>
 </head>
 <body>
-
 <div id="toast" class="toast"></div>
 
 <div id="page-login" class="page login-page active">
   <div style="text-align:center;margin-bottom:2rem;color:#fff">
-    <div style="font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:700;margin-bottom:.5rem">Global Acqua</div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:700">Global Acqua</div>
     <div style="font-size:.75rem;opacity:.6;letter-spacing:.1em;text-transform:uppercase">Sensory Quality Control</div>
   </div>
   <div class="login-card">
-    <div class="login-logo">💧</div>
+    <div class="login-logo">&#128167;</div>
     <h1>Welcome back</h1>
     <p>Sign in to access your dashboard</p>
     <div id="login-error" class="err" style="display:none"></div>
@@ -97,14 +91,13 @@ td{padding:.625rem .75rem;border-bottom:1px solid #f1f5f9}tr:hover{background:#f
     <div class="field"><label>Password</label><input type="password" id="login-pass" placeholder="Enter password"></div>
     <button class="btn btn-primary btn-full" id="login-btn" style="height:2.75rem">Sign In</button>
     <div style="margin-top:1rem;padding:.75rem;background:#f0f4f8;border-radius:.5rem;font-size:.6875rem;color:var(--t3)">
-      <b>Demo Accounts:</b><br>Admin: admin / admin123<br>User: SD / sd123</div>
+      <b>Demo Accounts:</b><br>Admin: admin / admin123<br>User: SD / sd123<br>User: RM / rm123</div>
   </div>
 </div>
 
 <div id="page-app" class="page">
-  <div class="mobile-header"><div style="display:flex;align-items:center;gap:.5rem"><div style="width:2rem;height:2rem;border-radius:.5rem;background:linear-gradient(135deg,var(--b),var(--s));display:flex;align-items:center;justify-content:center;color:#fff">💧</div><span style="font-weight:700;font-size:.8125rem">Global Acqua</span></div><button class="hamburger" id="hamburger-btn">☰</button></div>
   <aside class="sidebar" id="sidebar">
-    <div class="logo"><div class="icon">💧</div><div><h2>Global Acqua</h2><span id="sr-label">Panel</span></div></div>
+    <div class="logo"><div class="icon">&#128167;</div><div><h2>Global Acqua</h2><span id="sr-label">Panel</span></div></div>
     <nav id="snav"></nav>
     <div class="user-box">
       <div class="avatar" id="savatar">A</div>
@@ -118,406 +111,472 @@ td{padding:.625rem .75rem;border-bottom:1px solid #f1f5f9}tr:hover{background:#f
 <div class="modal-overlay" id="mover"><div class="modal" id="mcont"></div></div>
 
 <script>
-var U=null,V='dashboard',AC='',BN=1,BI=null,ST='regular',VS=null,JC='',TS=false;
-var SS='',SF='',STO='',SST='all',GT='regular',GC='3',GV='';
+"use strict";
 
-function $(id){return document.getElementById(id)}
-function _log(m){console.log('[GAQ] '+m)}
+/* ========== STORAGE ========== */
+var SK = "gaq_data";
+function dbGet() { try { return JSON.parse(localStorage.getItem(SK)) || null; } catch(e) { return null; } }
+function dbSet(d) { localStorage.setItem(SK, JSON.stringify(d)); }
+function dbLoad() { return dbGet() || { users: [], sessions: [] }; }
+function dbSave(d) { dbSet(d); }
 
-function dbLoad(){try{return JSON.parse(localStorage.getItem('gaq'))||{users:[],sessions:[]}}catch(e){return{users:[],sessions:[]}}}
-function dbSave(d){localStorage.setItem('gaq',JSON.stringify(d))}
-function _h(s){var h=0;for(var i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h=h|0}return'h'+h}
-function _id(){try{if(crypto.randomUUID)return crypto.randomUUID()}catch(e){}return'r'+Math.random().toString(36).slice(2)+Date.now().toString(36)}
-function _now(){return new Date().toISOString()}
-function _e(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function _f(s){return s?new Date(s).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'}):'N/A'}
-function _fd(s){return s?new Date(s).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'N/A'}
+/* ========== HELPERS ========== */
+function $(id) { return document.getElementById(id); }
+function hash(s) { var h = 0; for (var i = 0; i < s.length; i++) { h = ((h << 5) - h) + s.charCodeAt(i); h = h | 0; } return "h" + h; }
+function uid() { try { if (crypto.randomUUID) return crypto.randomUUID(); } catch(e) {} return "x" + Math.random().toString(36).slice(2) + Date.now(); }
+function iso() { return new Date().toISOString(); }
+function esc(s) { return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+function fmtD(s) { return s ? new Date(s).toLocaleDateString("en-US", {year:"numeric",month:"short",day:"numeric"}) : "N/A"; }
+function fmtDT(s) { return s ? new Date(s).toLocaleDateString("en-US", {year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}) : "N/A"; }
+function toast(m, t) { var el = $("toast"); el.textContent = m; el.className = "toast " + (t === "error" ? "err2" : t === "info" ? "inf" : "ok") + " show"; clearTimeout(el._t); el._t = setTimeout(function() { el.classList.remove("show"); }, 3500); }
+function genCode() { var A = "ABCDEFGHJKMNPQRSTUVWXYZ23456789", c = "GAQ-"; for (var i = 0; i < 6; i++) c += A[Math.floor(Math.random() * A.length)]; return c; }
+function sc(i, c, b, v, l) { return '<div class="stat-card"><div class="si" style="background:' + b + ";color:" + c + '">' + i + '</div><div><div class="sv">' + v + '</div><div class="sl">' + l + "</div></div></div>"; }
+function cbg(c) { return ({Control:"#e5e7eb",Yellow:"#fef08a",Brown:"#a16207",Blue:"#3b82f6",Green:"#22c55e",Red:"#ef4444",Purple:"#a855f7"})[c] || "#ccc"; }
+function ctb(c) { return (c === "Control" || c === "Yellow" || c === "Green") ? "#000" : "#fff"; }
 
-function _toast(m,t){var el=$('toast');el.textContent=m;el.className='toast '+(t==='error'?'err2':t==='info'?'inf':'ok')+' show';clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove('show')},3500)}
-
-function _gc_fn(){var A='ABCDEFGHJKMNPQRSTUVWXYZ23456789',c='GAQ-';for(var i=0;i<6;i++)c+=A[Math.floor(Math.random()*A.length)];return c}
-function _cbg(c){return({Control:'#e5e7eb',Yellow:'#fef08a',Brown:'#a16207',Blue:'#3b82f6',Green:'#22c55e',Red:'#ef4444',Purple:'#a855f7'})[c]||'#ccc'}
-function _ct(c){return(c==='Control'||c==='Yellow'||c==='Green')?'#000':'#fff'}
-function _sc(i,c,b,v,l){return'<div class="stat-card"><div class="si" style="background:'+b+';color:'+c+'">'+i+'</div><div><div class="sv">'+v+'</div><div class="sl">'+l+'</div></div></div>'}
-
-function dbInit(){
-  var d=dbLoad();
-  if(!d.users||!d.users.length){
-    d.users=[
-      {id:_id(),username:'admin',password:_h('admin123'),role:'admin',createdAt:_now()},
-      {id:_id(),username:'Saila Ruidas',password:_h('saila123'),role:'admin',createdAt:_now()},
-      {id:_id(),username:'SD',password:_h('sd123'),role:'user',createdAt:_now()},
-      {id:_id(),username:'RM',password:_h('rm123'),role:'user',createdAt:_now()},
-      {id:_id(),username:'SC',password:_h('sc123'),role:'user',createdAt:_now()},
-      {id:_id(),username:'SM',password:_h('sm123'),role:'user',createdAt:_now()}
-    ];d.sessions=[];dbSave(d);_log('Created '+d.users.length+' users');
+/* ========== DB INIT ========== */
+function dbInit() {
+  var d = dbLoad();
+  if (!d.users || !d.users.length) {
+    d.users = [
+      { id: uid(), username: "admin", password: hash("admin123"), role: "admin", createdAt: iso() },
+      { id: uid(), username: "Saila Ruidas", password: hash("saila123"), role: "admin", createdAt: iso() },
+      { id: uid(), username: "SD", password: hash("sd123"), role: "user", createdAt: iso() },
+      { id: uid(), username: "RM", password: hash("rm123"), role: "user", createdAt: iso() },
+      { id: uid(), username: "SC", password: hash("sc123"), role: "user", createdAt: iso() },
+      { id: uid(), username: "SM", password: hash("sm123"), role: "user", createdAt: iso() }
+    ];
+    d.sessions = [];
+    dbSave(d);
   }
-  _log('DB ready. Users:'+d.users.length);
 }
 
-function findUser(u,p){var d=dbLoad();for(var i=0;i<d.users.length;i++){if(d.users[i].username===u&&d.users[i].password===_h(p))return d.users[i]}return null}
+/* ========== STATE ========== */
+var U = null, V = "dashboard";
+var AC = "", BN = 1, BI = null, ST = "regular", VS = null;
+var TS = false, JC = "";
+var SS = "", SF = "", STO = "", SST = "all";
+var GT = "regular", GC = "3", GV = "";
 
-function doLogin(){
-  var u=$('login-user').value.trim(),p=$('login-pass').value;
-  _log('Login: "'+u+'"');
-  if(!u||!p){$('login-error').textContent='Please enter username and password';$('login-error').style.display='block';return}
-  var found=findUser(u,p);
-  if(!found){$('login-error').textContent='Incorrect username or password';$('login-error').style.display='block';_log('FAIL');return}
-  U={username:found.username,role:found.role};$('login-error').style.display='none';
-  _log('OK: '+U.username);showApp();
+/* ========== AUTH ========== */
+function doLogin() {
+  var u = $("login-user").value.trim();
+  var p = $("login-pass").value;
+  if (!u || !p) { $("login-error").textContent = "Enter username and password"; $("login-error").style.display = "block"; return; }
+  var d = dbLoad();
+  var found = null;
+  for (var i = 0; i < d.users.length; i++) {
+    if (d.users[i].username === u && d.users[i].password === hash(p)) { found = d.users[i]; break; }
+  }
+  if (!found) { $("login-error").textContent = "Incorrect username or password"; $("login-error").style.display = "block"; return; }
+  $("login-error").style.display = "none";
+  U = { username: found.username, role: found.role };
+  showApp();
 }
 
-function doLogout(){U=null;V='dashboard';$('page-app').classList.remove('active');$('page-login').classList.add('active');$('login-user').value='';$('login-pass').value=''}
-
-function showApp(){
-  $('page-login').classList.remove('active');$('page-app').classList.add('active');
-  $('sname').textContent=U.username;$('savatar').textContent=U.username.charAt(0).toUpperCase();
-  $('sr-label').textContent=U.role==='admin'?'Admin Panel':'Sensory Panel';
-  $('srole').textContent=U.role==='admin'?'Administrator':'Panelist';
-  buildNav();navTo('dashboard');_toast('Welcome, '+U.username+'!','ok');
+function showApp() {
+  $("page-login").classList.remove("active");
+  $("page-app").classList.add("active");
+  $("sname").textContent = U.username;
+  $("savatar").textContent = U.username.charAt(0).toUpperCase();
+  $("sr-label").textContent = U.role === "admin" ? "Admin Panel" : "Sensory Panel";
+  $("srole").textContent = U.role === "admin" ? "Administrator" : "Panelist";
+  buildNav();
+  navTo("dashboard");
+  toast("Welcome, " + U.username + "!", "ok");
 }
 
-function buildNav(){
-  var n=$('snav');
-  if(U.role==='admin'){
-    n.innerHTML='<a data-nav="dashboard">📊 Dashboard</a><a data-nav="users">👥 Users</a><a data-nav="sessions">📋 Sessions</a><a data-nav="generate">🔑 Generate</a><div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.1)"><div style="font-size:.625rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;padding:0 1rem;margin-bottom:.5rem">Reports</div><a data-rpt="daily">📅 Daily</a><a data-rpt="blind">🎯 Blind</a><a data-rpt="proficiency">⭐ Proficiency</a></div>';
+function doLogout() {
+  U = null; V = "dashboard";
+  $("page-app").classList.remove("active");
+  $("page-login").classList.add("active");
+  $("login-user").value = "";
+  $("login-pass").value = "";
+}
+
+/* ========== NAV ========== */
+function buildNav() {
+  var n = $("snav");
+  if (U.role === "admin") {
+    n.innerHTML = '<a data-nav="dashboard">&#128202; Dashboard</a><a data-nav="users">&#128101; Users</a><a data-nav="sessions">&#128203; Sessions</a><a data-nav="generate">&#128273; Generate</a><div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.1)"><div style="font-size:.625rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;padding:0 1rem;margin-bottom:.5rem">Reports</div><a data-rpt="daily">&#128197; Daily</a><a data-rpt="blind">&#127919; Blind</a><a data-rpt="proficiency">&#11088; Proficiency</a></div>';
   } else {
-    n.innerHTML='<a data-nav="dashboard">📊 Dashboard</a><a data-nav="active">📋 Active</a>';
+    n.innerHTML = '<a data-nav="dashboard">&#128202; Dashboard</a><a data-nav="active">&#128203; Active Session</a>';
   }
-  n.querySelectorAll('a[data-nav]').forEach(function(a){a.onclick=function(){navTo(a.getAttribute('data-nav'))}});
-  n.querySelectorAll('a[data-rpt]').forEach(function(a){a.onclick=function(){openRpt(a.getAttribute('data-rpt'))}});
-}
-
-function navTo(v){V=v;document.querySelectorAll('.sidebar nav a').forEach(function(a){a.classList.remove('active')});render();$('sidebar').classList.remove('open')}
-
-function render(){
-  var m=$('mc');
-  switch(V){
-    case'dashboard':m.innerHTML=U.role==='admin'?rAdmin():rUser();break;
-    case'users':m.innerHTML=rUsers();break;
-    case'sessions':m.innerHTML=rSessions();break;
-    case'generate':m.innerHTML=rGen();break;
-    case'active':m.innerHTML=rActive();break;
-    case'ballot':m.innerHTML=rBallot();attachRadio();break;
-    case'report':m.innerHTML=rReport();break;
-    default:m.innerHTML=U.role==='admin'?rAdmin():rUser();
-  }
-}
-
-function rAdmin(){
-  var ss=dbLoad().sessions||[];
-  var done=ss.filter(function(s){return s.status==='completed'});
-  var today=new Date().toDateString();
-  var tn=done.filter(function(s){return s.createdAt&&new Date(s.createdAt).toDateString()===today}).length;
-  var bl=ss.reduce(function(a,s){return a+s.ballots.length},0);
-  return'<div class="main-header"><h1>Admin Dashboard</h1><p>Welcome, '+_e(U.username)+'</p></div><div class="grid g4" style="margin-bottom:2rem">'+_sc('📊','var(--b)','#eff6ff',ss.length,'Sessions')+_sc('✅','var(--grn)','#f0fdf4',done.length,'Completed')+_sc('📋','var(--amb)','#fffbeb',tn,'Today')+_sc('👥','var(--pur)','#f5f3ff',bl,'Ballots')+'</div><div class="grid g2"><div class="card"><div class="card-header"><span style="font-size:1.25rem">🔑</span><h3>Quick Actions</h3></div><div class="card-body"><button class="btn btn-primary btn-full" data-nav="generate" style="margin-bottom:.75rem">Generate Code</button><button class="btn btn-secondary btn-full" data-nav="sessions">All Sessions</button></div></div><div class="card"><div class="card-header"><span style="font-size:1.25rem">👥</span><h3>Users</h3></div><div class="card-body"><button class="btn btn-primary btn-full" data-nav="users">Manage Users</button></div></div></div>';
-}
-
-function rUser(){
-  var ss=U.role==='admin'?(dbLoad().sessions||[]):(dbLoad().sessions||[]).filter(function(s){return s.createdBy===U.username});
-  var done=ss.filter(function(s){return s.status==='completed'});
-  var today=new Date().toDateString();
-  var tn=done.filter(function(s){return s.completedAt&&new Date(s.completedAt).toDateString()===today}).length;
-  var bl=ss.reduce(function(a,s){return a+s.ballots.length},0);
-  var h='<div class="main-header"><h1>Sensory Analysis Dashboard</h1><p>Create or join a session</p></div><div class="grid g4" style="margin-bottom:2rem">'+_sc('📊','var(--b)','#eff6ff',ss.length,'Sessions')+_sc('✅','var(--grn)','#f0fdf4',done.length,'Completed')+_sc('📋','var(--amb)','#fffbeb',tn,'Today')+_sc('👥','var(--pur)','#f5f3ff',bl,'Ballots')+'</div><div class="grid g2">';
-  h+='<div class="card"><div class="card-header"><span style="font-size:1.25rem">➕</span><h3>New Session</h3></div><div class="card-body"><p style="font-size:.8125rem;color:var(--t3);margin-bottom:1rem">Create a sensory evaluation session</p>';
-  if(!TS){
-    h+='<button class="btn btn-primary btn-full" data-act="tsel">1 Panelist Session</button>';
-  } else {
-    h+='<div style="display:flex;flex-direction:column;gap:.5rem"><button class="btn btn-full" data-act="start" data-type="regular" style="background:#eff6ff;border:1px solid #bfdbfe;color:var(--b);font-weight:600">📋 Regular Test</button><button class="btn btn-full" data-act="start" data-type="blind" style="background:#f5f3ff;border:1px solid #ddd6fe;color:var(--pur);font-weight:600">🎯 Blind Test</button><button class="btn btn-full" data-act="start" data-type="proficiency" style="background:#f0fdf4;border:1px solid #bbf7d0;color:var(--grn);font-weight:600">⭐ Proficiency</button><button class="btn btn-secondary btn-full" data-act="ctsel">Cancel</button></div>';
-  }
-  h+='<div style="margin-top:.75rem;display:flex;flex-direction:column;gap:.5rem"><button class="btn btn-full" data-act="start2" data-count="2" style="background:linear-gradient(135deg,#003A70,#0064C8);color:#fff">👥 2 Panelists</button><button class="btn btn-full" data-act="start2" data-count="3" style="background:linear-gradient(135deg,#00274d,#003A70);color:#fff">👥 3 Panelists</button></div></div></div>';
-  h+='<div class="card"><div class="card-header"><span style="font-size:1.25rem">🔑</span><h3>Join Session</h3></div><div class="card-body"><p style="font-size:.8125rem;color:var(--t3);margin-bottom:1rem">Enter a session code to join</p><div class="field"><input id="jci" placeholder="e.g. GAQ-ABC123"></div><button id="jbtn" class="btn btn-primary btn-full" disabled>Join Session</button><p style="font-size:.6875rem;color:var(--t4);text-align:center;margin-top:.5rem">Ask the session admin for the code</p></div></div></div>';
-  if(ss.length){
-    h+='<div style="margin-top:2rem"><div class="main-header" style="margin-bottom:1rem"><h1 style="font-size:1.125rem">Recent Sessions</h1></div><div class="grid" style="gap:.75rem">';
-    ss.slice(0,5).forEach(function(s){
-      var b=s.status==='completed'?'bg':'ba';
-      h+='<div class="card clickable" data-vs="'+s.sessionCode+'" style="cursor:pointer"><div style="padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem"><div><span class="badge '+b+'">'+s.status+'</span> <span class="badge bb">'+(s.testType||'regular')+'</span></div><div style="font-weight:700;color:var(--b)">'+s.sessionCode+'</div><div style="font-size:.75rem;color:var(--t3)">'+s.ballots.length+'/'+s.targetPanelistCount+'</div></div></div>';
+  n.querySelectorAll("a").forEach(function(a) {
+    a.addEventListener("click", function() {
+      var nav = a.getAttribute("data-nav");
+      var rpt = a.getAttribute("data-rpt");
+      if (nav) navTo(nav);
+      else if (rpt) openRpt(rpt);
     });
-    h+='</div></div>';
-  }
-  return h;
-}
-
-function rUsers(){
-  var users=(dbLoad().users||[]).map(function(u){return{username:u.username,role:u.role,createdAt:u.createdAt}});
-  var h='<div class="main-header"><h1>User Management</h1></div><div class="card"><div class="card-header"><span style="font-size:1.25rem">➕</span><h3>Create User</h3></div><div class="card-body"><div class="grid g4" style="align-items:end"><div class="field"><label>Username</label><input id="nu"></div><div class="field"><label>Password</label><input id="np" type="password"></div><div class="field"><label>Role</label><select id="nr"><option value="user">User</option><option value="admin">Admin</option></select></div><button class="btn btn-primary btn-full" data-act="cuser">Create</button></div></div></div>';
-  h+='<div style="margin-top:1rem"><div class="card"><div class="card-header"><span style="font-size:1.25rem">👥</span><h3>All Users ('+users.length+')</h3></div>';
-  users.forEach(function(u){
-    var g=u.role==='admin'?'linear-gradient(135deg,#7c3aed,#a78bfa)':'linear-gradient(135deg,#0064C8,#009DE0)';
-    var rb=u.role==='admin'?'bp':'bb';
-    h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid #f1f5f9"><div style="display:flex;align-items:center;gap:.75rem"><div style="width:2.25rem;height:2.25rem;border-radius:50%;background:'+g+';color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">'+u.username.charAt(0).toUpperCase()+'</div><div><div style="font-weight:600">'+_e(u.username)+'</div><span class="badge '+rb+'" style="margin-top:.25rem">'+u.role+'</span></div></div><button class="btn btn-sm btn-danger" data-act="duser" data-val="'+_e(u.username)+'">Delete</button></div>';
   });
-  h+='</div></div></div>';return h;
 }
 
-function rSessions(){
-  var ss=dbLoad().sessions||[];
-  if(SS){var q=SS.toLowerCase();ss=ss.filter(function(s){return(s.sessionCode||'').toLowerCase().indexOf(q)!==-1})}
-  if(SF)ss=ss.filter(function(s){return s.createdAt&&s.createdAt.split('T')[0]>=SF});
-  if(STO)ss=ss.filter(function(s){return s.createdAt&&s.createdAt.split('T')[0]<=STO});
-  if(SST!=='all')ss=ss.filter(function(s){return s.status===SST});
-  var h='<div class="main-header"><h1>All Sessions</h1></div><div class="card"><div class="card-header" style="flex-wrap:wrap;gap:.75rem"><span style="font-size:1.25rem">📋</span><h3 style="margin-right:auto">Sessions ('+ss.length+')</h3><input id="ssrch" placeholder="Search..." value="'+_e(SS)+'" style="height:2rem;padding:0 .625rem;border:1px solid var(--brd);border-radius:.5rem;font-size:.75rem;width:14rem"></div>';
-  h+='<div class="filter-bar"><label>From:</label><input id="sfrom" type="date" value="'+SF+'"><label>To:</label><input id="sto" type="date" value="'+STO+'"><label>Status:</label><select id="sst"><option value="all"'+(SST==='all'?' selected':'')+'>All</option><option value="completed"'+(SST==='completed'?' selected':'')+'>Completed</option><option value="in_progress"'+(SST==='in_progress'?' selected':'')+'>In Progress</option></select>';
-  if(SS||SF||STO||SST!=='all')h+='<button class="btn btn-sm btn-secondary" data-act="cfilt">Clear</button>';
-  h+='</div><div class="table-wrap"><table><thead><tr><th>Code</th><th>Status</th><th>Type</th><th>Panelists</th><th>By</th><th>Date</th><th></th></tr></thead><tbody>';
-  if(ss.length){ss.forEach(function(s){
-    var sb=s.status==='completed'?'bg':'ba';
-    var pct=Math.min(100,Math.round((s.ballots.length/Math.max(s.targetPanelistCount,1))*100));
-    h+='<tr><td><span style="font-weight:700;color:var(--b)">'+s.sessionCode+'</span></td><td><span class="badge '+sb+'">'+s.status+'</span></td><td><span class="badge bb">'+(s.testType||'regular')+'</span></td><td>'+s.ballots.length+'/'+s.targetPanelistCount+'</td><td>'+_e(s.createdBy)+'</td><td style="font-size:.75rem">'+_f(s.createdAt)+'</td><td style="white-space:nowrap"><button class="btn btn-sm btn-secondary" data-vs="'+s.sessionCode+'">View</button> <button class="btn btn-sm btn-danger" data-act="dsess" data-val="'+s.sessionCode+'">Del</button></td></tr>';
-  })}else{h+='<tr><td colspan="7" style="text-align:center;color:var(--t4);padding:3rem">No sessions</td></tr>'}
-  h+='</tbody></table></div></div>';return h;
+function navTo(v) {
+  V = v;
+  document.querySelectorAll(".sidebar nav a").forEach(function(a) { a.classList.remove("active"); });
+  var el = document.querySelector('.sidebar nav a[data-nav="' + v + '"]');
+  if (el) el.classList.add("active");
+  render();
 }
 
-function rGen(){
-  var h='<div class="main-header"><h1>Generate Session Code</h1></div><div class="card" style="max-width:32rem"><div class="card-header"><span style="font-size:1.25rem">🔑</span><h3>Generate Code</h3></div><div class="card-body"><div class="grid g2" style="margin-bottom:1rem"><div class="field"><label>Test Type</label><select id="gtype"><option value="regular"'+(GT==='regular'?' selected':'')+'>Regular</option><option value="blind"'+(GT==='blind'?' selected':'')+'>Blind</option><option value="proficiency"'+(GT==='proficiency'?' selected':'')+'>Proficiency</option></select></div><div class="field"><label>Panelists</label><select id="gcnt">';
-  for(var n=1;n<=5;n++)h+='<option value="'+n+'"'+(GC==n?' selected':'')+'>'+n+'</option>';
-  h+='</select></div></div><button class="btn btn-primary btn-full" data-act="gen" style="height:2.75rem">🔑 Generate</button></div></div>';
-  if(GV){h+='<div class="card" style="margin-top:1rem;max-width:32rem"><div class="card-body" style="background:linear-gradient(160deg,var(--d),#0f3460);border-radius:1rem;text-align:center;padding:2rem"><div style="font-size:.6875rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em">'+GT.toUpperCase()+' TEST</div><div class="session-code" style="color:#fff;background:transparent;border-color:rgba(255,255,255,.2);margin:1rem 0;font-size:2rem">'+GV+'</div><button class="btn btn-sm" data-act="copy" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">📋 Copy</button><p style="font-size:.6875rem;color:rgba(255,255,255,.4);margin-top:.75rem">Share with panelists</p></div></div>';}
-  return h;
+/* ========== RENDER ========== */
+function render() {
+  var m = $("mc");
+  switch (V) {
+    case "dashboard": m.innerHTML = U.role === "admin" ? rAdmin() : rUser(); break;
+    case "users": m.innerHTML = rUsers(); break;
+    case "sessions": m.innerHTML = rSessions(); break;
+    case "generate": m.innerHTML = rGen(); break;
+    case "active": m.innerHTML = rActive(); break;
+    case "ballot": m.innerHTML = rBallot(); break;
+    case "report": m.innerHTML = rReport(); break;
+    default: m.innerHTML = U.role === "admin" ? rAdmin() : rUser();
+  }
+  wireDynamic();
 }
 
-function rActive(){
-  var d=dbLoad();var s=null;
-  for(var i=0;i<d.sessions.length;i++){if(d.sessions[i].sessionCode===AC){s=d.sessions[i];break}}
-  if(!s)return'<p>No active session.</p>';
-  if(s.status==='completed'){VS=s;V='report';return rReport()}
-  V='ballot';return rBallot();
-}
-
-function rBallot(){
-  var d=dbLoad();var s=null;
-  for(var i=0;i<d.sessions.length;i++){if(d.sessions[i].sessionCode===AC){s=d.sessions[i];break}}
-  if(!s)return'<p>Session not found.</p>';
-  if(s.status==='completed'){VS=s;V='report';return rReport()}
-  var total=s.targetPanelistCount,done=s.ballots.length;
-  var pct=Math.min(100,Math.round((done/total)*100));
-  var h='<div style="max-width:40rem;margin:0 auto"><div class="session-code" style="margin-bottom:1.5rem">'+AC+'</div>';
-  h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem"><button class="btn btn-sm btn-secondary" data-nav="dashboard">← Dashboard</button><span style="font-size:.8125rem;color:var(--t2)">Panelist '+BN+' of '+total+'</span></div>';
-  h+='<div style="height:.5rem;background:#e2e8f0;border-radius:999px;margin-bottom:1.5rem;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,var(--b),var(--s));border-radius:999px"></div></div>';
-  h+='<div class="card"><div class="card-body"><h3 style="font-weight:700;margin-bottom:1.25rem">Panelist '+BN+' — Ballot</h3>';
-  if(s.testType==='blind')h+=rBlind();else if(s.testType==='proficiency')h+=rProf();else h+=rReg();
-  h+='</div></div></div>';return h;
-}
-
-function rReg(){
-  var i=BI||{};var nd=new Date(),cd=nd.toISOString().split('T')[0],ct=nd.toTimeString().slice(0,5);
-  var pw=i.productType==='Raw Water';
-  var h='<form id="bf"><div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>Panelist Info</h3></div><div class="card-body"><div class="field"><label>Name *</label><input name="pn" required placeholder="e.g. John Doe"></div></div></div>';
-  h+='<div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>Product Info</h3></div><div class="card-body"><div class="grid g2"><div class="field"><label>Product Type *</label><select name="pt" id="ptsel" required><option value="">Select...</option>';
-  ['Raw Water','Treated Water','Finished Goods','CIP Final Rinse Water','Other'].forEach(function(v){h+='<option value="'+v+'">'+v+'</option>'});
-  h+='</select></div><div class="field" id="otf" style="display:none"><label>Specify</label><input name="opt"></div><div class="field" id="vf" style="display:none"><label>Variant</label><select name="pv"><option value="">Select...</option>';
-  ['KW 500 ml','KW 1000 ml','KW 2000 ml','Filler Bowl','Product Water Tank','Other'].forEach(function(v){h+='<option>'+v+'</option>'});
-  h+='</select></div><div class="field"><label>Product Code *</label><input name="pc" required></div><div class="field"><label>Date of Mfg *</label><input name="dm" type="date" required value="'+cd+'"></div><div class="field"><label>Control Sample Code *</label><input name="cs" required></div><div class="field"><label>Time *</label><input name="tm" type="time" required value="'+ct+'"></div></div></div></div>';
-  h+='<div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>Sensory Testing</h3></div><div class="card-body">'+_tc('Appearance','app',['Turbid','Discolored','Particles','Cloudy','Sediment','Other'])+_tc('Odour','odo',['Plastic','Fruity','Burnt Caramel','Musty','Metallic','Sulfurous','Earthy','Other']);
-  if(!pw)h+=_tc('Taste','tas',['Plastic','Fruity','Burnt Caramel','Musty','Metallic','Sulfurous','Earthy','Other']);
-  h+='</div></div><div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>Remarks</h3></div><div class="card-body"><textarea name="rem" rows="3" style="width:100%;padding:.75rem;border:1px solid var(--brd);border-radius:.5rem" placeholder="Notes..."></textarea></div></div>';
-  h+='<div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>Completion</h3></div><div class="card-body"><div class="grid g2"><div class="field"><label>Date *</label><input name="cd" type="date" required value="'+cd+'"></div><div class="field"><label>Time *</label><input name="ct" type="time" required value="'+ct+'"></div></div></div></div>';
-  h+='<button type="submit" class="btn btn-primary btn-full" style="height:3rem;font-size:1rem">Submit Ballot</button></form>';return h;
-}
-
-function _tc(label,name,reasons){
-  var h='<div class="test-card"><h4><span style="width:1.5rem;height:1.5rem;background:var(--b);color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.6875rem;font-weight:700">'+label.charAt(0)+'</span>'+label+'</h4><div class="radio-group" style="display:flex;gap:1rem"><label style="display:flex;align-items:center;gap:.5rem;cursor:pointer"><input type="radio" name="'+name+'" value="IN" checked><span style="color:var(--grn);font-weight:500">IN</span></label><label style="display:flex;align-items:center;gap:.5rem;cursor:pointer"><input type="radio" name="'+name+'" value="OUT"><span style="color:var(--red);font-weight:500">OUT</span></label></div><div class="field rw" style="display:none;margin-top:.5rem"><label>Reason</label><select name="'+name+'r"><option value="">Select...</option>';
-  reasons.forEach(function(r){h+='<option>'+r+'</option>'});h+='</select></div></div>';return h;
-}
-
-function rBlind(){
-  var nd=new Date(),cd=nd.toISOString().split('T')[0],ct=nd.toTimeString().slice(0,5);
-  var cs=['Control','Yellow','Brown','Blue','Green','Red','Purple'];
-  var h='<form id="bf"><div class="card" style="margin-bottom:1rem"><div class="card-body"><div class="grid g2"><div class="field"><label>Name *</label><input name="pn" required></div><div class="field"><label>Test Code</label><input name="tc"></div><div class="field"><label>Date *</label><input name="td" type="date" required value="'+cd+'"></div><div class="field"><label>Time *</label><input name="tt" type="time" required value="'+ct+'"></div><div class="field"><label>Round *</label><input name="rn" required value="1"></div><div class="field"><label>Provider</label><input name="pv"></div></div></div></div>';
-  h+='<div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>Samples</h3></div><div class="card-body">';
-  cs.forEach(function(c,ci){h+='<div style="display:grid;grid-template-columns:auto 1fr 1fr;gap:.5rem;margin-bottom:.5rem;align-items:center;padding:.5rem;border:1px solid var(--brd);border-radius:.5rem"><span class="badge" style="background:'+_cbg(c)+';color:'+_ct(c)+';font-weight:700;min-width:5rem;justify-content:center">'+c+'</span><select name="s'+ci+'st"><option value="IN">IN</option><option value="OUT">OUT</option></select><input name="s'+ci+'on" placeholder="OFF Note"></div>'});
-  h+='</div></div><button type="submit" class="btn btn-primary btn-full" style="height:3rem">Submit</button></form>';return h;
-}
-
-function rProf(){
-  var nd=new Date(),cd=nd.toISOString().split('T')[0],ct=nd.toTimeString().slice(0,5);
-  var cs=['Control','Yellow','Brown','Blue','Green','Red','Purple'];
-  var h='<form id="bf"><div class="card" style="margin-bottom:1rem"><div class="card-body"><div class="grid g2"><div class="field"><label>Name *</label><input name="pn" required></div><div class="field"><label>Test Code</label><input name="tc"></div><div class="field"><label>Date *</label><input name="td" type="date" required value="'+cd+'"></div><div class="field"><label>Time *</label><input name="tt" type="time" required value="'+ct+'"></div><div class="field"><label>Round *</label><input name="rn" required value="1"></div><div class="field"><label>Provider</label><input name="pv"></div></div></div></div>';
-  h+='<div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>Proficiency Samples</h3></div><div class="card-body">';
-  cs.forEach(function(c,ci){h+='<div style="display:grid;grid-template-columns:auto 1fr 1fr;gap:.5rem;margin-bottom:.5rem;align-items:center;padding:.5rem;border:1px solid var(--brd);border-radius:.5rem"><span class="badge" style="background:'+_cbg(c)+';color:'+_ct(c)+';font-weight:700;min-width:5rem;justify-content:center">'+c+'</span><select name="s'+ci+'st"><option value="IN">IN</option><option value="OUT">OUT</option></select><input name="s'+ci+'on" placeholder="OFF Note"></div>'});
-  h+='</div></div><button type="submit" class="btn btn-primary btn-full" style="height:3rem">Submit</button></form>';return h;
-}
-
-function rReport(){
-  var s=VS;if(!s)return'<p>No session</p>';
-  var ballots=s.ballots||[],total=s.targetPanelistCount;
-  var pct=Math.min(100,Math.round((ballots.length/total)*100));
-  var isB=s.testType==='blind'||s.testType==='proficiency';
-  var checks=0,ins=0;var cat={Appearance:{i:0,t:0},Odour:{i:0,t:0},Taste:{i:0,t:0}};
-  ballots.forEach(function(b){['appearance','odour','taste'].forEach(function(k){if(b[k]&&b[k].status){var lk=k.charAt(0).toUpperCase()+k.slice(1);cat[lk].t++;checks++;if(b[k].status==='IN'){cat[lk].i++;ins++}}})});
-  var pp=checks?Math.round((ins/checks)*100):null,ap=pp===100;
-  var h='<div style="max-width:50rem;margin:0 auto"><div style="display:flex;justify-content:space-between;margin-bottom:1rem"><button class="btn btn-sm btn-secondary" data-nav="dashboard">← Dashboard</button><button class="btn btn-sm btn-primary" onclick="window.print()">Print</button></div>';
-  var qc=ap?'var(--grn)':'var(--red)',qb=ap?'#f0fdf4':'#fef2f2';
-  h+='<div class="grid g3" style="margin-bottom:1.5rem">'+_sc('👥','var(--b)','#eff6ff',ballots.length+'/'+total,'Panelists')+'<div class="stat-card"><div class="si" style="background:'+qb+';color:'+qc+'">✅</div><div><div class="sv" style="color:'+qc+'">'+(pp!==null?pp+'%':'—')+'</div><div class="sl">Quality</div></div></div>'+_sc('📋','var(--pur)','#f5f3ff',s.testType||'regular','Type')+'</div>';
-  var title=s.testType==='blind'?'Blind Test Report':s.testType==='proficiency'?'Proficiency Report':'Sensory Evaluation Report';
-  h+='<div class="report-card"><div class="report-header"><h1>'+title+'</h1><p>Global Acqua Pvt Ltd</p><div style="display:flex;gap:1rem;margin-top:1rem"><div class="badge bb" style="font-family:\'Space Grotesk\',monospace;padding:.5rem 1rem">'+s.sessionCode+'</div><div style="font-size:.8125rem;color:var(--t3)">'+_fd(s.completedAt||s.createdAt)+'</div></div></div><div class="report-body">';
-  ['Appearance','Odour','Taste'].forEach(function(n){var cv=cat[n];if(cv.t===0)return;var cp=Math.round((cv.i/cv.t)*100),cc=cp===100?'var(--grn)':'var(--b)';h+='<div style="margin-bottom:.75rem"><div style="display:flex;justify-content:space-between;font-size:.75rem"><span style="font-weight:600">'+n+'</span><span style="font-weight:700;color:'+cc+'">'+cp+'% IN ('+cv.i+'/'+cv.t+')</span></div><div style="height:.5rem;background:#f1f5f9;border-radius:999px;overflow:hidden"><div style="height:100%;width:'+cp+'%;background:'+cc+';border-radius:999px"></div></div></div>'});
-  h+='<h3 style="font-weight:600;margin:1.5rem 0 1rem">Panelist Evaluations</h3>';
-  ballots.forEach(function(b,idx){
-    var pBg=isB?'#f5f3ff':'#eff6ff',pBd=isB?'#ede9fe':'#dbeafe',pC=isB?'var(--pur)':'var(--b)';
-    h+='<div style="border:1px solid var(--brd);border-radius:.75rem;margin-bottom:1rem;overflow:hidden"><div style="background:'+pBg+';padding:.75rem 1rem;border-bottom:1px solid '+pBd+';display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:.5rem"><span style="width:1.75rem;height:1.75rem;background:'+pC+';color:#fff;border-radius:.375rem;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700">'+(idx+1)+'</span><span style="font-weight:600">'+_e(b.panelistName||'P'+(idx+1))+'</span></div></div><div style="padding:1rem">';
-    if(isB&&b.samples){h+='<table style="width:100%"><thead><tr><th>Sl</th><th>Color</th><th>Result</th><th>OFF Note</th></tr></thead><tbody>';b.samples.forEach(function(sm,si){h+='<tr><td>'+(sm.colorCode==='Control'?'C':si)+'</td><td><span class="badge" style="background:'+_cbg(sm.colorCode)+';color:'+_ct(sm.colorCode)+'">'+sm.colorCode+'</span></td><td><span class="badge '+(sm.status==='IN'?'bg':'br')+'">'+(sm.colorCode==='Control'?'IN':sm.status)+'</span></td><td>'+(sm.offNote||'-')+'</td></tr>'});h+='</tbody></table>'}
-    else{['appearance','odour'].concat(b.productType!=='Raw Water'?['taste']:[]).forEach(function(k){if(!b[k])return;var rc=b[k].status==='IN'?'pass':'fail';h+='<div class="result-row '+rc+'"><span style="font-weight:500">'+k.charAt(0).toUpperCase()+k.slice(1)+'</span><div style="display:flex;align-items:center;gap:.5rem"><span class="badge '+(b[k].status==='IN'?'bg':'br')+'">'+b[k].status+'</span>'+(b[k].status==='OUT'?'<span style="font-size:.75rem;color:var(--red)">'+_e(b[k].reason)+'</span>':'')+'</div></div>'});if(b.remarks)h+='<div style="margin-top:.5rem;background:#fafbfc;padding:.5rem;border-radius:.5rem;font-size:.8125rem"><b>Remarks:</b> '+_e(b.remarks)+'</div>'}
-    h+='</div></div>'});
-  h+='<div style="text-align:center;margin-top:2rem;padding-top:1rem;border-top:1px solid #f1f5f9;font-size:.75rem;color:var(--t4)">Generated by <b>Global Acqua Pvt Ltd</b></div></div></div></div>';return h;
-}
-
-// ===== SESSION ACTIONS =====
-function startSession(count,type){
-  type=type||'regular';var c=_gc_fn();var d=dbLoad();
-  while(d.sessions.some(function(s){return s.sessionCode===c}))c=_gc_fn();
-  d.sessions.push({id:_id(),sessionCode:c,status:'in_progress',targetPanelistCount:count,testType:type,ballots:[],createdBy:U.username,createdAt:_now(),completedAt:null});dbSave(d);
-  AC=c;BN=1;BI=null;ST=type;_toast('Session '+c+' created!','ok');V='ballot';render();
-}
-
-function joinSession(){
-  var inp=$('jci');var raw=inp?inp.value:JC;var code=raw.trim().toUpperCase();
-  if(!code){_toast('Enter a session code','error');return}
-  var d=dbLoad();var s=null;
-  for(var i=0;i<d.sessions.length;i++){if(d.sessions[i].sessionCode===code){s=d.sessions[i];break}}
-  if(!s){_toast('Session not found','error');return}
-  if(s.status==='completed'){_toast('Already completed','error');return}
-  AC=code;BN=s.ballots.length+1;ST=s.testType||'regular';
-  if(s.ballots.length>0){var f=s.ballots[0];BI={productType:f.productType,otherProductType:f.otherProductType,productCode:f.productCode,dateOfMfg:f.dateOfMfg,controlSampleCode:f.controlSampleCode,productTime:f.productTime}}else{BI=null}
-  JC='';V='ballot';render();_toast('Joined '+code+'!','ok');
-}
-
-function viewSession(code){var d=dbLoad();var s=null;for(var i=0;i<d.sessions.length;i++){if(d.sessions[i].sessionCode===code){s=d.sessions[i];break}}if(!s){_toast('Not found','error');return}VS=s;V='report';render()}
-
-function submitBallotToSess(data){
-  var d=dbLoad();var s=null;for(var i=0;i<d.sessions.length;i++){if(d.sessions[i].sessionCode===AC){s=d.sessions[i];break}}
-  if(!s){_toast('Failed','error');return}
-  s.ballots.push(data);if(s.ballots.length>=s.targetPanelistCount){s.status='completed';s.completedAt=_now()}dbSave(d);
-  if(s.status==='completed'){VS=s;V='report';render();_toast('Completed!','ok')}
-  else{BN=s.ballots.length+1;if(s.ballots.length===1&&ST==='regular'){BI={productType:data.productType,otherProductType:data.otherProductType,productCode:data.productCode,dateOfMfg:data.dateOfMfg,controlSampleCode:data.controlSampleCode,productTime:data.productTime}}render();_toast('Submitted! '+(s.targetPanelistCount-s.ballots.length)+' more.','ok')}
-}
-
-function attachRadio(){
-  var cards=document.querySelectorAll('.test-card');
-  for(var i=0;i<cards.length;i++){(function(tc){var radios=tc.querySelectorAll('input[type=radio]');var rw=tc.querySelector('.rw');if(!rw)return;for(var j=0;j<radios.length;j++){radios[j].onchange=function(){rw.style.display=(radios[j].value==='OUT'&&radios[j].checked)?'block':'none'}}})(cards[i])}
-}
-
-function openRpt(type){
-  var ss=dbLoad().sessions||[];var f;
-  if(type==='daily')f=ss.filter(function(s){return(!s.testType||s.testType==='regular')&&s.status==='completed'});
-  else if(type==='blind')f=ss.filter(function(s){return s.testType==='blind'&&s.status==='completed'});
-  else f=ss.filter(function(s){return s.testType==='proficiency'&&s.status==='completed'});
-  var title=type==='daily'?'Daily':type==='blind'?'Blind Test':'Proficiency';
-  var h='<div style="max-height:70vh;overflow-y:auto"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem"><h3 style="font-weight:700">'+title+'</h3><button class="btn btn-sm btn-secondary" data-act="cmodal">Close</button></div><div class="table-wrap"><table style="width:100%;font-size:.8125rem"><thead><tr><th>Code</th><th>Product</th><th>Panelists</th><th>Result</th><th>Date</th></tr></thead><tbody>';
-  if(f.length){f.forEach(function(s){var fb=s.ballots[0]||{};var allIn=s.ballots.every(function(x){return(x.appearance&&x.appearance.status==='IN')&&(x.odour&&x.odour.status==='IN')});h+='<tr><td style="font-weight:700;color:var(--b)">'+s.sessionCode+'</td><td>'+_e(fb.productType||'-')+'</td><td>'+s.ballots.length+'/'+s.targetPanelistCount+'</td><td><span class="badge '+(allIn?'bg':'br')+'">'+(allIn?'IN':'OUT')+'</span></td><td>'+_f(s.completedAt)+'</td></tr>'})}
-  else{h+='<tr><td colspan="5" style="text-align:center;color:var(--t4);padding:2rem">No completed sessions</td></tr>'}
-  h+='</tbody></table></div></div>';$('mcont').innerHTML=h;$('mover').classList.add('show');
-}
-
-// ===== ALL CLICKS VIA DELEGATION ON #mc =====
-$('mc').addEventListener('click',function(e){
-  var t=e.target;
-  // Walk up to find data-act, data-nav, data-vs, data-rpt
-  var node=t;
-  while(node&&node!==document.body){
-    if(node.getAttribute){
-      var act=node.getAttribute('data-act');
-      var nav=node.getAttribute('data-nav');
-      var vs=node.getAttribute('data-vs');
-      var rpt=node.getAttribute('data-rpt');
-      var val=node.getAttribute('data-val');
-      var cnt=node.getAttribute('data-count');
-      var typ=node.getAttribute('data-type');
-
-      if(act==='tsel'){TS=true;render();return}
-      if(act==='ctsel'){TS=false;render();return}
-      if(act==='start'){startSession(1,typ);return}
-      if(act==='start2'){startSession(parseInt(cnt)||2);return}
-      if(act==='gen'){
-        var c=_gc_fn();var d=dbLoad();
-        while(d.sessions.some(function(s){return s.sessionCode===c}))c=_gc_fn();
-        var gt=$('gtype')?$('gtype').value:GT;var gc=$('gcnt')?$('gcnt').value:GC;GT=gt;GC=gc;
-        d.sessions.push({id:_id(),sessionCode:c,status:'in_progress',targetPanelistCount:parseInt(gc),testType:gt,ballots:[],createdBy:U.username,createdAt:_now(),completedAt:null});dbSave(d);GV=c;_toast('Session '+c+' created!','ok');render();return;
+/* ========== WIRE DYNAMIC ELEMENTS ========== */
+function wireDynamic() {
+  // Join button
+  var jci = $("jci");
+  var jbtn = $("jbtn");
+  if (jci && jbtn) {
+    jci.addEventListener("input", function() { JC = this.value.toUpperCase(); jbtn.disabled = !JC.trim(); });
+    jci.addEventListener("keydown", function(e) { if (e.key === "Enter" && JC.trim()) doJoin(); });
+    jbtn.addEventListener("click", function() { doJoin(); });
+  }
+  // Radio buttons
+  document.querySelectorAll(".test-card").forEach(function(tc) {
+    var radios = tc.querySelectorAll('input[type="radio"]');
+    var rw = tc.querySelector(".rw");
+    if (!rw) return;
+    radios.forEach(function(r) {
+      r.addEventListener("change", function() { rw.style.display = (r.value === "OUT" && r.checked) ? "block" : "none"; });
+    });
+  });
+  // Form submit
+  var bf = $("bf");
+  if (bf) {
+    bf.addEventListener("submit", function(e) {
+      e.preventDefault();
+      var fd = new FormData(bf);
+      var d = dbLoad(); var s = null;
+      for (var i = 0; i < d.sessions.length; i++) { if (d.sessions[i].sessionCode === AC) { s = d.sessions[i]; break; } }
+      if (s && (s.testType === "blind" || s.testType === "proficiency")) {
+        var cs = ["Control","Yellow","Brown","Blue","Green","Red","Purple"];
+        var samples = cs.map(function(c, i) { return { colorCode: c, status: fd.get("s" + i + "st"), offNote: fd.get("s" + i + "on") || "" }; });
+        doSubmit({ panelistName: fd.get("pn"), testCode: fd.get("tc"), testDate: fd.get("td"), testTime: fd.get("tt"), roundNo: fd.get("rn"), provider: fd.get("pv"), samples: samples });
+      } else {
+        var bd = { panelistName: fd.get("pn"), productType: fd.get("pt"), otherProductType: fd.get("opt") || "", productVariant: fd.get("pv") || "", productCode: fd.get("pc"), dateOfMfg: fd.get("dm"), controlSampleCode: fd.get("cs"), productTime: fd.get("tm"), testingCompletionDate: fd.get("cd"), testingCompletionTime: fd.get("ct"), remarks: fd.get("rem") || "", appearance: { status: fd.get("app"), reason: fd.get("appr") || "" }, odour: { status: fd.get("odo"), reason: fd.get("odor") || "" }, taste: { status: fd.get("tas") || "IN", reason: fd.get("tasr") || "" } };
+        if (bd.productType === "Raw Water") bd.taste = { status: "IN", reason: "" };
+        doSubmit(bd);
       }
-      if(act==='copy'){if(navigator.clipboard)navigator.clipboard.writeText(GV).then(function(){_toast('Copied!','info')});else _toast('Code: '+GV,'info');return}
-      if(act==='cuser'){
-        var u=$('nu').value.trim(),p=$('np').value,r=$('nr').value;
-        if(!u||!p){_toast('Username and password required','error');return}
-        var dd=dbLoad();for(var ii=0;ii<dd.users.length;ii++){if(dd.users[ii].username===u){_toast('Already exists','error');return}}
-        dd.users.push({id:_id(),username:u,password:_h(p),role:r,createdAt:_now()});dbSave(dd);_toast('Created!','ok');render();return;
-      }
-      if(act==='duser'){
-        if(val===U.username){_toast("Cannot delete yourself",'error');return}
-        if(!confirm('Delete '+val+'?'))return;
-        var du=dbLoad();du.users=du.users.filter(function(x){return x.username!==val});dbSave(du);_toast('Deleted','ok');render();return;
-      }
-      if(act==='dsess'){
-        if(!confirm('Delete '+val+'?'))return;
-        var ds=dbLoad();ds.sessions=ds.sessions.filter(function(x){return x.sessionCode!==val});dbSave(ds);_toast('Deleted','ok');render();return;
-      }
-      if(act==='cfilt'){SS='';SF='';STO='';SST='all';render();return}
-      if(act==='cmodal'){$('mover').classList.remove('show');return}
-      if(nav){navTo(nav);return}
-      if(vs){viewSession(vs);return}
-      if(rpt){openRpt(rpt);return}
+    });
+    var ptsel = $("ptsel");
+    if (ptsel) ptsel.addEventListener("change", function() {
+      var otf = $("otf"); var vf = $("vf");
+      if (otf) otf.style.display = this.value === "Other" ? "block" : "none";
+      if (vf) vf.style.display = (this.value === "Finished Goods" || this.value === "CIP Final Rinse Water") ? "block" : "none";
+    });
+  }
+  // Filter inputs
+  var ssrch = $("ssrch"); if (ssrch) ssrch.addEventListener("input", function() { SS = this.value; render(); });
+  var sfrom = $("sfrom"); if (sfrom) sfrom.addEventListener("change", function() { SF = this.value; render(); });
+  var sto = $("sto"); if (sto) sto.addEventListener("change", function() { STO = this.value; render(); });
+  var sst = $("sst"); if (sst) sst.addEventListener("change", function() { SST = this.value; render(); });
+}
+
+/* ========== CLICK DELEGATION ========== */
+document.addEventListener("click", function(e) {
+  var node = e.target;
+  while (node && node !== document.body) {
+    if (node.getAttribute) {
+      var act = node.getAttribute("data-act");
+      var nav = node.getAttribute("data-nav");
+      var vs = node.getAttribute("data-vs");
+      var rpt = node.getAttribute("data-rpt");
+      var val = node.getAttribute("data-val");
+
+      if (act === "tsel") { TS = true; render(); return; }
+      if (act === "ctsel") { TS = false; render(); return; }
+      if (act === "start") { doStart(1, node.getAttribute("data-type") || "regular"); return; }
+      if (act === "start2") { doStart(parseInt(node.getAttribute("data-count")) || 2); return; }
+      if (act === "gen") { doGen(); return; }
+      if (act === "copy") { if (navigator.clipboard) navigator.clipboard.writeText(GV).then(function() { toast("Copied!", "info"); }); return; }
+      if (act === "cuser") { doCreateUser(); return; }
+      if (act === "duser") { if (confirm("Delete " + val + "?")) { doDeleteUser(val); } return; }
+      if (act === "dsess") { if (confirm("Delete " + val + "?")) { doDeleteSession(val); } return; }
+      if (act === "cfilt") { SS = ""; SF = ""; STO = ""; SST = "all"; render(); return; }
+      if (act === "cmodal") { $("mover").classList.remove("show"); return; }
+      if (nav) { navTo(nav); return; }
+      if (vs) { doView(vs); return; }
+      if (rpt) { openRpt(rpt); return; }
     }
-    node=node.parentNode;
+    node = node.parentNode;
   }
 });
 
-// ===== JOIN BUTTON & INPUT (wired after each render) =====
-var _origRender=render;
-render=function(){
-  _origRender();
-  // Wire join input/button after render
-  var jci=$('jci');
-  var jbtn=$('jbtn');
-  if(jci&&jbtn){
-    jci.oninput=function(){JC=this.value.toUpperCase();jbtn.disabled=!JC.trim()};
-    jci.onkeydown=function(e){if(e.key==='Enter'&&JC.trim())joinSession()};
-    jbtn.onclick=function(){joinSession()};
-    _log('Join wired');
-  }
-  // Wire filter inputs
-  var ssrch=$('ssrch');if(ssrch)ssrch.oninput=function(){SS=this.value;render()};
-  var sfrom=$('sfrom');if(sfrom)sfrom.onchange=function(){SF=this.value;render()};
-  var sto=$('sto');if(sto)sto.onchange=function(){STO=this.value;render()};
-  var sst=$('sst');if(sst)sst.onchange=function(){SST=this.value;render()};
-  // Wire form submit
-  var bf=$('bf');
-  if(bf){
-    bf.onsubmit=function(e){
-      e.preventDefault();
-      var fd=new FormData(bf);
-      var d=dbLoad();var s=null;
-      for(var i=0;i<d.sessions.length;i++){if(d.sessions[i].sessionCode===AC){s=d.sessions[i];break}}
-      if(s&&(s.testType==='blind'||s.testType==='proficiency')){
-        var cs=['Control','Yellow','Brown','Blue','Green','Red','Purple'];
-        var samples=cs.map(function(c,i){return{colorCode:c,status:fd.get('s'+i+'st'),offNote:fd.get('s'+i+'on')||''}});
-        submitBallotToSess({panelistName:fd.get('pn'),testCode:fd.get('tc'),testDate:fd.get('td'),testTime:fd.get('tt'),roundNo:fd.get('rn'),provider:fd.get('pv'),samples:samples});
-      } else {
-        var bd={panelistName:fd.get('pn'),productType:fd.get('pt'),otherProductType:fd.get('opt')||'',productVariant:fd.get('pv')||'',productCode:fd.get('pc'),dateOfMfg:fd.get('dm'),controlSampleCode:fd.get('cs'),productTime:fd.get('tm'),testingCompletionDate:fd.get('cd'),testingCompletionTime:fd.get('ct'),remarks:fd.get('rem')||'',appearance:{status:fd.get('app'),reason:fd.get('appr')||''},odour:{status:fd.get('odo'),reason:fd.get('odor')||''},taste:{status:fd.get('tas')||'IN',reason:fd.get('tasr')||''}};
-        if(bd.productType==='Raw Water')bd.taste={status:'IN',reason:''};
-        submitBallotToSess(bd);
-      }
-    };
-    // Wire product type select
-    var ptsel=$('ptsel');
-    if(ptsel)ptsel.onchange=function(){
-      var otf=$('otf');var vf=$('vf');
-      if(otf)otf.style.display=this.value==='Other'?'block':'none';
-      if(vf)vf.style.display=(this.value==='Finished Goods'||this.value==='CIP Final Rinse Water')?'block':'none';
-    };
-    attachRadio();
-  }
-};
+/* ========== SESSION ACTIONS ========== */
+function doStart(count, type) {
+  type = type || "regular";
+  var c = genCode(); var d = dbLoad();
+  while (d.sessions.some(function(s) { return s.sessionCode === c; })) c = genCode();
+  d.sessions.push({ id: uid(), sessionCode: c, status: "in_progress", targetPanelistCount: count, testType: type, ballots: [], createdBy: U.username, createdAt: iso(), completedAt: null });
+  dbSave(d);
+  AC = c; BN = 1; BI = null; ST = type;
+  toast("Session " + c + " created!", "ok");
+  V = "ballot"; render();
+}
 
-// ===== STATIC BUTTONS =====
-$('login-btn').onclick=function(){doLogin()};
-$('logout-btn').onclick=function(){doLogout()};
-$('hamburger-btn').onclick=function(){$('sidebar').classList.toggle('open')};
-$('mover').onclick=function(e){if(e.target===$('mover'))$('mover').classList.remove('show')};
-$('login-pass').onkeydown=function(e){if(e.key==='Enter')doLogin()};
-$('login-user').onkeydown=function(e){if(e.key==='Enter')$('login-pass').focus()};
+function doGen() {
+  var gt = $("gtype") ? $("gtype").value : GT;
+  var gc = $("gcnt") ? $("gcnt").value : GC;
+  GT = gt; GC = gc;
+  var c = genCode(); var d = dbLoad();
+  while (d.sessions.some(function(s) { return s.sessionCode === c; })) c = genCode();
+  d.sessions.push({ id: uid(), sessionCode: c, status: "in_progress", targetPanelistCount: parseInt(gc), testType: gt, ballots: [], createdBy: U.username, createdAt: iso(), completedAt: null });
+  dbSave(d);
+  GV = c;
+  toast("Session " + c + " created!", "ok");
+  render();
+}
 
-_log('App ready');
+function doJoin() {
+  var inp = $("jci");
+  var code = (inp ? inp.value : JC).trim().toUpperCase();
+  if (!code) { toast("Enter a session code", "error"); return; }
+  var d = dbLoad(); var s = null;
+  for (var i = 0; i < d.sessions.length; i++) { if (d.sessions[i].sessionCode === code) { s = d.sessions[i]; break; } }
+  if (!s) { toast("Session not found: " + code, "error"); return; }
+  if (s.status === "completed") { toast("Already completed", "error"); return; }
+  AC = code; BN = s.ballots.length + 1; ST = s.testType || "regular";
+  if (s.ballots.length > 0) {
+    var f = s.ballots[0];
+    BI = { productType: f.productType, otherProductType: f.otherProductType, productCode: f.productCode, dateOfMfg: f.dateOfMfg, controlSampleCode: f.controlSampleCode, productTime: f.productTime };
+  } else { BI = null; }
+  JC = ""; V = "ballot"; render();
+  toast("Joined " + code + "!", "ok");
+}
+
+function doView(code) {
+  var d = dbLoad(); var s = null;
+  for (var i = 0; i < d.sessions.length; i++) { if (d.sessions[i].sessionCode === code) { s = d.sessions[i]; break; } }
+  if (!s) { toast("Not found", "error"); return; }
+  VS = s; V = "report"; render();
+}
+
+function doSubmit(data) {
+  var d = dbLoad(); var s = null;
+  for (var i = 0; i < d.sessions.length; i++) { if (d.sessions[i].sessionCode === AC) { s = d.sessions[i]; break; } }
+  if (!s) { toast("Failed", "error"); return; }
+  s.ballots.push(data);
+  if (s.ballots.length >= s.targetPanelistCount) { s.status = "completed"; s.completedAt = iso(); }
+  dbSave(d);
+  if (s.status === "completed") { VS = s; V = "report"; render(); toast("Session completed!", "ok"); }
+  else { BN = s.ballots.length + 1; if (s.ballots.length === 1 && ST === "regular") { BI = { productType: data.productType, otherProductType: data.otherProductType, productCode: data.productCode, dateOfMfg: data.dateOfMfg, controlSampleCode: data.controlSampleCode, productTime: data.productTime }; } render(); toast("Submitted! " + (s.targetPanelistCount - s.ballots.length) + " more.", "ok"); }
+}
+
+function doCreateUser() {
+  var u = $("nu").value.trim(), p = $("np").value, r = $("nr").value;
+  if (!u || !p) { toast("Username and password required", "error"); return; }
+  var d = dbLoad();
+  for (var i = 0; i < d.users.length; i++) { if (d.users[i].username === u) { toast("Already exists", "error"); return; } }
+  d.users.push({ id: uid(), username: u, password: hash(p), role: r, createdAt: iso() });
+  dbSave(d); toast("Created!", "ok"); render();
+}
+
+function doDeleteUser(u) {
+  if (u === U.username) { toast("Cannot delete yourself", "error"); return; }
+  var d = dbLoad(); d.users = d.users.filter(function(x) { return x.username !== u; }); dbSave(d);
+  toast("Deleted", "ok"); render();
+}
+
+function doDeleteSession(c) {
+  var d = dbLoad(); d.sessions = d.sessions.filter(function(x) { return x.sessionCode !== c; }); dbSave(d);
+  toast("Deleted", "ok"); render();
+}
+
+/* ========== VIEWS ========== */
+function rAdmin() {
+  var ss = dbLoad().sessions || [];
+  var done = ss.filter(function(s) { return s.status === "completed"; });
+  var today = new Date().toDateString();
+  var tn = done.filter(function(s) { return s.createdAt && new Date(s.createdAt).toDateString() === today; }).length;
+  var bl = ss.reduce(function(a, s) { return a + s.ballots.length; }, 0);
+  return '<div class="main-header"><h1>Admin Dashboard</h1><p>Welcome, ' + esc(U.username) + '</p></div><div class="grid g4" style="margin-bottom:2rem">' + sc("&#128202;", "var(--b)", "#eff6ff", ss.length, "Sessions") + sc("&#9989;", "var(--grn)", "#f0fdf4", done.length, "Completed") + sc("&#128203;", "var(--amb)", "#fffbeb", tn, "Today") + sc("&#128101;", "var(--pur)", "#f5f3ff", bl, "Ballots") + '</div><div class="grid g2"><div class="card"><div class="card-header"><h3>Quick Actions</h3></div><div class="card-body"><button class="btn btn-primary btn-full" data-nav="generate" style="margin-bottom:.75rem">Generate Code</button><button class="btn btn-secondary btn-full" data-nav="sessions">All Sessions</button></div></div><div class="card"><div class="card-header"><h3>Users</h3></div><div class="card-body"><button class="btn btn-primary btn-full" data-nav="users">Manage Users</button></div></div></div>';
+}
+
+function rUser() {
+  var d = dbLoad(); var ss = U.role === "admin" ? (d.sessions || []) : (d.sessions || []).filter(function(s) { return s.createdBy === U.username; });
+  var done = ss.filter(function(s) { return s.status === "completed"; });
+  var today = new Date().toDateString();
+  var tn = done.filter(function(s) { return s.completedAt && new Date(s.completedAt).toDateString() === today; }).length;
+  var bl = ss.reduce(function(a, s) { return a + s.ballots.length; }, 0);
+  var h = '<div class="main-header"><h1>Sensory Analysis Dashboard</h1></div><div class="grid g4" style="margin-bottom:2rem">' + sc("&#128202;", "var(--b)", "#eff6ff", ss.length, "Sessions") + sc("&#9989;", "var(--grn)", "#f0fdf4", done.length, "Completed") + sc("&#128203;", "var(--amb)", "#fffbeb", tn, "Today") + sc("&#128101;", "var(--pur)", "#f5f3ff", bl, "Ballots") + '</div><div class="grid g2">';
+  h += '<div class="card"><div class="card-header"><h3>New Session</h3></div><div class="card-body">';
+  if (!TS) { h += '<button class="btn btn-primary btn-full" data-act="tsel">1 Panelist Session</button>'; }
+  else { h += '<div style="display:flex;flex-direction:column;gap:.5rem"><button class="btn btn-full" data-act="start" data-type="regular" style="background:#eff6ff;border:1px solid #bfdbfe;color:var(--b);font-weight:600">Regular Test</button><button class="btn btn-full" data-act="start" data-type="blind" style="background:#f5f3ff;border:1px solid #ddd6fe;color:var(--pur);font-weight:600">Blind Test</button><button class="btn btn-full" data-act="start" data-type="proficiency" style="background:#f0fdf4;border:1px solid #bbf7d0;color:var(--grn);font-weight:600">Proficiency</button><button class="btn btn-secondary btn-full" data-act="ctsel">Cancel</button></div>'; }
+  h += '<div style="margin-top:.75rem;display:flex;flex-direction:column;gap:.5rem"><button class="btn btn-full" data-act="start2" data-count="2" style="background:linear-gradient(135deg,#003A70,#0064C8);color:#fff">2 Panelists</button><button class="btn btn-full" data-act="start2" data-count="3" style="background:linear-gradient(135deg,#00274d,#003A70);color:#fff">3 Panelists</button></div></div></div>';
+  h += '<div class="card"><div class="card-header"><h3>Join Session</h3></div><div class="card-body"><p style="font-size:.8125rem;color:var(--t3);margin-bottom:1rem">Enter a session code to join</p><div class="field"><input id="jci" placeholder="e.g. GAQ-ABC123"></div><button id="jbtn" class="btn btn-primary btn-full" disabled>Join Session</button><p style="font-size:.6875rem;color:var(--t4);text-align:center;margin-top:.5rem">Ask the session admin for the code</p></div></div></div>';
+  if (ss.length) {
+    h += '<div style="margin-top:2rem"><div class="main-header" style="margin-bottom:1rem"><h1 style="font-size:1.125rem">Recent Sessions</h1></div><div class="grid" style="gap:.75rem">';
+    ss.slice(0, 5).forEach(function(s) {
+      h += '<div class="card" data-vs="' + s.sessionCode + '" style="cursor:pointer"><div style="padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem"><div><span class="badge ' + (s.status === "completed" ? "bg" : "ba") + '">' + s.status + '</span> <span class="badge bb">' + (s.testType || "regular") + '</span></div><div style="font-weight:700;color:var(--b)">' + s.sessionCode + '</div><div style="font-size:.75rem;color:var(--t3)">' + s.ballots.length + "/" + s.targetPanelistCount + '</div></div></div>';
+    });
+    h += '</div></div>';
+  }
+  return h;
+}
+
+function rUsers() {
+  var users = (dbLoad().users || []).map(function(u) { return { username: u.username, role: u.role, createdAt: u.createdAt }; });
+  var h = '<div class="main-header"><h1>User Management</h1></div><div class="card"><div class="card-header"><h3>Create User</h3></div><div class="card-body"><div class="grid g4" style="align-items:end"><div class="field"><label>Username</label><input id="nu"></div><div class="field"><label>Password</label><input id="np" type="password"></div><div class="field"><label>Role</label><select id="nr"><option value="user">User</option><option value="admin">Admin</option></select></div><button class="btn btn-primary btn-full" data-act="cuser">Create</button></div></div></div>';
+  h += '<div style="margin-top:1rem"><div class="card"><div class="card-header"><h3>All Users (' + users.length + ')</h3></div>';
+  users.forEach(function(u) {
+    var g = u.role === "admin" ? "linear-gradient(135deg,#7c3aed,#a78bfa)" : "linear-gradient(135deg,#0064C8,#009DE0)";
+    h += '<div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid #f1f5f9"><div style="display:flex;align-items:center;gap:.75rem"><div style="width:2.25rem;height:2.25rem;border-radius:50%;background:' + g + ';color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">' + u.username.charAt(0).toUpperCase() + '</div><div><div style="font-weight:600">' + esc(u.username) + '</div><span class="badge ' + (u.role === "admin" ? "bp" : "bb") + '" style="margin-top:.25rem">' + u.role + '</span></div></div><button class="btn btn-sm btn-danger" data-act="duser" data-val="' + esc(u.username) + '">Delete</button></div>';
+  });
+  h += '</div></div></div>'; return h;
+}
+
+function rSessions() {
+  var ss = dbLoad().sessions || [];
+  if (SS) { var q = SS.toLowerCase(); ss = ss.filter(function(s) { return (s.sessionCode || "").toLowerCase().indexOf(q) !== -1; }); }
+  if (SF) ss = ss.filter(function(s) { return s.createdAt && s.createdAt.split("T")[0] >= SF; });
+  if (STO) ss = ss.filter(function(s) { return s.createdAt && s.createdAt.split("T")[0] <= STO; });
+  if (SST !== "all") ss = ss.filter(function(s) { return s.status === SST; });
+  var h = '<div class="main-header"><h1>All Sessions</h1></div><div class="card"><div class="card-header" style="flex-wrap:wrap;gap:.75rem"><h3 style="margin-right:auto">Sessions (' + ss.length + ')</h3><input id="ssrch" placeholder="Search..." value="' + esc(SS) + '" style="height:2rem;padding:0 .625rem;border:1px solid var(--brd);border-radius:.5rem;font-size:.75rem;width:14rem"></div>';
+  h += '<div class="filter-bar"><label>From:</label><input id="sfrom" type="date" value="' + SF + '"><label>To:</label><input id="sto" type="date" value="' + STO + '"><label>Status:</label><select id="sst"><option value="all"' + (SST === "all" ? " selected" : "") + '>All</option><option value="completed"' + (SST === "completed" ? " selected" : "") + '>Completed</option><option value="in_progress"' + (SST === "in_progress" ? " selected" : "") + '>In Progress</option></select>';
+  if (SS || SF || STO || SST !== "all") h += '<button class="btn btn-sm btn-secondary" data-act="cfilt">Clear</button>';
+  h += '</div><div class="table-wrap"><table><thead><tr><th>Code</th><th>Status</th><th>Type</th><th>Panelists</th><th>By</th><th>Date</th><th></th></tr></thead><tbody>';
+  if (ss.length) { ss.forEach(function(s) {
+    var pct = Math.min(100, Math.round((s.ballots.length / Math.max(s.targetPanelistCount, 1)) * 100));
+    h += '<tr><td><span style="font-weight:700;color:var(--b)">' + s.sessionCode + '</span></td><td><span class="badge ' + (s.status === "completed" ? "bg" : "ba") + '">' + s.status + '</span></td><td><span class="badge bb">' + (s.testType || "regular") + '</span></td><td>' + s.ballots.length + "/" + s.targetPanelistCount + '</td><td>' + esc(s.createdBy) + '</td><td style="font-size:.75rem">' + fmtD(s.createdAt) + '</td><td style="white-space:nowrap"><button class="btn btn-sm btn-secondary" data-vs="' + s.sessionCode + '">View</button> <button class="btn btn-sm btn-danger" data-act="dsess" data-val="' + s.sessionCode + '">Del</button></td></tr>';
+  }) } else { h += '<tr><td colspan="7" style="text-align:center;color:var(--t4);padding:3rem">No sessions</td></tr>'; }
+  h += '</tbody></table></div></div>'; return h;
+}
+
+function rGen() {
+  var h = '<div class="main-header"><h1>Generate Session Code</h1></div><div class="card" style="max-width:32rem"><div class="card-header"><h3>Generate Code</h3></div><div class="card-body"><div class="grid g2" style="margin-bottom:1rem"><div class="field"><label>Test Type</label><select id="gtype"><option value="regular"' + (GT === "regular" ? " selected" : "") + '>Regular</option><option value="blind"' + (GT === "blind" ? " selected" : "") + '>Blind</option><option value="proficiency"' + (GT === "proficiency" ? " selected" : "") + '>Proficiency</option></select></div><div class="field"><label>Panelists</label><select id="gcnt">';
+  for (var n = 1; n <= 5; n++) h += '<option value="' + n + '"' + (GC == n ? " selected" : "") + ">" + n + "</option>";
+  h += '</select></div></div><button class="btn btn-primary btn-full" data-act="gen" style="height:2.75rem">Generate</button></div></div>';
+  if (GV) { h += '<div class="card" style="margin-top:1rem;max-width:32rem"><div class="card-body" style="background:linear-gradient(160deg,var(--d),#0f3460);border-radius:1rem;text-align:center;padding:2rem"><div style="font-size:.6875rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em">' + GT.toUpperCase() + " TEST</div><div class='session-code-box' style='color:#fff;background:transparent;border-color:rgba(255,255,255,.2);margin:1rem 0;font-size:2rem'>" + GV + '</div><button class="btn btn-sm" data-act="copy" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">Copy Code</button><p style="font-size:.6875rem;color:rgba(255,255,255,.4);margin-top:.75rem">Share with panelists</p></div></div>'; }
+  return h;
+}
+
+function rActive() {
+  var d = dbLoad(); var s = null;
+  for (var i = 0; i < d.sessions.length; i++) { if (d.sessions[i].sessionCode === AC) { s = d.sessions[i]; break; } }
+  if (!s) return "<p>No active session.</p>";
+  if (s.status === "completed") { VS = s; V = "report"; return rReport(); }
+  V = "ballot"; return rBallot();
+}
+
+function rBallot() {
+  var d = dbLoad(); var s = null;
+  for (var i = 0; i < d.sessions.length; i++) { if (d.sessions[i].sessionCode === AC) { s = d.sessions[i]; break; } }
+  if (!s) return "<p>Session not found.</p>";
+  if (s.status === "completed") { VS = s; V = "report"; return rReport(); }
+  var total = s.targetPanelistCount, done = s.ballots.length;
+  var pct = Math.min(100, Math.round((done / total) * 100));
+  var h = '<div style="max-width:40rem;margin:0 auto"><div class="session-code-box" style="margin-bottom:1.5rem">' + AC + '</div>';
+  h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem"><button class="btn btn-sm btn-secondary" data-nav="dashboard">Back</button><span style="font-size:.8125rem;color:var(--t2)">Panelist ' + BN + " of " + total + '</span></div>';
+  h += '<div style="height:.5rem;background:#e2e8f0;border-radius:999px;margin-bottom:1.5rem;overflow:hidden"><div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,var(--b),var(--s));border-radius:999px"></div></div>';
+  h += '<div class="card"><div class="card-body"><h3 style="font-weight:700;margin-bottom:1.25rem">Panelist ' + BN + " Ballot</h3>";
+  if (s.testType === "blind") h += rBlind(); else if (s.testType === "proficiency") h += rProf(); else h += rReg();
+  h += '</div></div></div>'; return h;
+}
+
+function rReg() {
+  var i = BI || {}; var nd = new Date(), cd = nd.toISOString().split("T")[0], ct = nd.toTimeString().slice(0, 5);
+  var pw = i.productType === "Raw Water";
+  var h = '<form id="bf"><div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>Panelist Info</h3></div><div class="card-body"><div class="field"><label>Name *</label><input name="pn" required placeholder="e.g. John Doe"></div></div></div>';
+  h += '<div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>Product Info</h3></div><div class="card-body"><div class="grid g2"><div class="field"><label>Product Type *</label><select name="pt" id="ptsel" required><option value="">Select...</option>';
+  ["Raw Water", "Treated Water", "Finished Goods", "CIP Final Rinse Water", "Other"].forEach(function(v) { h += '<option value="' + v + '">' + v + "</option>"; });
+  h += '</select></div><div class="field" id="otf" style="display:none"><label>Specify</label><input name="opt"></div><div class="field" id="vf" style="display:none"><label>Variant</label><select name="pv"><option value="">Select...</option>';
+  ["KW 500 ml", "KW 1000 ml", "KW 2000 ml", "Filler Bowl", "Product Water Tank", "Other"].forEach(function(v) { h += "<option>" + v + "</option>"; });
+  h += '</select></div><div class="field"><label>Product Code *</label><input name="pc" required></div><div class="field"><label>Date of Mfg *</label><input name="dm" type="date" required value="' + cd + '"></div><div class="field"><label>Control Sample Code *</label><input name="cs" required></div><div class="field"><label>Time *</label><input name="tm" type="time" required value="' + ct + '"></div></div></div></div>';
+  h += '<div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>Sensory Testing</h3></div><div class="card-body">' + rTC("Appearance", "app", ["Turbid", "Discolored", "Particles", "Cloudy", "Sediment", "Other"]) + rTC("Odour", "odo", ["Plastic", "Fruity", "Burnt Caramel", "Musty", "Metallic", "Sulfurous", "Earthy", "Other"]);
+  if (!pw) h += rTC("Taste", "tas", ["Plastic", "Fruity", "Burnt Caramel", "Musty", "Metallic", "Sulfurous", "Earthy", "Other"]);
+  h += '</div></div><div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>Remarks</h3></div><div class="card-body"><textarea name="rem" rows="3" style="width:100%;padding:.75rem;border:1px solid var(--brd);border-radius:.5rem" placeholder="Notes..."></textarea></div></div>';
+  h += '<div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>Completion</h3></div><div class="card-body"><div class="grid g2"><div class="field"><label>Date *</label><input name="cd" type="date" required value="' + cd + '"></div><div class="field"><label>Time *</label><input name="ct" type="time" required value="' + ct + '"></div></div></div></div>';
+  h += '<button type="submit" class="btn btn-primary btn-full" style="height:3rem;font-size:1rem">Submit Ballot</button></form>'; return h;
+}
+
+function rTC(label, name, reasons) {
+  var h = '<div class="test-card"><h4><span style="width:1.5rem;height:1.5rem;background:var(--b);color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.6875rem;font-weight:700">' + label.charAt(0) + "</span>" + label + '</h4><div style="display:flex;gap:1rem"><label style="display:flex;align-items:center;gap:.5rem;cursor:pointer"><input type="radio" name="' + name + '" value="IN" checked><span style="color:var(--grn);font-weight:500">IN</span></label><label style="display:flex;align-items:center;gap:.5rem;cursor:pointer"><input type="radio" name="' + name + '" value="OUT"><span style="color:var(--red);font-weight:500">OUT</span></label></div><div class="field rw" style="display:none;margin-top:.5rem"><label>Reason</label><select name="' + name + 'r"><option value="">Select...</option>';
+  reasons.forEach(function(r) { h += "<option>" + r + "</option>"; });
+  h += '</select></div></div>'; return h;
+}
+
+function rBlind() {
+  var nd = new Date(), cd = nd.toISOString().split("T")[0], ct = nd.toTimeString().slice(0, 5);
+  var cs = ["Control", "Yellow", "Brown", "Blue", "Green", "Red", "Purple"];
+  var h = '<form id="bf"><div class="card" style="margin-bottom:1rem"><div class="card-body"><div class="grid g2"><div class="field"><label>Name *</label><input name="pn" required></div><div class="field"><label>Test Code</label><input name="tc"></div><div class="field"><label>Date *</label><input name="td" type="date" required value="' + cd + '"></div><div class="field"><label>Time *</label><input name="tt" type="time" required value="' + ct + '"></div><div class="field"><label>Round *</label><input name="rn" required value="1"></div><div class="field"><label>Provider</label><input name="pv"></div></div></div></div>';
+  h += '<div class="card" style="margin-bottom:1rem"><div class="card-header"><h3>Samples</h3></div><div class="card-body">';
+  cs.forEach(function(c, ci) { h += '<div style="display:grid;grid-template-columns:auto 1fr 1fr;gap:.5rem;margin-bottom:.5rem;align-items:center;padding:.5rem;border:1px solid var(--brd);border-radius:.5rem"><span class="badge" style="background:' + cbg(c) + ";color:" + ctb(c) + ';font-weight:700;min-width:5rem;justify-content:center">' + c + '</span><select name="s' + ci + 'st"><option value="IN">IN</option><option value="OUT">OUT</option></select><input name="s' + ci + 'on" placeholder="OFF Note"></div>'; });
+  h += '</div></div><button type="submit" class="btn btn-primary btn-full" style="height:3rem">Submit</button></form>'; return h;
+}
+
+function rProf() { return rBlind().replace("Samples", "Proficiency Samples"); }
+
+function rReport() {
+  var s = VS; if (!s) return "<p>No session</p>";
+  var ballots = s.ballots || [], total = s.targetPanelistCount;
+  var pct = Math.min(100, Math.round((ballots.length / total) * 100));
+  var isB = s.testType === "blind" || s.testType === "proficiency";
+  var checks = 0, ins = 0; var cat = { Appearance: {i:0,t:0}, Odour: {i:0,t:0}, Taste: {i:0,t:0} };
+  ballots.forEach(function(b) { ["appearance", "odour", "taste"].forEach(function(k) { if (b[k] && b[k].status) { var lk = k.charAt(0).toUpperCase() + k.slice(1); cat[lk].t++; checks++; if (b[k].status === "IN") { cat[lk].i++; ins++; } } }); });
+  var pp = checks ? Math.round((ins / checks) * 100) : null, ap = pp === 100;
+  var h = '<div style="max-width:50rem;margin:0 auto"><div style="display:flex;justify-content:space-between;margin-bottom:1rem"><button class="btn btn-sm btn-secondary" data-nav="dashboard">Back</button><button class="btn btn-sm btn-primary" onclick="window.print()">Print</button></div>';
+  var qc = ap ? "var(--grn)" : "var(--red)", qb = ap ? "#f0fdf4" : "#fef2f2";
+  h += '<div class="grid g3" style="margin-bottom:1.5rem">' + sc("&#128101;", "var(--b)", "#eff6ff", ballots.length + "/" + total, "Panelists") + '<div class="stat-card"><div class="si" style="background:' + qb + ";color:" + qc + '">&#9989;</div><div><div class="sv" style="color:' + qc + '">' + (pp !== null ? pp + "%" : "\u2014") + '</div><div class="sl">Quality</div></div></div>' + sc("&#128203;", "var(--pur)", "#f5f3ff", s.testType || "regular", "Type") + '</div>';
+  var title = s.testType === "blind" ? "Blind Test Report" : s.testType === "proficiency" ? "Proficiency Report" : "Sensory Evaluation Report";
+  h += '<div class="report-card"><div class="report-header"><h1>' + title + '</h1><p>Global Acqua Pvt Ltd</p><div style="display:flex;gap:1rem;margin-top:1rem"><div class="badge bb" style="font-family:\'Space Grotesk\',monospace;padding:.5rem 1rem">' + s.sessionCode + '</div><div style="font-size:.8125rem;color:var(--t3)">' + fmtDT(s.completedAt || s.createdAt) + '</div></div></div><div class="report-body">';
+  ["Appearance", "Odour", "Taste"].forEach(function(n) { var cv = cat[n]; if (cv.t === 0) return; var cp = Math.round((cv.i / cv.t) * 100), cc = cp === 100 ? "var(--grn)" : "var(--b)"; h += '<div style="margin-bottom:.75rem"><div style="display:flex;justify-content:space-between;font-size:.75rem"><span style="font-weight:600">' + n + '</span><span style="font-weight:700;color:' + cc + '">' + cp + "% IN (" + cv.i + "/" + cv.t + ')</span></div><div style="height:.5rem;background:#f1f5f9;border-radius:999px;overflow:hidden"><div style="height:100%;width:' + cp + "%;background:" + cc + ';border-radius:999px"></div></div></div>'; });
+  h += '<h3 style="font-weight:600;margin:1.5rem 0 1rem">Panelist Evaluations</h3>';
+  ballots.forEach(function(b, idx) {
+    var pC = isB ? "var(--pur)" : "var(--b)";
+    h += '<div style="border:1px solid var(--brd);border-radius:.75rem;margin-bottom:1rem;overflow:hidden"><div style="background:' + (isB ? "#f5f3ff" : "#eff6ff") + ';padding:.75rem 1rem;border-bottom:1px solid ' + (isB ? "#ede9fe" : "#dbeafe") + ';display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:.5rem"><span style="width:1.75rem;height:1.75rem;background:' + pC + ';color:#fff;border-radius:.375rem;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700">' + (idx + 1) + '</span><span style="font-weight:600">' + esc(b.panelistName || "P" + (idx + 1)) + '</span></div></div><div style="padding:1rem">';
+    if (isB && b.samples) {
+      h += '<table style="width:100%"><thead><tr><th>Sl</th><th>Color</th><th>Result</th><th>OFF Note</th></tr></thead><tbody>';
+      b.samples.forEach(function(sm, si) { h += "<tr><td>" + (sm.colorCode === "Control" ? "C" : si) + '</td><td><span class="badge" style="background:' + cbg(sm.colorCode) + ";color:" + ctb(sm.colorCode) + '">' + sm.colorCode + '</span></td><td><span class="badge ' + (sm.status === "IN" ? "bg" : "br") + '">' + (sm.colorCode === "Control" ? "IN" : sm.status) + '</span></td><td>' + (sm.offNote || "-") + "</td></tr>"; });
+      h += "</tbody></table>";
+    } else {
+      ["appearance", "odour"].concat(b.productType !== "Raw Water" ? ["taste"] : []).forEach(function(k) {
+        if (!b[k]) return;
+        h += '<div class="result-row ' + (b[k].status === "IN" ? "pass" : "fail") + '"><span style="font-weight:500">' + k.charAt(0).toUpperCase() + k.slice(1) + '</span><div style="display:flex;align-items:center;gap:.5rem"><span class="badge ' + (b[k].status === "IN" ? "bg" : "br") + '">' + b[k].status + "</span>" + (b[k].status === "OUT" ? '<span style="font-size:.75rem;color:var(--red)">' + esc(b[k].reason) + "</span>" : "") + "</div></div>";
+      });
+      if (b.remarks) h += '<div style="margin-top:.5rem;background:#fafbfc;padding:.5rem;border-radius:.5rem;font-size:.8125rem"><b>Remarks:</b> ' + esc(b.remarks) + "</div>";
+    }
+    h += "</div></div>";
+  });
+  h += '<div style="text-align:center;margin-top:2rem;padding-top:1rem;border-top:1px solid #f1f5f9;font-size:.75rem;color:var(--t4)">Generated by <b>Global Acqua Pvt Ltd</b></div></div></div></div>'; return h;
+}
+
+function openRpt(type) {
+  var ss = dbLoad().sessions || []; var f;
+  if (type === "daily") f = ss.filter(function(s) { return (!s.testType || s.testType === "regular") && s.status === "completed"; });
+  else if (type === "blind") f = ss.filter(function(s) { return s.testType === "blind" && s.status === "completed"; });
+  else f = ss.filter(function(s) { return s.testType === "proficiency" && s.status === "completed"; });
+  var title = type === "daily" ? "Daily" : type === "blind" ? "Blind Test" : "Proficiency";
+  var h = '<div style="max-height:70vh;overflow-y:auto"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem"><h3 style="font-weight:700">' + title + '</h3><button class="btn btn-sm btn-secondary" data-act="cmodal">Close</button></div><div class="table-wrap"><table style="width:100%;font-size:.8125rem"><thead><tr><th>Code</th><th>Product</th><th>Panelists</th><th>Result</th><th>Date</th></tr></thead><tbody>';
+  if (f.length) { f.forEach(function(s) { var fb = s.ballots[0] || {}; var allIn = s.ballots.every(function(x) { return (x.appearance && x.appearance.status === "IN") && (x.odour && x.odour.status === "IN"); }); h += '<tr><td style="font-weight:700;color:var(--b)">' + s.sessionCode + "</td><td>" + esc(fb.productType || "-") + "</td><td>" + s.ballots.length + "/" + s.targetPanelistCount + '</td><td><span class="badge ' + (allIn ? "bg" : "br") + '">' + (allIn ? "IN" : "OUT") + "</span></td><td>" + fmtD(s.completedAt) + "</td></tr>"; }); }
+  else { h += '<tr><td colspan="5" style="text-align:center;color:var(--t4);padding:2rem">No completed sessions</td></tr>'; }
+  h += "</tbody></table></div></div>"; $("mcont").innerHTML = h; $("mover").classList.add("show");
+}
+
+/* ========== STATIC EVENT LISTENERS ========== */
+$("login-btn").addEventListener("click", function() { doLogin(); });
+$("logout-btn").addEventListener("click", function() { doLogout(); });
+$("login-pass").addEventListener("keydown", function(e) { if (e.key === "Enter") doLogin(); });
+$("login-user").addEventListener("keydown", function(e) { if (e.key === "Enter") $("login-pass").focus(); });
+$("mover").addEventListener("click", function(e) { if (e.target === $("mover")) $("mover").classList.remove("show"); });
+
+/* ========== INIT ========== */
 dbInit();
+console.log("[Global Acqua] Ready. Users: " + dbLoad().users.length);
 </script>
 </body>
 </html>
