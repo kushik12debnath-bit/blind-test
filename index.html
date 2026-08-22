@@ -115,7 +115,24 @@ td{padding:.625rem .75rem;border-bottom:1px solid #f1f5f9}tr:hover{background:#f
 
 /* ========== STORAGE ========== */
 var SK = "gaq_data";
-function dbGet() { try { return JSON.parse(localStorage.getItem(SK)) || null; } catch(e) { return null; } }
+var SK_OLD = "gaq_db";
+function dbGet() {
+  try {
+    var d = JSON.parse(localStorage.getItem(SK));
+    if (d && d.users && d.users.length) return d;
+  } catch(e) {}
+  // Try old key and migrate
+  try {
+    var old = JSON.parse(localStorage.getItem(SK_OLD));
+    if (old && old.users && old.users.length) {
+      localStorage.setItem(SK, JSON.stringify(old));
+      localStorage.removeItem(SK_OLD);
+      console.log("[GAQ] Migrated data from old key");
+      return old;
+    }
+  } catch(e) {}
+  return null;
+}
 function dbSet(d) { localStorage.setItem(SK, JSON.stringify(d)); }
 function dbLoad() { return dbGet() || { users: [], sessions: [] }; }
 function dbSave(d) { dbSet(d); }
@@ -280,6 +297,18 @@ function wireDynamic() {
       if (vf) vf.style.display = (this.value === "Finished Goods" || this.value === "CIP Final Rinse Water") ? "block" : "none";
     });
   }
+  // Clickable session codes
+  document.querySelectorAll(".code-click").forEach(function(el) {
+    el.addEventListener("click", function() {
+      var jci = $("jci");
+      var jbtn = $("jbtn");
+      if (jci) {
+        jci.value = el.getAttribute("data-code");
+        JC = jci.value.toUpperCase();
+        if (jbtn) jbtn.disabled = false;
+      }
+    });
+  });
   // Filter inputs
   var ssrch = $("ssrch"); if (ssrch) ssrch.addEventListener("input", function() { SS = this.value; render(); });
   var sfrom = $("sfrom"); if (sfrom) sfrom.addEventListener("change", function() { SF = this.value; render(); });
@@ -325,6 +354,7 @@ function doStart(count, type) {
   d.sessions.push({ id: uid(), sessionCode: c, status: "in_progress", targetPanelistCount: count, testType: type, ballots: [], createdBy: U.username, createdAt: iso(), completedAt: null });
   dbSave(d);
   AC = c; BN = 1; BI = null; ST = type;
+  console.log("[GAQ] Session created: " + c + " (total: " + d.sessions.length + ")");
   toast("Session " + c + " created!", "ok");
   V = "ballot"; render();
 }
@@ -338,6 +368,7 @@ function doGen() {
   d.sessions.push({ id: uid(), sessionCode: c, status: "in_progress", targetPanelistCount: parseInt(gc), testType: gt, ballots: [], createdBy: U.username, createdAt: iso(), completedAt: null });
   dbSave(d);
   GV = c;
+  console.log("[GAQ] Session created: " + c + " (total: " + d.sessions.length + ")");
   toast("Session " + c + " created!", "ok");
   render();
 }
@@ -347,8 +378,10 @@ function doJoin() {
   var code = (inp ? inp.value : JC).trim().toUpperCase();
   if (!code) { toast("Enter a session code", "error"); return; }
   var d = dbLoad(); var s = null;
+  console.log("[GAQ] Join attempt: " + code + ", total sessions: " + d.sessions.length);
+  console.log("[GAQ] Available codes: " + d.sessions.map(function(x){return x.sessionCode}).join(", "));
   for (var i = 0; i < d.sessions.length; i++) { if (d.sessions[i].sessionCode === code) { s = d.sessions[i]; break; } }
-  if (!s) { toast("Session not found: " + code, "error"); return; }
+  if (!s) { toast("Session not found: " + code + " (" + d.sessions.length + " sessions in DB)", "error"); return; }
   if (s.status === "completed") { toast("Already completed", "error"); return; }
   AC = code; BN = s.ballots.length + 1; ST = s.testType || "regular";
   if (s.ballots.length > 0) {
@@ -418,7 +451,7 @@ function rUser() {
   if (!TS) { h += '<button class="btn btn-primary btn-full" data-act="tsel">1 Panelist Session</button>'; }
   else { h += '<div style="display:flex;flex-direction:column;gap:.5rem"><button class="btn btn-full" data-act="start" data-type="regular" style="background:#eff6ff;border:1px solid #bfdbfe;color:var(--b);font-weight:600">Regular Test</button><button class="btn btn-full" data-act="start" data-type="blind" style="background:#f5f3ff;border:1px solid #ddd6fe;color:var(--pur);font-weight:600">Blind Test</button><button class="btn btn-full" data-act="start" data-type="proficiency" style="background:#f0fdf4;border:1px solid #bbf7d0;color:var(--grn);font-weight:600">Proficiency</button><button class="btn btn-secondary btn-full" data-act="ctsel">Cancel</button></div>'; }
   h += '<div style="margin-top:.75rem;display:flex;flex-direction:column;gap:.5rem"><button class="btn btn-full" data-act="start2" data-count="2" style="background:linear-gradient(135deg,#003A70,#0064C8);color:#fff">2 Panelists</button><button class="btn btn-full" data-act="start2" data-count="3" style="background:linear-gradient(135deg,#00274d,#003A70);color:#fff">3 Panelists</button></div></div></div>';
-  h += '<div class="card"><div class="card-header"><h3>Join Session</h3></div><div class="card-body"><p style="font-size:.8125rem;color:var(--t3);margin-bottom:1rem">Enter a session code to join</p><div class="field"><input id="jci" placeholder="e.g. GAQ-ABC123"></div><button id="jbtn" class="btn btn-primary btn-full" disabled>Join Session</button><p style="font-size:.6875rem;color:var(--t4);text-align:center;margin-top:.5rem">Ask the session admin for the code</p></div></div></div>';
+  h += '<div class="card"><div class="card-header"><h3>Join Session</h3></div><div class="card-body"><p style="font-size:.8125rem;color:var(--t3);margin-bottom:1rem">Enter a session code to join</p><div class="field"><input id="jci" placeholder="e.g. GAQ-ABC123"></div><button id="jbtn" class="btn btn-primary btn-full" disabled>Join Session</button><p style="font-size:.6875rem;color:var(--t4);text-align:center;margin-top:.5rem">Ask the session admin for the code</p>'; var allSess = dbLoad().sessions || []; var active = allSess.filter(function(s){return s.status==='in_progress'}); if(active.length){ h+='<div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--brd)"><div style="font-size:.6875rem;font-weight:600;color:var(--t2);margin-bottom:.5rem">Active Sessions:</div>'; active.forEach(function(s){ h+='<div style="display:flex;justify-content:space-between;align-items:center;padding:.375rem 0;font-size:.75rem;border-bottom:1px solid #f1f5f9"><span class="code-click" data-code="'+s.sessionCode+'" style="font-family:monospace;font-weight:700;color:var(--b);cursor:pointer">'+s.sessionCode+'</span><span style="color:var(--t4)">'+s.testType+' ('+s.ballots.length+'/'+s.targetPanelistCount+')</span></div>'; }); h+='</div>'; } h+='</div></div></div>';
   if (ss.length) {
     h += '<div style="margin-top:2rem"><div class="main-header" style="margin-bottom:1rem"><h1 style="font-size:1.125rem">Recent Sessions</h1></div><div class="grid" style="gap:.75rem">';
     ss.slice(0, 5).forEach(function(s) {
